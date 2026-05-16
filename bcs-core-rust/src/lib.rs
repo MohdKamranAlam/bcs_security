@@ -21,6 +21,20 @@
 //! This crate is for **research and audit** purposes. It is not
 //! constant-time and must not be used in production unaudited.
 
+// ---------------------------------------------------------------------------
+// Constant-time core (experimental, opt-in via `--features ct`)
+// ---------------------------------------------------------------------------
+//
+// When the `ct` feature is enabled, `crate::ct::*` becomes available
+// as a parallel implementation path with the same external behaviour
+// as the BigUint reference code below.  All 10 frozen test vectors
+// must produce byte-equal output via both paths — see
+// `tests/test_ct_parity.rs`.  Once parity is confirmed and the
+// `dudect` timing-leak harness passes, the BigUint path will be
+// retired in `v0.3.0`.
+#[cfg(feature = "ct")]
+pub mod ct;
+
 use hkdf::Hkdf;
 use num_bigint::{BigUint, RandBigInt};
 use num_traits::{One, Zero};
