@@ -35,7 +35,7 @@ record(s) = { print(s); out = concat(out, concat(s, "\n")); };
 
 record("=========================================================================");
 record("BCS-521 Independent Cardinality Proof  (Pari/GP)");
-record(Strftime("%Y-%m-%d %H:%M:%S UTC", getwalltime()/1000));
+record(Str("Timestamp ms: ", getwalltime()));
 record("=========================================================================");
 record(Str("p bits         = ", #binary(p_521)));
 record(Str("n bits         = ", #binary(n_521)));
