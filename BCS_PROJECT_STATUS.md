@@ -1,7 +1,7 @@
 # Bismillah Cryptosystem (BCS) — Master Project Status
 
 **Last updated:** 2026-05-17  
-**Status:** Phase 3 complete. **10/10 frozen test vectors PASS on Codespaces (Rust ↔ Python byte-equal, Kahf-bound included)**. Next: Sage `proof=True` cardinality + constant-time Rust v0.2.0. See `BCS_WORLD_CLASS_ROADMAP.md` for full path to world-class.
+**Status:** Phase 3 complete + **independent cardinality proof complete**. **10/10 frozen test vectors PASS on Codespaces (Rust ↔ Python byte-equal, Kahf-bound included)** AND **Pari/GP SEA `VERDICT: PASS` on BCS-521 cardinality** (see `bcs-verify/bcs521_pari_proof_result.txt`). Next: constant-time Rust v0.2.0. See `BCS_WORLD_CLASS_ROADMAP.md` for full path to world-class.
 
 ---
 
