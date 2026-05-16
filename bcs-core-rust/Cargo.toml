@@ -1,0 +1,31 @@
+[package]
+name = "bcs-core-rust"
+version = "0.2.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "BCS research reference core for BCS-256 and BCS-521 with strict point validation"
+
+[dependencies]
+num-bigint = { version = "0.4", features = ["rand"] }
+num-traits = "0.2"
+num-integer = "0.1"
+rand = "0.8"
+sha2 = "0.10"
+hkdf = "0.12"
+hex = "0.4"
+
+[dev-dependencies]
+aes-gcm    = "0.10"
+serde_json = { version = "1", features = ["std"] }
+serde      = { version = "1", features = ["derive"] }
+
+[[example]]
+name = "bcs521_ecdh_demo"
+path = "examples/bcs521_ecdh_demo.rs"
+
+[[example]]
+name = "bcs256_ecdh_demo"
+path = "examples/bcs256_ecdh_demo.rs"
+
+[profile.release]
+opt-level = 3

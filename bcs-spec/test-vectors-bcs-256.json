@@ -1,0 +1,30 @@
+{
+  "name": "BCS-256 reference test vectors",
+  "status": "draft-v1",
+  "curve": "y^2 = x^3 - 2x^2 + 5x + 4 mod p",
+  "p": "75403776646910504885013085564245979049841362888363155420739536990720881516533",
+  "n": "75403776646910504885013085564245979049566799732270309665248923838363814402301",
+  "generator": {
+    "x": "0",
+    "y": "2"
+  },
+  "invalid_points": [
+    {
+      "x": "0",
+      "y": "3",
+      "reason": "fails curve equation"
+    }
+  ],
+  "requirements": [
+    "All public keys must pass curve equation validation before scalar multiplication.",
+    "Raw ECDH x-coordinate must be passed through HKDF before use.",
+    "Private keys and shared secrets must never be logged."
+  ],
+  "vectors_to_freeze_after_rust_test": [
+    "2G",
+    "123456789*G",
+    "987654321*G",
+    "ECDH(123456789, 987654321*G)",
+    "HKDF-SHA-256 output for fixed salt/info"
+  ]
+}

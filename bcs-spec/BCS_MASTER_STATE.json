@@ -1,0 +1,136 @@
+{
+  "schema": "BCS-master-state-v1",
+  "last_updated_utc": "2026-05-16T17:00:00Z",
+  "project_name": "Bismillah Cryptosystem (BCS)",
+  "description": "Master state JSON containing all curve parameters, audit results, and reproduction instructions for BCS-256 and BCS-521. This file is the authoritative backup. If anything else is lost, this file can fully reconstruct the cryptographic parameters.",
+
+  "bismillah_origin": {
+    "master_equation": "T_A = 17 * B^2 + 5 * B + 4 = 6236",
+    "B_value": 19,
+    "B_meaning": "Number of letters in Bismillah",
+    "T_A_value": 6236,
+    "T_A_meaning": "Total number of ayahs in the Quran",
+    "curve_equation": "y^2 = x^3 - 2*x^2 + 5*x + 4",
+    "curve_coefficients": { "a1": 0, "a2": -2, "a3": 0, "a4": 5, "a6": 4 },
+    "generator": { "Gx": 0, "Gy": 2 },
+    "sanity_check_F17": "#E(F_17) = 19 (matches B, Bismillah identity)"
+  },
+
+  "curves": {
+    "BCS-256": {
+      "status": "CONDITIONAL_PASS",
+      "bit_length": 256,
+      "p": "75403776646910504885013085564245979049841362888363155420739536990720881516533",
+      "n": "75403776646910504885013085564245979049566799732270309665248923838363814402301",
+      "a_p": "274563156092845755490613152357067114233",
+      "cofactor_h": 1,
+      "ecdlp_security_bits_estimate": 128,
+      "kdf": "HKDF-SHA-256",
+      "field_bytes": 32,
+      "generator": { "Gx": "0", "Gy": "2" },
+      "audit": {
+        "p_prime_BPSW": true,
+        "n_prime_BPSW": true,
+        "hasse_bound": true,
+        "not_anomalous": true,
+        "not_supersingular": true,
+        "MOV_embedding_degree_lower_bound": "k >= 2^30",
+        "twist_prime": false,
+        "twist_policy": "Mandatory point validation",
+        "group_law_n_times_G_is_O": true
+      },
+      "test_vector_2G": {
+        "x": "60293021317528403908010468451396783239873090310690524336591616767739926388825",
+        "y": "54263719185775563510980655411412563580898420670635964468759342709292877320113"
+      }
+    },
+
+    "BCS-521": {
+      "status": "CONDITIONAL_PASS",
+      "frozen_date_utc": "2026-05-16",
+      "bit_length": 521,
+      "p": "6684878480953803875615041384236581248565144626959181331935475284049641722241859916862100650133594325184551397342003884026080714561754188260987347401802009363",
+      "n": "6684878480953803875615041384236581248565144626959181331935475284049641722241859866323302474084432391273141914599968033004535887077643952596722791822942474231",
+      "a_p": "595387981786604061933914900482742035851821544827484116235664264555578850535133",
+      "cofactor_h": 1,
+      "ecdlp_security_bits_estimate": 260,
+      "kdf": "HKDF-SHA-512",
+      "field_bytes": 66,
+      "generator": { "Gx": "0", "Gy": "2" },
+      "search_metadata": {
+        "tool": "bcs521-search Rust + PARI/GP",
+        "platform": "GitHub Codespaces 4-core",
+        "attempts": 166,
+        "duration_seconds": 3857.798110987,
+        "duration_minutes_approx": 64,
+        "workers": 4,
+        "found_timestamp_utc": "2026-05-16T11:40:57.665188888+00:00",
+        "search_budget_seconds": 86400
+      },
+      "audit": {
+        "p_prime_BPSW": true,
+        "n_prime_BPSW": true,
+        "hasse_bound": true,
+        "not_anomalous": true,
+        "ECDLP_cost_approx_2_pow_260": true,
+        "generator_on_curve": true,
+        "twist_prime": false,
+        "twist_small_factors": "43, 47, 58651, 106856077 (and larger composite remainder)",
+        "twist_policy": "Mandatory point validation per BCS Twist Validation Policy",
+        "sage_independent_proof": "PENDING (Colab BCS_521_SAGE_COLAB.py)"
+      },
+      "open_items": [
+        "Sage proof=True primality certificate for p",
+        "Sage independent E.cardinality()==n verification",
+        "Exact embedding degree k = ord_n(p)",
+        "Full twist order factorization (or formal point-validation policy)",
+        "Test vectors signed and frozen",
+        "External cryptographer review"
+      ]
+    }
+  },
+
+  "implementation": {
+    "rust_crate": "bcs-core-rust v0.2.0",
+    "search_tool": "bcs521-search v0.1.0",
+    "audit_script_256": "BCS_HONEST_VERIFY_COLAB.py",
+    "audit_script_521": "BCS_521_VERIFY_COLAB.py",
+    "test_vector_generator": "BCS_521_TEST_VECTORS_COLAB.py",
+    "sage_proof_script_256": "bcs-verify/bcs256_sage_proof.sage",
+    "sage_proof_script_521": "bcs-verify/bcs521_sage_proof.sage",
+    "colab_sage_runner": "BCS_521_SAGE_COLAB.py"
+  },
+
+  "post_quantum_hybrid_target": {
+    "name": "BCS-521 + ML-KEM-1024",
+    "construction": "final_key = HKDF-SHA-512(BCS_ecdh_secret || MLKEM_secret, salt='BCS-521-PQ-v1', info=...)",
+    "status": "DESIGN_PENDING"
+  },
+
+  "demo_application": {
+    "name": "BCS Halal Certificate Digital Trust Demo",
+    "spec_file": "bcs-demo/halal-certificate/README.md",
+    "example_payload": "bcs-demo/halal-certificate/certificate_example.json",
+    "status": "SPEC_DRAFTED"
+  },
+
+  "known_limitations": {
+    "file": "bcs-spec/known-limitations.md",
+    "high_level": [
+      "Not constant-time (research reference only)",
+      "Twist composite on both curves (mitigated by mandatory point validation)",
+      "No formal academic primality certificate yet (BPSW probabilistic only)",
+      "No external cryptographer review yet",
+      "Quantum: broken by Shor's algorithm (need PQ hybrid)"
+    ]
+  },
+
+  "reproduction_instructions": {
+    "verify_BCS_256_audit": "Open BCS_HONEST_VERIFY_COLAB.py in Colab, run all cells, download bcs256_honest_audit_*.json",
+    "verify_BCS_521_audit": "Open BCS_521_VERIFY_COLAB.py in Colab, paste BCS-521 p,n, run all cells",
+    "regenerate_test_vectors_521": "Open BCS_521_TEST_VECTORS_COLAB.py in Colab, run, downloads bcs521_test_vectors.json",
+    "run_sage_proof_521": "Follow BCS_521_SAGE_COLAB.py cells in Colab with SageMath kernel installed (~30 min)",
+    "rust_tests": "cd bcs-core-rust && cargo test --release",
+    "rust_demos": "cargo run --release --example bcs521_ecdh_demo"
+  }
+}
