@@ -35,6 +35,16 @@
 #[cfg(feature = "ct")]
 pub mod ct;
 
+/// High-level, user-facing API for BCS-521 (`Bcs521`, `Bcs521SecretKey`,
+/// `Bcs521PublicKey`, `Bcs521SharedSecret`).  Wraps the constant-time
+/// primitives in `ct::*` behind strict, validated newtypes with
+/// `Zeroize` discipline and redacted `Debug`.
+#[cfg(feature = "ct")]
+pub mod api;
+
+#[cfg(feature = "ct")]
+pub use api::{Bcs521, Bcs521Error, Bcs521PublicKey, Bcs521SecretKey, Bcs521SharedSecret};
+
 use hkdf::Hkdf;
 use num_bigint::{BigUint, RandBigInt};
 use num_traits::{One, Zero};
