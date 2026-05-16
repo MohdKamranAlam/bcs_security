@@ -29,7 +29,7 @@
 //! and so leaks no secret information; it is performed by the
 //! free functions `to_short` / `from_short`.
 
-use subtle::{Choice, ConstantTimeEq};
+use subtle::Choice;
 
 use super::consts::{
     SHORT_A_MONT_LIMBS, SHORT_B3_MONT_LIMBS, SHORT_GX_MONT_LIMBS, SHORT_GY_MONT_LIMBS,
