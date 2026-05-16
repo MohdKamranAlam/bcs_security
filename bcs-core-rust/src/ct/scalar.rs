@@ -23,7 +23,12 @@ use super::consts::{FIELD_BITS, FIELD_BYTES, N_521_LIMBS};
 ///
 /// `Drop` zeroizes the limbs.  This struct is **secret** by default
 /// and must never be `Debug`-printed in production.
-#[derive(Clone, Copy, Zeroize, ZeroizeOnDrop)]
+///
+/// `Scalar` is intentionally **not** `Copy`: every duplication of a
+/// secret should be a deliberate `.clone()` so it is easy to audit
+/// where secrets exist in memory.  `Clone` is provided for the cases
+/// where duplication is genuinely necessary (e.g. in tests).
+#[derive(Clone, Zeroize, ZeroizeOnDrop)]
 pub struct Scalar {
     pub(crate) limbs: [u64; 9],
 }

@@ -36,9 +36,11 @@
 pub mod consts;
 pub mod fp521;
 pub mod scalar;
-// pub mod point;     // ← TODO: enable when point.rs lands
-// pub mod ladder;    // ← TODO: enable when ladder.rs lands
+pub mod point;
+pub mod ladder;
 
 pub use consts::*;
 pub use fp521::Fp521;
 pub use scalar::Scalar;
+pub use point::ProjPoint;
+pub use ladder::{scalar_mul, scalar_mul_generator};
