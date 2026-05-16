@@ -52,7 +52,8 @@ fn h2b(s: &str) -> Vec<u8> {
 // =========================================================
 #[test]
 fn tv_aes256gcm_encrypt() {
-    let key: &Key<Aes256Gcm> = h2b(AES_KEY_HEX).as_slice().try_into().unwrap();
+    let key_bytes = h2b(AES_KEY_HEX);
+    let key: &Key<Aes256Gcm> = key_bytes.as_slice().try_into().unwrap();
     let cipher = Aes256Gcm::new(key);
     let nonce_bytes = h2b(AES_NONCE_HEX);
     let nonce = Nonce::from_slice(&nonce_bytes);
@@ -75,7 +76,8 @@ fn tv_aes256gcm_encrypt() {
 // =========================================================
 #[test]
 fn tv_aes256gcm_decrypt() {
-    let key: &Key<Aes256Gcm> = h2b(AES_KEY_HEX).as_slice().try_into().unwrap();
+    let key_bytes = h2b(AES_KEY_HEX);
+    let key: &Key<Aes256Gcm> = key_bytes.as_slice().try_into().unwrap();
     let cipher = Aes256Gcm::new(key);
     let nonce_bytes = h2b(AES_NONCE_HEX);
     let nonce = Nonce::from_slice(&nonce_bytes);
