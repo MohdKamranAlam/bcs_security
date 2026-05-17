@@ -1,0 +1,38 @@
+[package]
+name = "bcs-core-rust-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.bcs-core-rust]
+path = ".."
+features = ["ct"]
+
+# Prevent cargo from publishing this crate.
+[workspace]
+members = ["."]
+
+# Each fuzz target is its own [[bin]].
+[[bin]]
+name = "fuzz_parse_public_key"
+path = "fuzz_targets/fuzz_parse_public_key.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "fuzz_parse_secret_key"
+path = "fuzz_targets/fuzz_parse_secret_key.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "fuzz_ecdh_round_trip"
+path = "fuzz_targets/fuzz_ecdh_round_trip.rs"
+test = false
+doc = false

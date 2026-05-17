@@ -45,6 +45,18 @@ pub mod api;
 #[cfg(feature = "ct")]
 pub use api::{Bcs521, Bcs521Error, Bcs521PublicKey, Bcs521SecretKey, Bcs521SharedSecret};
 
+/// Hybrid post-quantum KEM combining BCS-521 ECDH with ML-KEM-1024.
+/// Gated behind `--features hybrid`, which transitively enables `ct`
+/// and pulls in the `ml-kem` crate from RustCrypto.
+#[cfg(feature = "hybrid")]
+pub mod hybrid;
+
+#[cfg(feature = "hybrid")]
+pub use hybrid::{
+    BcsHybrid521Mlkem1024, HybridCiphertext, HybridError, HybridPublicKey, HybridSecretKey,
+    HybridSharedSecret,
+};
+
 use hkdf::Hkdf;
 use num_bigint::{BigUint, RandBigInt};
 use num_traits::{One, Zero};

@@ -12,6 +12,9 @@ default = []
 # field ops route through `crate::ct::*`. The reference BigUint code remains
 # available under `crate::reference::*` for parity testing.
 ct = ["dep:subtle", "dep:zeroize"]
+# Enable the hybrid post-quantum KEM (BCS-521 ECDH + ML-KEM-1024).
+# Pulls in the `ml-kem` crate from RustCrypto.
+hybrid = ["ct", "dep:ml-kem"]
 
 [dependencies]
 num-bigint = { version = "0.4", features = ["rand"] }
@@ -23,12 +26,14 @@ hkdf = "0.12"
 hex = "0.4"
 subtle  = { version = "2.5", optional = true, default-features = false }
 zeroize = { version = "1.7", optional = true, features = ["zeroize_derive"] }
+ml-kem  = { version = "0.2", optional = true, default-features = false, features = ["std"] }
 
 [dev-dependencies]
 aes-gcm    = "0.10"
 serde_json = { version = "1", features = ["std"] }
 serde      = { version = "1", features = ["derive"] }
 criterion  = { version = "0.5", features = ["html_reports"] }
+proptest   = "1.4"
 
 [[example]]
 name = "bcs521_ecdh_demo"

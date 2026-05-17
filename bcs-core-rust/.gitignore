@@ -1,0 +1,18 @@
+# Rust build artefacts
+target/
+Cargo.lock.bk
+
+# cargo-fuzz artefacts
+fuzz/target/
+fuzz/corpus/
+fuzz/artifacts/
+fuzz/coverage/
+
+# Editor files
+*.swp
+.idea/
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
