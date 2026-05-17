@@ -144,7 +144,7 @@ fn bcs521_scalar_mul(runner: &mut CtRunner, rng: &mut BenchRng) {
     }
 
     // Hot loop — only the call to `scalar_mul_generator` is timed.
-    for (s, class) in inputs.into_iter().zip(classes.into_iter()) {
+    for (s, class) in inputs.into_iter().zip(classes) {
         runner.run_one(class, || {
             // black-box discouraging the optimiser from hoisting work.
             let p = scalar_mul_generator(&s);
@@ -196,7 +196,7 @@ fn bcs521_ecdh(runner: &mut CtRunner, rng: &mut BenchRng) {
         }
     }
 
-    for (sk, class) in inputs.into_iter().zip(classes.into_iter()) {
+    for (sk, class) in inputs.into_iter().zip(classes) {
         runner.run_one(class, || {
             let ss = Bcs521::ecdh(&sk, &peer_pk).expect("validated inputs");
             std::hint::black_box(ss)
@@ -264,7 +264,7 @@ fn fp521_mont_mul(runner: &mut CtRunner, rng: &mut BenchRng) {
         }
     }
 
-    for (a, class) in inputs.into_iter().zip(classes.into_iter()) {
+    for (a, class) in inputs.into_iter().zip(classes) {
         runner.run_one(class, || std::hint::black_box(a.mont_mul(&b)));
     }
 }
