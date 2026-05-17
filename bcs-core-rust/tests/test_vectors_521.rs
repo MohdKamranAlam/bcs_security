@@ -53,7 +53,7 @@ fn h2b(s: &str) -> Vec<u8> {
 #[test]
 fn tv_aes256gcm_encrypt() {
     let key_bytes = h2b(AES_KEY_HEX);
-    let key: &Key<Aes256Gcm> = key_bytes.as_slice().try_into().unwrap();
+    let key: &Key<Aes256Gcm> = key_bytes.as_slice().into();
     let cipher = Aes256Gcm::new(key);
     let nonce_bytes = h2b(AES_NONCE_HEX);
     let nonce = Nonce::from_slice(&nonce_bytes);
@@ -77,7 +77,7 @@ fn tv_aes256gcm_encrypt() {
 #[test]
 fn tv_aes256gcm_decrypt() {
     let key_bytes = h2b(AES_KEY_HEX);
-    let key: &Key<Aes256Gcm> = key_bytes.as_slice().try_into().unwrap();
+    let key: &Key<Aes256Gcm> = key_bytes.as_slice().into();
     let cipher = Aes256Gcm::new(key);
     let nonce_bytes = h2b(AES_NONCE_HEX);
     let nonce = Nonce::from_slice(&nonce_bytes);
@@ -159,7 +159,7 @@ fn tv_full_pipeline_alice_to_ciphertext() {
     assert_eq!(hex::encode(&shared_x), SHARED_X_HEX, "ECDH shared_x mismatch");
 
     let hkdf_out = hkdf_sha512_64(&shared_x, HKDF_SALT, HKDF_INFO);
-    let aes_key: &Key<Aes256Gcm> = hkdf_out[..32].try_into().unwrap();
+    let aes_key: &Key<Aes256Gcm> = hkdf_out[..32].into();
     let cipher = Aes256Gcm::new(aes_key);
     let nonce = Nonce::from_slice(&hkdf_out[32..44]);
 
@@ -212,7 +212,7 @@ fn tv_kahf_full_pipeline() {
     let shared_x = curve.ecdh(&alice_sk, &bob_pk).expect("ECDH failed");
 
     let hkdf_out = hkdf_sha512_64_kahf(&shared_x, HKDF_SALT, HKDF_INFO);
-    let aes_key: &Key<Aes256Gcm> = hkdf_out[..32].try_into().unwrap();
+    let aes_key: &Key<Aes256Gcm> = hkdf_out[..32].into();
     let cipher = Aes256Gcm::new(aes_key);
     let nonce = Nonce::from_slice(&hkdf_out[32..44]);
 

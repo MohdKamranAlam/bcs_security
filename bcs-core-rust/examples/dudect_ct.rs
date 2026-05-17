@@ -67,7 +67,10 @@
 
 use bcs_core_rust::ct::{scalar_mul_generator, Fp521, Scalar};
 use bcs_core_rust::{Bcs521, Bcs521PublicKey, Bcs521SecretKey};
-use dudect_bencher::rand::{Rng, RngCore};
+// `RngExt` (not `RngCore`) provides `random::<T>()` in rand 0.10,
+// which is what `dudect-bencher` 0.7 re-exports.  See upstream
+// example: https://github.com/rozbb/dudect-bencher/blob/master/examples/ctbench-foo.rs
+use dudect_bencher::rand::{Rng, RngExt};
 use dudect_bencher::{ctbench_main, BenchRng, Class, CtRunner};
 
 /// Number of pre-generated samples per dudect bench iteration.
