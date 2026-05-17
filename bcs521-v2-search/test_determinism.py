@@ -18,6 +18,8 @@ from kahf_seeded_search import (
     master_seed,
     candidate,
     generator_on_curve,
+    default_certificate_path,
+    default_checkpoint_path,
 )
 
 
@@ -114,6 +116,29 @@ class TestKahfSeededCandidate(unittest.TestCase):
             p = candidate(c)
             self.assertTrue(hex(p).startswith(expected),
                             msg=f"counter {c}: got {hex(p)[:34]}, want {expected}")
+
+
+class TestBitAwarePaths(unittest.TestCase):
+    """Tiered runs at 128/256/521 must use disjoint default file paths so
+    they never overwrite each other's certificates/checkpoints."""
+
+    def test_certificate_paths_distinct_per_bits(self):
+        c128 = default_certificate_path(128)
+        c256 = default_certificate_path(256)
+        c521 = default_certificate_path(521)
+        self.assertNotEqual(c128, c256)
+        self.assertNotEqual(c256, c521)
+        self.assertNotEqual(c128, c521)
+
+    def test_certificate_paths_contain_bits(self):
+        for bits in (128, 192, 256, 384, 521):
+            self.assertIn(str(bits), str(default_certificate_path(bits)))
+            self.assertIn(str(bits), str(default_checkpoint_path(bits)))
+
+    def test_certificate_and_checkpoint_distinct(self):
+        for bits in (128, 256, 521):
+            self.assertNotEqual(default_certificate_path(bits),
+                                default_checkpoint_path(bits))
 
 
 class TestGeneratorOnCurve(unittest.TestCase):

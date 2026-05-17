@@ -259,19 +259,34 @@ def generator_on_curve(p: int) -> bool:
 # 6. Search driver
 # ---------------------------------------------------------------------------
 
-CHECKPOINT_PATH = Path(__file__).parent / "kahf_seeded_checkpoint.json"
-CERTIFICATE_PATH = Path(__file__).parent / "kahf_seeded_certificate.json"
+# Bit-aware default paths (so tiered runs at 128 / 256 / 521 do NOT overwrite
+# each other). Caller can override via --out for the certificate path.
+DEFAULT_DIR = Path(__file__).parent
 
 
-def _save_checkpoint(state: dict) -> None:
+def default_checkpoint_path(bits: int) -> Path:
+    return DEFAULT_DIR / f"kahf_seeded_checkpoint_{bits}.json"
+
+
+def default_certificate_path(bits: int) -> Path:
+    return DEFAULT_DIR / f"kahf_seeded_certificate_{bits}.json"
+
+
+def _save_checkpoint(path: Path, state: dict) -> None:
     state["updated_at"] = datetime.now(timezone.utc).isoformat()
-    CHECKPOINT_PATH.write_text(json.dumps(state, indent=2))
+    path.write_text(json.dumps(state, indent=2))
 
 
-def search(bits: int, start: int, max_attempts: int, label: str) -> dict | None:
+def search(bits: int, start: int, max_attempts: int, label: str,
+           out_path: Path | None = None,
+           checkpoint_path: Path | None = None) -> dict | None:
     """Run the deterministic search. Returns certificate dict on success."""
     seed_input = canonical_seed_input(label, bits)
     seed = hashlib.sha512(seed_input).digest()
+    if out_path is None:
+        out_path = default_certificate_path(bits)
+    if checkpoint_path is None:
+        checkpoint_path = default_checkpoint_path(bits)
 
     print("=" * 72)
     print("BCS Kahf-Seeded Deterministic Prime Search")
@@ -283,6 +298,8 @@ def search(bits: int, start: int, max_attempts: int, label: str) -> dict | None:
     print(f"start counter     : {start}")
     print(f"max attempts      : {max_attempts}")
     print(f"PARI/GP available : {_have_gp()}")
+    print(f"certificate out   : {out_path}")
+    print(f"checkpoint        : {checkpoint_path}")
     print("=" * 72)
 
     if bits >= 256 and not _have_gp():
@@ -303,7 +320,8 @@ def search(bits: int, start: int, max_attempts: int, label: str) -> dict | None:
                 print(f"  [c={c}] elapsed {int(time.time() - t_start)}s, "
                       f"p_primes_seen={primes_found}")
                 last_progress_at = time.time()
-                _save_checkpoint({"label": label, "bits": bits,
+                _save_checkpoint(checkpoint_path,
+                                 {"label": label, "bits": bits,
                                   "last_counter": c, "primes_found": primes_found,
                                   "elapsed_s": int(time.time() - t_start)})
             continue
@@ -377,7 +395,7 @@ def search(bits: int, start: int, max_attempts: int, label: str) -> dict | None:
                 ],
             },
         }
-        CERTIFICATE_PATH.write_text(json.dumps(certificate, indent=2))
+        out_path.write_text(json.dumps(certificate, indent=2))
         print()
         print("=" * 72)
         print(f"FOUND at counter c={c}  (after {c - start + 1} attempts, "
@@ -385,7 +403,7 @@ def search(bits: int, start: int, max_attempts: int, label: str) -> dict | None:
         print(f"  p ({p.bit_length()} bits) = {p}")
         print(f"  n ({n.bit_length()} bits) = {n}")
         print(f"  a_p = {a_p}")
-        print(f"Certificate written to {CERTIFICATE_PATH}")
+        print(f"Certificate written to {out_path}")
         print("=" * 72)
         return certificate
 
@@ -507,6 +525,9 @@ def main() -> int:
                     help=f"Protocol label (default '{SEED_LABEL}')")
     ap.add_argument("--verify", type=int, default=None,
                     help="Verify mode: re-derive candidate at this counter")
+    ap.add_argument("--out", type=str, default=None,
+                    help=("Certificate output path. Defaults to "
+                          "kahf_seeded_certificate_<bits>.json next to this script."))
     args = ap.parse_args()
 
     if args.smoke:
@@ -515,8 +536,10 @@ def main() -> int:
     if args.verify is not None:
         verify(args.verify, label=args.label, bits=args.bits)
         return 0
+    out_path = Path(args.out) if args.out else None
     res = search(bits=args.bits, start=args.start,
-                 max_attempts=args.max_attempts, label=args.label)
+                 max_attempts=args.max_attempts, label=args.label,
+                 out_path=out_path)
     return 0 if res is not None else 2
 
 
