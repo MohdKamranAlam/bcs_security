@@ -87,7 +87,13 @@ impl Scalar {
     }
 
     /// Constant-time `self < n_521`?
+    ///
+    /// The explicit `for i in 0..9` form is intentional — see the
+    /// header comment on `Fp521::ct_lt_p` for the constant-time
+    /// rationale that applies to every 9-limb indexed loop in this
+    /// module.
     #[inline]
+    #[allow(clippy::needless_range_loop)]
     fn ct_lt_n(&self) -> Choice {
         let mut borrow: u64 = 0;
         for i in 0..9 {

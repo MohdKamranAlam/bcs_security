@@ -115,7 +115,20 @@ impl Fp521 {
     }
 
     /// Constant-time comparison.  Returns 1 iff `self < P_521`.
+    ///
+    /// NOTE on the indexed `for i in 0..9` loops appearing throughout
+    /// this module: the explicit form is *intentional*.  Every such
+    /// loop accesses two-or-more parallel arrays
+    /// (`self.limbs[i]`, `rhs.limbs[i]`, `P_521_LIMBS[i]`, output
+    /// buffers) and the loop bound is a cryptographic invariant
+    /// (`9 = ⌈521 / 64⌉`).  Rewriting via iterator chains would either
+    /// obscure the constant-time intent or duplicate the index inside
+    /// `.enumerate()`, neither of which improves the audit story.
+    /// The `#[allow(clippy::needless_range_loop)]` annotations below
+    /// are therefore *deliberate* and should not be removed without
+    /// re-justifying the constant-time analysis.
     #[inline]
+    #[allow(clippy::needless_range_loop)]
     fn ct_lt_p(&self) -> Choice {
         // Subtract-with-borrow `self - P`; if the final borrow is 1,
         // then `self < P`.
@@ -138,6 +151,7 @@ impl Fp521 {
     /// conditional subtraction of `p`.  Both branches are always
     /// executed; the result is selected with `Choice`.
     #[inline]
+    #[allow(clippy::needless_range_loop)] // see ct_lt_p — multi-array CT loops
     pub fn add_mod_p(&self, rhs: &Self) -> Self {
         // 1. raw add with carry
         let mut sum = [0u64; 10];
@@ -176,6 +190,7 @@ impl Fp521 {
 
     /// Modular subtraction: `(self - rhs) mod p`.
     #[inline]
+    #[allow(clippy::needless_range_loop)] // see ct_lt_p — multi-array CT loops
     pub fn sub_mod_p(&self, rhs: &Self) -> Self {
         // 1. raw sub with borrow
         let mut diff = [0u64; 9];
@@ -250,6 +265,7 @@ impl Fp521 {
     /// Montgomery multiplication: returns the Montgomery representative
     /// of `a~ · b~ · R^{-1} mod p`.
     #[inline]
+    #[allow(clippy::needless_range_loop)] // see ct_lt_p — multi-array CT loops
     pub fn mont_mul(&self, rhs: &Self) -> Self {
         let a = &self.limbs;
         let b = &rhs.limbs;
@@ -574,7 +590,7 @@ mod tests {
     #[test]
     fn mont_mul_by_one() {
         // a~ · 1~  =  a~     (where 1~ = ONE_MONT)
-        let a = small_canonical(0x12_3456_789A_BCDE_F0);
+        let a = small_canonical(0x1234_5678_9ABC_DEF0);
         let a_mont = a.to_montgomery();
         let prod = a_mont.mont_mul(&Fp521::ONE_MONT);
         assert_eq!(prod, a_mont);

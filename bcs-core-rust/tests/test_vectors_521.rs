@@ -95,7 +95,12 @@ fn tv_aes256gcm_decrypt() {
 // =========================================================
 // TEST 3: Scalar-mul k=1 → G itself (always passes)
 // =========================================================
+// `G` and `kG` deliberately use uppercase to mirror the mathematical
+// notation (G = generator, kG = k·G).  This is the standard convention
+// in every ECC textbook and in our `bcs-521.md` spec; renaming would
+// hurt cross-document readability for a $13/hr style win.
 #[test]
+#[allow(non_snake_case)]
 fn tv_scalar_mul_k1_is_G() {
     use num_traits::One;
     let c = bcs521();
@@ -108,6 +113,7 @@ fn tv_scalar_mul_k1_is_G() {
 // TEST 4: Scalar-mul k=2 → known frozen x-coord
 // =========================================================
 #[test]
+#[allow(non_snake_case)] // `kG` mirrors textbook notation, see TEST 3
 fn tv_scalar_mul_k2_frozen() {
     let c = bcs521();
     let kG = c.scalar_mul(&BigUint::from(2u32), &c.g.clone());

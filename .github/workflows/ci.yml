@@ -1,0 +1,241 @@
+# =============================================================================
+# bcs_security — Continuous Integration  (for `bcs-core-rust/` Rust crate)
+# =============================================================================
+#
+# Repo layout:
+#
+#   bcs_security/
+#   ├── .github/workflows/ci.yml   ← this file
+#   ├── bcs-core-rust/             ← the Rust crate (every cargo cmd runs here)
+#   ├── bcs-spec/
+#   └── bcs-verify/
+#
+# Goals (PHASE C-3 of the BCS audit-readiness plan):
+#
+#   1. Catch any breakage in the *default* (BigUint reference) build, so
+#      casual contributors see green/red without needing the `ct` flag.
+#   2. Build + test the **constant-time** path (`--features ct`) on every
+#      push, so the path that real users will deploy is always green.
+#   3. Build + test the **hybrid post-quantum KEM** (`--features hybrid`)
+#      whose dependency on `ml-kem` is the most likely source of
+#      future-Rust-version breakage.
+#   4. Enforce `clippy -D warnings`.  `rustfmt --check` is advisory while
+#      the existing aligned-`let` style is in transition (see lint job).
+#   5. Compile (but do not run) the dudect harness, the cargo-fuzz
+#      targets, and the criterion benches so dead-code rot never lands
+#      silently on `master`.
+#   6. Run `cargo audit` (advisory) for known CVEs in our dep graph.
+#
+# Out of scope here (handled in separate workflows or manual jobs):
+#
+#   * Long dudect runs ( > 30 s ) — see `dudect-nightly.yml` (TODO).
+#   * `cargo fuzz run` for hours — see `fuzz-weekly.yml` (TODO).
+#   * Cross-compile to wasm32, aarch64, etc. — added once we publish.
+#
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  RUSTFLAGS: -D warnings
+  RUST_BACKTRACE: 1
+
+# Every cargo command runs from inside the Rust crate.
+defaults:
+  run:
+    working-directory: bcs-core-rust
+
+# -----------------------------------------------------------------------------
+jobs:
+
+  # ===========================================================================
+  # 1. Format + clippy — fast, single-platform, fails the entire run early.
+  # ===========================================================================
+  lint:
+    name: rustfmt + clippy (stable)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "bcs-core-rust -> target"
+          shared-key: "lint"
+
+      # rustfmt check is *advisory* (continue-on-error) while we still
+      # carry author-aligned formatting (e.g. visually-aligned `let`
+      # bindings in `lib.rs` / `tests/test_vectors_521.rs`) that
+      # rustfmt-default would rewrite.  A dedicated "cargo fmt --all"
+      # cleanup PR is tracked in the audit-readiness todo list; once
+      # merged, flip `continue-on-error` to `false` and the lint
+      # becomes a hard gate.
+      - name: cargo fmt --check (advisory)
+        continue-on-error: true
+        run: cargo fmt --all -- --check
+
+      - name: clippy (default features)
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: clippy (--features ct)
+        run: cargo clippy --all-targets --features ct -- -D warnings
+
+      - name: clippy (--features hybrid)
+        run: cargo clippy --all-targets --features hybrid -- -D warnings
+
+  # ===========================================================================
+  # 2. Build + test matrix.
+  #
+  #    OS:        ubuntu, macos, windows  (catches MSVC linker, endianness
+  #                                        is the same on all three but
+  #                                        toolchains differ).
+  #    Toolchain: stable, beta              (nightly handled separately).
+  #    Features:  "", "ct", "hybrid"        ("hybrid" implies "ct").
+  # ===========================================================================
+  test:
+    name: test ${{ matrix.os }} / ${{ matrix.rust }} / ${{ matrix.features }}
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        rust: [stable, beta]
+        features: ["", "ct", "hybrid"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "bcs-core-rust -> target"
+          shared-key: "test-${{ matrix.os }}-${{ matrix.rust }}-${{ matrix.features }}"
+
+      - name: cargo build
+        run: cargo build --verbose ${{ matrix.features != '' && format('--features {0}', matrix.features) || '' }}
+
+      - name: cargo test
+        run: cargo test  --verbose ${{ matrix.features != '' && format('--features {0}', matrix.features) || '' }}
+
+  # ===========================================================================
+  # 3. Nightly compile-only sanity check.
+  # ===========================================================================
+  nightly:
+    name: nightly compile-only (allowed to fail)
+    needs: lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "bcs-core-rust -> target"
+          shared-key: "nightly"
+      - name: cargo check (default)
+        run: cargo +nightly check --all-targets
+      - name: cargo check (--features ct)
+        run: cargo +nightly check --all-targets --features ct
+      - name: cargo check (--features hybrid)
+        run: cargo +nightly check --all-targets --features hybrid
+
+  # ===========================================================================
+  # 4. Compile (do not run) the cargo-fuzz targets.
+  # ===========================================================================
+  fuzz_build:
+    name: cargo-fuzz build (nightly)
+    needs: lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "bcs-core-rust/fuzz -> target"
+          shared-key: "fuzz"
+
+      - name: Install cargo-fuzz
+        run: cargo install cargo-fuzz --locked
+
+      - name: build all fuzz targets
+        run: cargo +nightly fuzz build
+
+  # ===========================================================================
+  # 5. Compile (do not run) the criterion benches and the dudect harness.
+  # ===========================================================================
+  bench_build:
+    name: bench + dudect compile (stable, --features ct)
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "bcs-core-rust -> target"
+          shared-key: "bench"
+
+      - name: cargo bench --no-run --features ct
+        run: cargo bench --no-run --features ct
+
+      - name: build dudect example
+        run: cargo build --release --features ct --example dudect_ct
+
+  # ===========================================================================
+  # 6. Smoke-test dudect on every PR.
+  # ===========================================================================
+  dudect_smoke:
+    name: dudect smoke (≤ 30 s)
+    needs: bench_build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "bcs-core-rust -> target"
+          shared-key: "bench"
+
+      - name: build dudect example
+        run: cargo build --release --features ct --example dudect_ct
+
+      - name: run dudect — fp521_mont_mul (single round)
+        timeout-minutes: 2
+        run: cargo run --release --features ct --example dudect_ct -- fp521_mont_mul
+
+  # ===========================================================================
+  # 7. Security advisory scan.
+  # ===========================================================================
+  audit:
+    name: cargo audit
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install cargo-audit
+        run: cargo install cargo-audit --locked
+      - name: cargo audit
+        run: cargo audit

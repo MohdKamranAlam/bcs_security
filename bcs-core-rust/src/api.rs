@@ -565,8 +565,8 @@ mod tests {
         // to be on the curve.
         let mut bytes = [0u8; PUBLIC_KEY_BYTES];
         bytes[0] = 0x04;
-        for i in 1..PUBLIC_KEY_BYTES {
-            bytes[i] = (i as u8).wrapping_mul(37);
+        for (i, b) in bytes.iter_mut().enumerate().skip(1) {
+            *b = (i as u8).wrapping_mul(37);
         }
         // Mask high bits so coords < p (avoid hitting the
         // "coordinate out of range" path first).

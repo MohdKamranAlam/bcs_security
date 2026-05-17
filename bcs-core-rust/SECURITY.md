@@ -116,7 +116,7 @@ for any well-chosen curve.
 | **Small-subgroup / invalid-curve** | Mandatory point validation in `Bcs521PublicKey::from_bytes` (on-curve check + coord-range check + non-identity check). | ✅ enforced |
 | **Twist attack** | Twist order is composite → invalid-curve attack possible *if* a peer accepts off-curve points.  **`Bcs521PublicKey::from_bytes` rejects all off-curve points before any scalar multiplication.** | ✅ enforced |
 | **Identity-output attack** | `Bcs521::ecdh` returns `EcdhResultIsIdentity` rather than a degenerate symmetric key in the impossible case of `s·peer_pk = O`. | ✅ enforced |
-| **Timing side-channel (secret scalar)** | All scalar-secret operations route through the Montgomery ladder over Renes–Costello–Batina formulas, with `subtle::ConditionallySelectable` for branchless selection.  **Empirical timing-leak measurement (`dudect`) is *not yet* run** — see §5. | 🟡 designed, not statistically verified |
+| **Timing side-channel (secret scalar)** | All scalar-secret operations route through the Montgomery ladder over Renes–Costello–Batina formulas, with `subtle::ConditionallySelectable` for branchless selection.  An empirical `dudect` (Reparaz 2017) timing-leak harness ships in `examples/dudect_ct.rs` covering `Fp521::mont_mul`, `scalar_mul_generator`, and end-to-end `Bcs521::ecdh`.  See §5 for current run status. | 🟡 designed; harness shipped, full long-run pending |
 | **Memory disclosure of secrets** | `Bcs521SecretKey` and `Bcs521SharedSecret` implement `zeroize::ZeroizeOnDrop`.  `Debug` impls deliberately redact: printing yields `"<redacted>"`. | ✅ enforced |
 | **Pollard rho ECDLP** | Group order ≈ `2^521`, so generic discrete log ≈ `2^260`.  Comfortably above the current 80-bit “quasi-broken” bar and on par with P-521. | ✅ structural |
 | **MOV / Frey-Rück embedding** | Embedding degree of `E[n]` into `F_{p^k}` was computed and is too large for any sub-exponential attack to apply.  See `BCS_SECURITY_AUDIT_COLAB.py`. | ✅ verified |
@@ -135,23 +135,38 @@ this line is a known gap, *not* a known vulnerability.
   reviewed by NCC Group, Cure53, Trail of Bits, or any equivalent
   third party.  Internal review only.
 
-* **No empirical timing-leak measurement (`dudect`).**  The CT code is
-  *designed* to be constant-time, and the algorithms are textbook
-  constant-time.  But the LLVM compiler can in principle introduce
-  data-dependent branches via optimisation.  A `dudect` run with
-  ≥ 10⁶ samples and Welch t-statistic `|t| < 4.5` is planned but not
-  yet executed.
+* **No long-budget `dudect` run on a quiescent machine.**  The CT
+  code is *designed* to be constant-time, and the algorithms are
+  textbook constant-time.  But the LLVM compiler can in principle
+  introduce data-dependent branches via optimisation.  A `dudect`
+  harness exists at `examples/dudect_ct.rs` covering three benches:
+  `bcs521_scalar_mul`, `bcs521_ecdh`, and `fp521_mont_mul`, each as
+  a fixed-vs-random Welch t-test.  A passing verdict requires
+  `|t| < 4.5` (≡ `p > 10⁻⁵`) sustained over ≥ 10⁶ measurements on a
+  quiescent baremetal machine — that long-budget run is the next
+  audit milestone.
 
-* **No fuzz testing of public-key parsing.**  Coming in v0.2.1 via
-  `cargo-fuzz` targets for `Bcs521PublicKey::from_bytes` and
-  `Bcs521SecretKey::from_bytes`.
+  **CI smoke run** (`fp521_mont_mul`, single round) is wired into
+  `.github/workflows/ci.yml` to catch catastrophic regressions per
+  PR; it is **advisory only** until a baseline t-distribution is
+  established.
+
+* **No long-budget fuzz run.**  `cargo-fuzz` targets ship in `fuzz/`
+  for `Bcs521PublicKey::from_bytes`, `Bcs521SecretKey::from_bytes`,
+  and an ECDH round-trip target.  They build on every CI run, but
+  no continuous run of `≥ 1 hour` per target has yet been published
+  with corpus + crash-set.
 
 * **No formal verification of the CT code.**  Tools like HACL\*,
   Fiat-Crypto, or EverCrypt have not been applied.
 
-* **No constant-time bench-vs-reference performance numbers.**  The
-  bench harness (`benches/ct_bench.rs`) exists but has not been run
-  against `p521`, `p256`, `curve25519-dalek`, or `ring`.
+* **No published baseline performance numbers.**  A multi-curve
+  Criterion bench harness ships at `benches/ecdh_compare.rs`
+  comparing BCS-521 against `p256`, `p521`, `k256`, and
+  `x25519-dalek` for both keygen and ECDH.  It has been written
+  but not yet run on a reference machine and committed as part of
+  the public README.  The fair cousin-to-cousin comparison is
+  **BCS-521 vs P-521**.
 
 * **No standardisation track.**  No IETF draft, no CFRG submission,
   no NIST SP 800-186 inclusion request.

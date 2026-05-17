@@ -34,6 +34,17 @@ serde_json = { version = "1", features = ["std"] }
 serde      = { version = "1", features = ["derive"] }
 criterion  = { version = "0.5", features = ["html_reports"] }
 proptest   = "1.4"
+# Dudect statistical timing-leak detector (PHASE C-1).
+# Re-exports its own `rand` (currently 0.10) under `dudect_bencher::rand`,
+# so the example below pulls no extra rand version into our public lockfile.
+dudect-bencher = "0.7"
+# Comparator curves for honest perf benchmarks (PHASE C-2).
+# All RustCrypto / *ring* — pure-Rust, audit-mature, widely deployed.
+p256             = { version = "0.13", default-features = false, features = ["ecdh", "arithmetic"] }
+p521             = { version = "0.13", default-features = false, features = ["ecdh", "arithmetic"] }
+k256             = { version = "0.13", default-features = false, features = ["ecdh", "arithmetic"] }
+x25519-dalek     = { version = "2",    default-features = false, features = ["static_secrets"] }
+elliptic-curve   = { version = "0.13", default-features = false }
 
 [[example]]
 name = "bcs521_ecdh_demo"
@@ -43,8 +54,22 @@ path = "examples/bcs521_ecdh_demo.rs"
 name = "bcs256_ecdh_demo"
 path = "examples/bcs256_ecdh_demo.rs"
 
+# PHASE C-1 — dudect timing-leak harness.
+# Run via:
+#   cargo run --release --features ct --example dudect_ct -- --continuous bcs521_ecdh
+[[example]]
+name = "dudect_ct"
+path = "examples/dudect_ct.rs"
+required-features = ["ct"]
+
 [[bench]]
 name = "ct_bench"
+harness = false
+required-features = ["ct"]
+
+# PHASE C-2 — honest perf vs. p256 / p521 / k256 / curve25519-dalek.
+[[bench]]
+name = "ecdh_compare"
 harness = false
 required-features = ["ct"]
 
