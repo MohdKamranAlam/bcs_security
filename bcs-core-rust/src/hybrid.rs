@@ -66,7 +66,7 @@ use core::fmt;
 
 use hkdf::Hkdf;
 use ml_kem::kem::{Decapsulate, Encapsulate};
-use ml_kem::{Encoded, EncodedSizeUser, KemCore, MlKem1024};
+use ml_kem::{Ciphertext, Encoded, EncodedSizeUser, KemCore, MlKem1024};
 use rand::{CryptoRng, RngCore};
 use sha2::Sha256;
 use zeroize::{Zeroize, ZeroizeOnDrop};
@@ -79,7 +79,11 @@ use crate::api::{Bcs521, Bcs521Error, Bcs521PublicKey, Bcs521SecretKey, Bcs521Sh
 
 type MlKemEk = <MlKem1024 as KemCore>::EncapsulationKey;
 type MlKemDk = <MlKem1024 as KemCore>::DecapsulationKey;
-type MlKemCt = <MlKem1024 as KemCore>::Ciphertext;
+/// `Ciphertext<MlKem1024>` is a `hybrid_array::Array<u8, U1568>`.  It is
+/// **not** an associated type of `KemCore`; it lives at the crate root
+/// of `ml-kem` 0.2.x as a public type alias parameterised by the
+/// parameter set.
+type MlKemCt = Ciphertext<MlKem1024>;
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -442,16 +446,20 @@ fn decode_ml_kem_ek(bytes: &[u8]) -> Result<MlKemEk, HybridError> {
     if bytes.len() != MLKEM_EK_BYTES {
         return Err(HybridError::PublicKeyWrongLength);
     }
-    let arr: &Encoded<MlKemEk> = Encoded::<MlKemEk>::from_slice(bytes);
-    Ok(MlKemEk::from_bytes(arr))
+    // `Encoded<MlKemEk>` is `hybrid_array::Array<u8, MlKemEk::EncodedSize>`.
+    // The new (non-deprecated) constructor is `TryFrom<&[u8]>`.
+    let arr: Encoded<MlKemEk> =
+        Encoded::<MlKemEk>::try_from(bytes).map_err(|_| HybridError::PublicKeyWrongLength)?;
+    Ok(MlKemEk::from_bytes(&arr))
 }
 
 fn decode_ml_kem_ct(bytes: &[u8]) -> Result<MlKemCt, HybridError> {
     if bytes.len() != MLKEM_CT_BYTES {
         return Err(HybridError::CiphertextWrongLength);
     }
-    let arr: &MlKemCt = MlKemCt::from_slice(bytes);
-    Ok(arr.clone())
+    // `MlKemCt = Ciphertext<MlKem1024> = Array<u8, U1568>`; it is just a
+    // byte array, so we copy the bytes in directly.
+    MlKemCt::try_from(bytes).map_err(|_| HybridError::CiphertextWrongLength)
 }
 
 // ===========================================================================
