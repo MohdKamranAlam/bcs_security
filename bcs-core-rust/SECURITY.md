@@ -116,7 +116,7 @@ for any well-chosen curve.
 | **Small-subgroup / invalid-curve** | Mandatory point validation in `Bcs521PublicKey::from_bytes` (on-curve check + coord-range check + non-identity check). | ✅ enforced |
 | **Twist attack** | Twist order is composite → invalid-curve attack possible *if* a peer accepts off-curve points.  **`Bcs521PublicKey::from_bytes` rejects all off-curve points before any scalar multiplication.** | ✅ enforced |
 | **Identity-output attack** | `Bcs521::ecdh` returns `EcdhResultIsIdentity` rather than a degenerate symmetric key in the impossible case of `s·peer_pk = O`. | ✅ enforced |
-| **Timing side-channel (secret scalar)** | All scalar-secret operations route through the Montgomery ladder over Renes–Costello–Batina formulas, with `subtle::ConditionallySelectable` for branchless selection.  An empirical `dudect` (Reparaz 2017) timing-leak harness ships in `examples/dudect_ct.rs` covering `Fp521::mont_mul`, `scalar_mul_generator`, and end-to-end `Bcs521::ecdh`.  See §5 for current run status. | 🟡 designed; harness shipped, full long-run pending |
+| **Timing side-channel (secret scalar)** | All scalar-secret operations route through the Montgomery ladder over Renes–Costello–Batina formulas, with `subtle::ConditionallySelectable` for branchless selection.  An empirical `dudect` (Reparaz 2017) timing-leak harness ships in `examples/dudect_ct.rs` covering `Fp521::mont_mul`, `scalar_mul_generator`, and end-to-end `Bcs521::ecdh`.  **First public smoke run (2026-05-17, Codespaces): `\|t\| < 2.3` on all three benches, well below the audit threshold of `\|t\| < 4.5`** — see [`AUDIT_RESULTS.md`](AUDIT_RESULTS.md) §1. Long-budget run on a quiescent baremetal machine is the next milestone. | � designed + smoke-verified; long-budget run pending |
 | **Memory disclosure of secrets** | `Bcs521SecretKey` and `Bcs521SharedSecret` implement `zeroize::ZeroizeOnDrop`.  `Debug` impls deliberately redact: printing yields `"<redacted>"`. | ✅ enforced |
 | **Pollard rho ECDLP** | Group order ≈ `2^521`, so generic discrete log ≈ `2^260`.  Comfortably above the current 80-bit “quasi-broken” bar and on par with P-521. | ✅ structural |
 | **MOV / Frey-Rück embedding** | Embedding degree of `E[n]` into `F_{p^k}` was computed and is too large for any sub-exponential attack to apply.  See `BCS_SECURITY_AUDIT_COLAB.py`. | ✅ verified |
@@ -146,6 +146,12 @@ this line is a known gap, *not* a known vulnerability.
   quiescent baremetal machine — that long-budget run is the next
   audit milestone.
 
+  **First public smoke run** (2026-05-17, GitHub Codespaces, 5 000–
+  106 000 samples per bench): max `|t|` ∈ {1.84, 2.21, 2.28}, all
+  three benches clear the `|t| < 4.5` bar. See
+  [`AUDIT_RESULTS.md`](AUDIT_RESULTS.md) §1 for the full table,
+  caveats, and reproducer.
+
   **CI smoke run** (`fp521_mont_mul`, single round) is wired into
   `.github/workflows/ci.yml` to catch catastrophic regressions per
   PR; it is **advisory only** until a baseline t-distribution is
@@ -160,13 +166,21 @@ this line is a known gap, *not* a known vulnerability.
 * **No formal verification of the CT code.**  Tools like HACL\*,
   Fiat-Crypto, or EverCrypt have not been applied.
 
-* **No published baseline performance numbers.**  A multi-curve
-  Criterion bench harness ships at `benches/ecdh_compare.rs`
-  comparing BCS-521 against `p256`, `p521`, `k256`, and
-  `x25519-dalek` for both keygen and ECDH.  It has been written
-  but not yet run on a reference machine and committed as part of
-  the public README.  The fair cousin-to-cousin comparison is
-  **BCS-521 vs P-521**.
+* **No published baseline performance numbers on reference hardware.**
+  A multi-curve Criterion bench harness ships at
+  `benches/ecdh_compare.rs` comparing BCS-521 against `p256`, `p521`,
+  `k256`, and `x25519-dalek` for both keygen and ECDH.  The fair
+  cousin-to-cousin comparison is **BCS-521 vs P-521**.
+
+  **First public smoke run** (2026-05-17, GitHub Codespaces) headline:
+  BCS-521 keygen ≈ 2.93 ms, ECDH ≈ 3.10 ms; P-521 keygen ≈ 918 µs,
+  ECDH ≈ 759 µs (i.e. BCS-521 is **3–4× slower than P-521** in this
+  configuration).  The gap is attributed to three known
+  un-applied optimisations (Solinas reduction, fixed-base comb,
+  mixed-add specialisation), all of which preserve the CT contract.
+  See [`AUDIT_RESULTS.md`](AUDIT_RESULTS.md) §2 for the full table
+  and reproducer.  A re-run on dedicated baremetal hardware is the
+  next step.
 
 * **No standardisation track.**  No IETF draft, no CFRG submission,
   no NIST SP 800-186 inclusion request.

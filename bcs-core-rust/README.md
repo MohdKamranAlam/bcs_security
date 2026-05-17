@@ -103,9 +103,23 @@ G = (0, 2)
 Found via parallel Rust + PARI/GP SEA search (166 attempts, ~64 min on
 4 cores). See `../bcs-spec/bcs-521.md` for the full audit checklist.
 
+## Empirical audit-readiness status (2026-05-17 smoke run, Codespaces)
+
+| Phase | What | Result |
+|-------|------|--------|
+| **C-1** Dudect timing-leak harness | `bcs521_scalar_mul`, `bcs521_ecdh`, `fp521_mont_mul` — fixed-vs-random Welch t-test | ✅ all three `\|t\| < 2.3`, well under the `< 4.5` audit threshold |
+| **C-2** Perf benches vs industry curves | BCS-521 vs P-256, P-521, K-256, X25519 (keygen + ECDH) | BCS-521 ≈ **3.0 ms** keygen, **3.1 ms** ECDH; **3–4× slower than P-521** in this config |
+| **C-3** CI workflow | `.github/workflows/ci.yml`: lint + 3×OS × 2×toolchain × 3×features matrix + dudect smoke + cargo-audit | ✅ green on `master` |
+| **C-4** Long-budget dudect (≥ 10⁶ samples, baremetal) | overnight `--continuous` run | ⏳ pending |
+| **C-5** Cargo-fuzz long run (≥ 1h per target) | `fuzz/fuzz_targets/*` | ⏳ pending |
+
+Full data, caveats, and reproducer commands live in [`AUDIT_RESULTS.md`](AUDIT_RESULTS.md).
+The honest reading of the perf gap is in `AUDIT_RESULTS.md` §2.3.
+
 ## Roadmap
 
 - Sage independent cardinality proof for BCS-521
 - ML-KEM-1024 post-quantum hybrid wire protocol
 - Constant-time hardening (when moving toward production)
-- External cryptographer review
+- Long-budget dudect run on dedicated baremetal hardware
+- External cryptographer review (NCC Group / Cure53 / Trail of Bits)

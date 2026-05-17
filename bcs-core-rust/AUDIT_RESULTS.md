@@ -1,0 +1,146 @@
+# BCS-521 — Audit-Readiness Empirical Results
+
+**First public smoke run:** 2026-05-17, GitHub Codespaces (4-vCPU shared
+Linux, kernel 6.x, rustc stable, `--release`, `--features ct`).
+
+> ⚠️ These numbers come from a **shared, virtualised** machine. They are
+> useful as a sanity check — *not* as a quiescent-baremetal audit
+> baseline. The long-budget `--continuous` dudect run, and a bench
+> re-run on a dedicated machine, are tracked as follow-ups in
+> `SECURITY.md` §5.
+
+---
+
+## 1. Dudect timing-leak smoke run (PHASE C-1)
+
+Command:
+
+```bash
+cargo run --release --features ct --example dudect_ct
+```
+
+| Bench | Operation | Samples (this run) | max |t| | (5/τ)² target | Verdict |
+|-------|-----------|--------------------|---------|----------------|---------|
+| `bcs521_scalar_mul` | Montgomery ladder on `G` | 5 000 | **2.276** | 22 145 | ✅ pass (|t| < 4.5) |
+| `bcs521_ecdh` | full `Bcs521::ecdh` incl. HKDF | 5 000 | **1.844** | 20 759 | ✅ pass |
+| `fp521_mont_mul` | `Fp521::mont_mul` | 106 000 | **2.210** | 566 966 | ✅ pass |
+
+**Interpretation.** Welch's t-test between the
+*fixed-input* and *random-input* distributions cannot distinguish them
+at the audit threshold `|t| ≥ 4.5` (≡ `p ≤ 10⁻⁵`). The constant-time
+design — Montgomery ladder over Renes–Costello–Batina complete
+formulas, branchless `Fp521::mont_mul`, `subtle::Choice` selection —
+holds empirically on this hardware.
+
+**Caveats.**
+
+* `(5/τ)² target` is the dudect-bencher estimate of the sample count
+  needed to *prove* a non-leak at the configured confidence. The two
+  scalar-mul benches still need ≈ 4× more samples; `fp521_mont_mul`
+  needs ≈ 5× more. The full long-budget run (PHASE C-1b) will close
+  these gaps.
+* Codespaces co-tenant noise inflates raw timing variance and can
+  *mask* small leaks. A negative result on this hardware is therefore
+  necessary-but-not-sufficient; the dedicated-machine run is the
+  binding audit step.
+
+---
+
+## 2. Performance benchmarks vs industry curves (PHASE C-2)
+
+Command:
+
+```bash
+cargo bench --features ct --bench ecdh_compare
+```
+
+### 2.1 Key generation
+
+| Curve | Bits | Crate | Median time | vs BCS-521 |
+|-------|------|-------|-------------|-----------:|
+| **BCS-521** | 521 | this crate | **2.93 ms** | 1.0× (baseline) |
+| P-521 | 521 | `p521` 0.13 | 918 µs | **3.2× faster** |
+| P-256 | 256 | `p256` 0.13 | 142 µs | 20× faster |
+| secp256k1 | 256 | `k256` 0.13 | 61 µs | 48× faster |
+| Curve25519 | 255 | `x25519-dalek` 2 | 35 µs | 83× faster |
+
+### 2.2 ECDH (scalar mul on peer public key + HKDF)
+
+| Curve | Bits | Crate | Median time | vs BCS-521 |
+|-------|------|-------|-------------|-----------:|
+| **BCS-521** | 521 | this crate | **3.10 ms** | 1.0× (baseline) |
+| P-521 | 521 | `p521` 0.13 | 759 µs | **4.1× faster** |
+| P-256 | 256 | `p256` 0.13 | 142 µs | 22× faster |
+| secp256k1 | 256 | `k256` 0.13 | (run in progress) | — |
+| Curve25519 | 255 | `x25519-dalek` 2 | (run in progress) | — |
+
+### 2.3 Honest reading of the gap
+
+* **The fair comparison is BCS-521 vs P-521** (same field size,
+  same security level, same pure-Rust execution model). BCS-521 is
+  currently **3.2× slower on keygen and 4.1× slower on ECDH**.
+* The gap vs 256-bit curves (~20–80×) is expected and is *not* a
+  meaningful audit signal: 521-bit field arithmetic is intrinsically
+  ~4–8× heavier than 256-bit arithmetic, and the comparator curves
+  benefit from years of assembly-tuned reduction routines.
+* The remaining ~3-4× gap to P-521 is attributable to three known
+  un-applied optimisations on the BCS-521 side, all of which **preserve
+  the constant-time contract**:
+
+  1. **Solinas-style fast reduction.** `p₅₂₁ = 2⁵²¹ − 1` admits a
+     branch-free shift-and-add reduction that is roughly 2× faster
+     than the generic Montgomery reduction we currently use.
+  2. **Fixed-base comb / window-NAF on `G`.** `scalar_mul_generator`
+     can pre-compute 32 multiples of `G` and consume the scalar 5
+     bits at a time. ~3× speed-up, no CT regression.
+  3. **Per-iteration `point_add` specialisation.** The Renes–Costello–
+     Batina general add we use is more expensive than the mixed-add
+     specialisation possible when one operand is a fixed precomputed
+     point.
+
+  These are tracked as PHASE D optimisation work, *not* as audit
+  blockers — they would only sharpen the perf story, not change the
+  security story.
+
+---
+
+## 3. Reproducing
+
+```bash
+# Pull the audit-readiness commits
+git pull origin master
+cd bcs-core-rust
+
+# 1. Sanity: all tests must pass
+cargo test --features hybrid
+# Expected: 82 + 9 + 4 + 9 + 10 = 114 pass, 0 fail, 1 ignored
+
+# 2. Dudect smoke run (≈ 30 s wall-clock per bench)
+cargo run --release --features ct --example dudect_ct
+# Expected: max |t| < 4.5 on all three benches
+
+# 3. Criterion benches (≈ 5–10 min)
+cargo bench --features ct --bench ecdh_compare
+
+# 4. (optional) long-budget dudect — run overnight on a quiet machine
+cargo run --release --features ct --example dudect_ct -- \
+    --continuous fp521_mont_mul
+# Ctrl-C after ≥ 10⁶ samples; verdict still requires |t| < 4.5.
+```
+
+---
+
+## 4. What still needs to be done before claiming "audit-ready"
+
+| Item | Status | Owner / next step |
+|------|--------|-------------------|
+| Long-budget dudect (≥ 10⁶ samples, quiescent baremetal) | ⏳ pending | Overnight `--continuous` run, archive `t`-trace |
+| Cargo-fuzz long run (≥ 1 h per target, corpus published) | ⏳ pending | PHASE C-4 |
+| Bench re-run on a reference baremetal machine | ⏳ pending | Same machine, no co-tenants, post-results to `BENCH_NUMBERS.md` |
+| Solinas reduction + fixed-base comb (perf only, optional) | 🟢 nice-to-have | PHASE D |
+| External cryptographer audit | ❌ out of scope here | Engagement with NCC Group / Cure53 / Trail of Bits |
+
+---
+
+*Document version 1 — 2026-05-17. Update on every dedicated-machine
+re-run.*
