@@ -1,0 +1,44 @@
+{
+  "schema": "bcs-kahf-seeded-certificate-v1",
+  "frozen_at": "2026-05-17T21:07:31.962907+00:00",
+  "label": "BCS-521-V2-Seed-v1",
+  "bits": 128,
+  "canonical_input": "BCS-521-V2-Seed-v1:p_kahf_first_decimal=2141;p_kahf_last_zf=2969;p_kahf_sleepers=7;p_kahf_surah_zf=19;p_kahf_years_zf=373;a2=-2;a4=5;a6=4;bits=128;",
+  "master_seed_sha512_hex": "4727d0e2c9825f6783fe5afd750be5b03fda9f956c9f244b771a6c06ad7b10f7880c0fef426b7735db87540fbd3477e8e79f6e15b8749a0a0d9963cd635fbcc7",
+  "winning_counter": 22808,
+  "attempts_until_found": 22809,
+  "elapsed_s": 116,
+  "curve": {
+    "equation": "y^2 = x^3 - 2*x^2 + 5*x + 4",
+    "a2": -2,
+    "a4": 5,
+    "a6": 4,
+    "G": {
+      "x": 0,
+      "y": 2
+    }
+  },
+  "p_decimal": "291312833315019028166970832602336336487",
+  "p_hex": "0xdb28cf96431b7cc4e23c7c6d3df81a67",
+  "p_bits": 128,
+  "n_decimal": "291312833315019028184810684852748743537",
+  "n_hex": "0xdb28cf96431b7cc5d9d05f876540f371",
+  "n_bits": 128,
+  "a_p_decimal": "-17839852250412407049",
+  "cofactor_h": 1,
+  "audit": {
+    "p_prime_BPSW_plus_MR20": true,
+    "n_prime_BPSW_plus_MR20": true,
+    "cardinality_method": "PARI/GP ellap (SEA)",
+    "hasse_bound_ok": true,
+    "not_anomalous_p_neq_n": true,
+    "generator_on_curve": true,
+    "needs_external_proof": [
+      "PARI APR-CL isprime(p, 2)",
+      "PARI APR-CL isprime(n, 2)",
+      "Sage E.cardinality(proof=True) == n",
+      "Embedding degree k = znorder(Mod(p, n))",
+      "Twist factorization"
+    ]
+  }
+}

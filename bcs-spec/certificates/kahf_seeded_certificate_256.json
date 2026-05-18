@@ -1,0 +1,44 @@
+{
+  "schema": "bcs-kahf-seeded-certificate-v1",
+  "frozen_at": "2026-05-17T21:13:41.706977+00:00",
+  "label": "BCS-521-V2-Seed-v1",
+  "bits": 256,
+  "canonical_input": "BCS-521-V2-Seed-v1:p_kahf_first_decimal=2141;p_kahf_last_zf=2969;p_kahf_sleepers=7;p_kahf_surah_zf=19;p_kahf_years_zf=373;a2=-2;a4=5;a6=4;bits=256;",
+  "master_seed_sha512_hex": "affbbe82dd31407d1b2f9d3c6dec532a05e7363ed6d742430655f97376e8186dfb8f9b3c2babb02ed1493c5d003699a972e3896dd0c3c53a4e04242f24a9936b",
+  "winning_counter": 4848,
+  "attempts_until_found": 4849,
+  "elapsed_s": 106,
+  "curve": {
+    "equation": "y^2 = x^3 - 2*x^2 + 5*x + 4",
+    "a2": -2,
+    "a4": 5,
+    "a6": 4,
+    "G": {
+      "x": 0,
+      "y": 2
+    }
+  },
+  "p_decimal": "64785768435712505297032350592412539631446931930634664104272546989590128312521",
+  "p_hex": "0x8f3b720b966a3801dcbe3d4e378d8ffe5a547f6570252c0a3a8364514aaf40c9",
+  "p_bits": 256,
+  "n_decimal": "64785768435712505297032350592412539631333810351941156051801664859884729270921",
+  "n_hex": "0x8f3b720b966a3801dcbe3d4e378d8ffe053a12f5f26fa838ed2e80e5a4760289",
+  "n_bits": 256,
+  "a_p_decimal": "113121578693508052470882129705399041601",
+  "cofactor_h": 1,
+  "audit": {
+    "p_prime_BPSW_plus_MR20": true,
+    "n_prime_BPSW_plus_MR20": true,
+    "cardinality_method": "PARI/GP ellap (SEA)",
+    "hasse_bound_ok": true,
+    "not_anomalous_p_neq_n": true,
+    "generator_on_curve": true,
+    "needs_external_proof": [
+      "PARI APR-CL isprime(p, 2)",
+      "PARI APR-CL isprime(n, 2)",
+      "Sage E.cardinality(proof=True) == n",
+      "Embedding degree k = znorder(Mod(p, n))",
+      "Twist factorization"
+    ]
+  }
+}
