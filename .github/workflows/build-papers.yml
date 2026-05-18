@@ -1,0 +1,81 @@
+name: Build Phase 7 papers
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'bcs-papers/**'
+      - '.github/workflows/build-papers.yml'
+  pull_request:
+    paths:
+      - 'bcs-papers/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-pell-paper:
+    name: Build arXiv Pell paper
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile paper.tex with latexmk
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: bcs-papers/arxiv-pell-1424d1
+          root_file: paper.tex
+          latexmk_use_xelatex: false
+          latexmk_shell_escape: false
+          args: -pdf -interaction=nonstopmode -halt-on-error -file-line-error
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pell-1424d1-paper
+          path: bcs-papers/arxiv-pell-1424d1/paper.pdf
+          if-no-files-found: error
+          retention-days: 30
+
+  build-bcs-paper:
+    name: Build IACR BCS-521-V2 paper
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile paper.tex with latexmk
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: bcs-papers/iacr-eprint-bcs521-v2
+          root_file: paper.tex
+          latexmk_use_xelatex: false
+          latexmk_shell_escape: false
+          args: -pdf -interaction=nonstopmode -halt-on-error -file-line-error
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bcs521-v2-eprint-paper
+          path: bcs-papers/iacr-eprint-bcs521-v2/paper.pdf
+          if-no-files-found: error
+          retention-days: 30
+
+  summary:
+    name: Summary
+    runs-on: ubuntu-latest
+    needs: [build-pell-paper, build-bcs-paper]
+    if: always()
+    steps:
+      - name: Print result
+        run: |
+          echo "Phase 7 PDF build summary"
+          echo "  Pell paper:        ${{ needs.build-pell-paper.result }}"
+          echo "  BCS-521-V2 paper:  ${{ needs.build-bcs-paper.result }}"
+          if [ "${{ needs.build-pell-paper.result }}" != "success" ] || \
+             [ "${{ needs.build-bcs-paper.result }}" != "success" ]; then
+            echo "::error::At least one paper build failed"
+            exit 1
+          fi
