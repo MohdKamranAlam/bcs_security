@@ -1,0 +1,62 @@
+{
+    "name": "BCS Security — Rust 1.80+",
+
+    // Microsoft's official Rust devcontainer.  Comes with rustup, cargo,
+    // rust-analyzer, clippy, rustfmt pre-installed.  No more curl + sh
+    // every time the codespace starts.
+    "image": "mcr.microsoft.com/devcontainers/rust:1-bookworm",
+
+    // Extra OS packages we need:
+    //   - pkg-config + libssl-dev: required by `openssl-sys` (sometimes
+    //     pulled in transitively by cargo deps)
+    //   - build-essential: gcc/ld for native crates
+    //   - git, curl, ca-certificates: standard tooling
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": true,
+            "configureZshAsDefaultShell": false,
+            "username": "vscode"
+        }
+    },
+
+    "containerEnv": {
+        "CARGO_INCREMENTAL": "1",
+        "RUST_BACKTRACE": "1"
+    },
+
+    // VS Code / Codespaces editor setup.
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "rust-lang.rust-analyzer",
+                "tamasfe.even-better-toml",
+                "vadimcn.vscode-lldb",
+                "serayuzgur.crates",
+                "fill-labs.dependi"
+            ],
+            "settings": {
+                "rust-analyzer.cargo.features": ["fortress", "ecdsa"],
+                "rust-analyzer.check.command": "clippy",
+                "editor.formatOnSave": true,
+                "[rust]": {
+                    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+                },
+                "files.watcherExclude": {
+                    "**/target/**": true
+                }
+            }
+        }
+    },
+
+    // Pin the Rust toolchain to the same MSRV as the workspace
+    // (`rust-version = "1.80.0"` in bcs-core-rust/Cargo.toml).
+    "postCreateCommand": "rustup default stable && rustup component add clippy rustfmt && cargo --version && rustc --version",
+
+    // Verify the workspace compiles after the codespace finishes setting up.
+    "postStartCommand": "echo 'Devcontainer ready.  Try: cargo build --manifest-path bcs-core-rust/Cargo.toml --features fortress'",
+
+    // Mount the .env file (already gitignored) so push tokens persist.
+    "mounts": [],
+
+    "remoteUser": "vscode"
+}

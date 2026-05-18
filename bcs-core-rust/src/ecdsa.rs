@@ -294,7 +294,7 @@ fn rfc6979_nonce(n: &BigUint, sk_bytes: &[u8; 66], h1: &[u8; 32]) -> BigUint {
         //   T is n_bytes*8 = 528 bits, qlen = 521 bits.
         //   Discard the 7 rightmost (least-significant) bits → right-shift by 7.
         let raw = BigUint::from_bytes_be(&t[..n_bytes]);
-        let candidate = raw >> 7; // now at most 521 bits
+        let candidate: BigUint = raw >> 7usize; // now at most 521 bits
 
         if !candidate.is_zero() && &candidate < n {
             return candidate;
