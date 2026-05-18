@@ -1,6 +1,6 @@
 [package]
 name = "bcs-core-rust"
-version = "0.2.0"
+version = "0.2.0-fortress"
 edition = "2021"
 rust-version = "1.80.0"
 license = "MIT OR Apache-2.0"
@@ -16,6 +16,10 @@ ct = ["dep:subtle", "dep:zeroize"]
 # Enable the hybrid post-quantum KEM (BCS-521 ECDH + ML-KEM-1024).
 # Pulls in the `ml-kem` crate from RustCrypto.
 hybrid = ["ct", "dep:ml-kem"]
+# Fortress: all security hardening enabled (CT + fault injection + DPA masking
+# + aggressive zeroize + transparent execution proofs + PQ hybrid).
+# This is the recommended feature for production deployments.
+fortress = ["hybrid"]
 
 [dependencies]
 num-bigint = { version = "0.4", features = ["rand"] }

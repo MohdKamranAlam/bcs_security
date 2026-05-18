@@ -18,6 +18,7 @@ use subtle::{Choice, ConstantTimeEq};
 use zeroize::{Zeroize, ZeroizeOnDrop};
 
 use super::consts::{FIELD_BITS, FIELD_BYTES, N_521_LIMBS};
+use super::aggressive_zeroize::AggressiveZeroize;
 
 /// A scalar in `Z / n_521 Z`, stored as 9 little-endian `u64` limbs.
 ///
@@ -36,6 +37,12 @@ pub struct Scalar {
 impl core::fmt::Debug for Scalar {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.write_str("Scalar(***)")
+    }
+}
+
+impl AggressiveZeroize for Scalar {
+    fn aggressive_zeroize(&mut self) {
+        super::aggressive_zeroize::aggressive_clear_u64(&mut self.limbs);
     }
 }
 
