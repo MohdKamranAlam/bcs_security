@@ -1,0 +1,22 @@
+{
+  "integer_points_count": 2,
+  "integer_points": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      -2
+    ]
+  ],
+  "max_prime_in_lseries": 3000,
+  "log_L_partial": -1.8179457371055572,
+  "L_partial_approx": 0.16235893653020206,
+  "rank_signal": {
+    "slope_log_L_vs_log_log_X": -1.1140584687903232,
+    "n_points": 428,
+    "indicator": "consistent with rank \u2265 1  (L_X drifting to 0)"
+  },
+  "bsd_disclaimer": "BSD itself is unproven (Millennium Problem). These are numerical heuristics for the specific curve."
+}
