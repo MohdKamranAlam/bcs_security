@@ -55,6 +55,14 @@ pub use api::{Bcs521, Bcs521Error, Bcs521PublicKey, Bcs521SecretKey, Bcs521Share
 #[cfg(feature = "hybrid")]
 pub mod hybrid;
 
+/// BCS-521 ECDSA — deterministic sign + verify (RFC 6979, SHA-256).
+/// Requires `--features ecdsa`.  Reference BigUint path (not CT yet).
+#[cfg(feature = "ecdsa")]
+pub mod ecdsa;
+
+#[cfg(feature = "ecdsa")]
+pub use ecdsa::{sign as ecdsa_sign, verify as ecdsa_verify, Bcs521Signature, EcdsaError};
+
 /// Kahf-seeded deterministic prime generator for BCS-521-V2.
 /// Byte-for-byte port of `bcs521-v2-search/kahf_seeded_search.py::candidate`.
 /// Required by `bcs521_v2()` to prove `p` is the frozen seed image and was

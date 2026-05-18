@@ -1,3 +1,5 @@
+use crate::kahf_crypto::{kahf_domain_separator, KahfMetadata, KAHF_PRIMES, verify_kahf_lock};
+
 /// Display security information about BCS-521 Fortress.
 ///
 /// Every claim printed here must be a fact about the current binary,
@@ -26,7 +28,9 @@ pub fn run(detailed: bool) {
     println!("  - [x] `bcs ecdh`              — real Bcs521::ecdh + HKDF-SHA-256");
     println!("  - [x] `bcs hybrid-kem --encaps` — real BCS-521 + ML-KEM-1024");
     println!("  - [ ] `bcs hybrid-kem --decaps` — use the `bcs-shield` HTTP API");
-    println!("  - [ ] `bcs sign` / `bcs verify` — NOT implemented (v0.3.0 roadmap)");
+    println!("  - [x] `bcs sign`              — real ECDSA-RFC6979-SHA256 (non-CT, v0.3.0)");
+    println!("  - [x] `bcs verify`            — real ECDSA verification (non-CT, v0.3.0)");
+    println!("  - [ ] CT sign/verify          — Barrett-reduced path (v0.3.1 roadmap)");
     println!();
 
     println!("Islamic-fintech features:");
@@ -35,6 +39,23 @@ pub fn run(detailed: bool) {
     println!("  - [info] `--kahf` flag is metadata only; key material remains");
     println!("           uniform-random per RFC 6090. There is no Kahf-derived");
     println!("           scalar in the production keygen path.");
+    println!();
+
+    let meta = KahfMetadata::new();
+    let lock_ok = verify_kahf_lock();
+    println!("Surah Al-Kahf (Quran 18) audit:");
+    println!("  surah     : {}", meta.surah_number);
+    println!("  verses    : {}", meta.verses);
+    println!("  sleepers  : {}", meta.sleepers);
+    println!("  years     : {}", meta.years_in_cave);
+    println!("  named stories: {}", meta.named_stories);
+    println!("  prime lock: {} (all 5 sacred primes verified)", if lock_ok { "PASS" } else { "FAIL" });
+    println!("  5 sacred Kahf primes:");
+    for p in &KAHF_PRIMES {
+        println!("    {}", p);
+    }
+    let dst = kahf_domain_separator("BCS-521-Kahf-v1");
+    println!("  DST(BCS-521-Kahf-v1): {}", hex::encode(dst));
     println!();
 
     if detailed {
@@ -56,7 +77,7 @@ pub fn run(detailed: bool) {
     println!("  - No FIPS 140-2/3 certification.");
     println!("  - No Common Criteria evaluation.");
     println!("  - No completed external cryptographic audit (planned).");
-    println!("  - No ECDSA/EdDSA over BCS-521 (planned for v0.3.0).");
+    println!("  - No CT ECDSA (Barrett-reduced scalar arithmetic planned for v0.3.1).");
     println!();
 
     println!("Repository: https://github.com/MohdKamranAlam/bcs_security");
