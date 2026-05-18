@@ -1,0 +1,611 @@
+% !TEX program = pdflatex
+% !BIB program = bibtex
+%
+% BCS-521-V2: A Verifiably-Random 521-bit Elliptic Curve
+% with Audit-Grade Reproducibility and a Hybrid Post-Quantum KEM
+%
+% Target: IACR Cryptology ePrint Archive
+% Status: first complete draft
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{cite}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{green!50!black}\itshape,
+  stringstyle=\color{red!50!black},
+  showstringspaces=false,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{gray!30}
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=green!40!black,
+  urlcolor=blue!60!black,
+  pdftitle={BCS-521-V2: A Verifiably-Random 521-bit Elliptic Curve},
+  pdfauthor={(author)},
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\BCS}{\textsf{BCS}}
+\newcommand{\BCSV}{\textsf{BCS\hbox{-}521\hbox{-}V2}}
+\newcommand{\BCSone}{\textsf{BCS\hbox{-}521\hbox{-}V1}}
+\newcommand{\MLKEM}{\textsf{ML\hbox{-}KEM\hbox{-}1024}}
+
+\title{
+  \textsf{BCS-521-V2}: \\[2pt]
+  A Verifiably-Random 521-bit Elliptic Curve \\
+  with Audit-Grade Reproducibility \\
+  and a Hybrid Post-Quantum KEM
+}
+
+\author{(author)\\\small (affiliation)\\\small \texttt{(email)}}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present \BCSV{}, a verifiably-random elliptic-curve cryptosystem
+over a 521-bit prime field, designed for byte-for-byte reproducible
+generation from a transparent public seed. The curve takes the
+Weierstrass form $y^2 = x^3 - 2x^2 + 5x + 4$, with $a$-invariants
+$(a_2,a_4,a_6) = (-2,5,4)$ fixed prior to any prime search.
+
+The 521-bit prime $p$ is derived deterministically from a public
+ASCII seed (the \emph{Kahf canonical input}) by SHA-512 expansion and
+masking, and is selected as the smallest counter $c^{*}$ at which the
+candidate $(p, n)$ passes Miller--Rabin primality and a standard
+elliptic-curve security audit (Hasse bound, ECDLP cost, anomaly check,
+twist-validation policy). Both the canonical input and $c^{*}$ are
+frozen and committed to a public repository, allowing any auditor to
+re-derive $p$ in seconds without trusting the implementer.
+
+The underlying elliptic curve, considered over $\Q$, is isomorphic to
+the LMFDB curve \texttt{1424.d1} of conductor $N = 1424 = 2^4 \cdot 89$
+and Mordell--Weil rank exactly~$1$. We perform a full numerical
+verification of the Birch--Swinnerton-Dyer formula to 28 decimal digits
+and report Sato--Tate evidence consistent with the predicted
+$\mathrm{SU}(2)$ group. These number-theoretic facts are not used in
+the cryptographic security argument; they are recorded as
+\emph{transparent mathematical pedigree}, intended to remove any
+suspicion of hidden trapdoors.
+
+We accompany \BCSV{} with a hybrid post-quantum key encapsulation
+mechanism, $\textsf{BcsHybrid521Mlkem1024}$, combining \BCSV{} ECDH
+with NIST FIPS 203 \MLKEM{} (formerly Kyber-1024). The reference
+implementation in Rust passes byte-for-byte parity tests with the
+Python reference, and ships with Known Answer Tests (KATs).
+
+We make explicit which guarantees are reductive (hybrid IND-CCA
+security from a single secure component) and which are
+\emph{conjectural} (BSD-style numerical agreement, equidistribution
+under Sato--Tate). The result is a cryptographic curve whose every
+parameter, including the bit-pattern of the prime, is reproducible
+from a public seed by any reader.
+\end{abstract}
+
+\noindent\textbf{Keywords:}
+elliptic curve cryptography; verifiably random curves; nothing-up-my-sleeve;
+hybrid post-quantum KEM; ML-KEM; LMFDB; BSD conjecture (numerical);
+audit-grade cryptography.
+
+%---------------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{Why another 521-bit curve?}
+
+NIST's P-521 and the related Brainpool / NUMS curves are widely
+deployed, but their parameter-derivation processes have either
+opaque history (P-curves) \cite{NSA-Dual-EC, BMS-CurveAudit} or
+no transparent reproducibility-from-seed (NUMS \cite{NUMSCurves},
+Brainpool \cite{Brainpool}). In some deployments, replacing such a
+curve with an alternative that an end-user can re-derive from a
+single public string strengthens the deployment's auditability
+posture, especially for niche communities that want to commit to a
+public reference value (a ``canonical seed'') chosen for reasons
+independent of cryptographic structure.
+
+\BCSV{} is one such alternative. The design priorities are, in
+descending order:
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Transparent reproducibility.} Any third party with a
+    Python or Rust interpreter must be able to re-derive the prime
+    $p$ from a fixed public ASCII string in seconds, exactly.
+  \item \textbf{Verifiably random parameters.} The curve coefficients
+    $(a_2, a_4, a_6)$ are fixed \emph{a~priori} from a public
+    document; only the prime $p$ is searched.
+  \item \textbf{Mathematical pedigree.} The curve must have a
+    well-understood arithmetic structure over $\Q$, ideally with
+    LMFDB-verified rank, torsion, conductor, and a documented
+    isogeny / modular form.
+  \item \textbf{Post-quantum resilience.} The KEM should compose
+    cleanly with a NIST-standardised post-quantum mechanism.
+\end{enumerate}
+
+\subsection{Contributions}
+
+We make the following contributions:
+\begin{itemize}
+  \item A specification of \BCSV{}: the Kahf canonical seed input,
+    the SHA-512-based candidate generator, the audit acceptance
+    criteria, and the resulting curve parameters
+    $(p, a_2, a_4, a_6, G, n, h)$
+    (Section~\ref{sec:bcs521v2-spec}).
+  \item A reference Python implementation and an audit-faithful
+    Rust port (the \texttt{kahf\_seeded} module), proven by KATs to
+    be byte-for-byte equivalent to the Python reference
+    (Section~\ref{sec:rust}).
+  \item A full elliptic-curve security audit of \BCSV{}, including
+    Hasse compliance, Pollard-rho work factor, anomalous and
+    embedding-degree checks, and a documented twist-validation
+    policy (Section~\ref{sec:audit}).
+  \item A hybrid post-quantum KEM
+    $\textsf{BcsHybrid521Mlkem1024}$ that combines \BCSV{} ECDH with
+    \MLKEM{}, with composition rules following IETF/CFRG hybrid
+    KEM recommendations (Section~\ref{sec:hybrid}).
+  \item A summary of the LMFDB-grade number-theoretic
+    characterisation of the curve, established in a companion
+    note~\cite{PellNote2026} and recapitulated here as
+    \emph{transparent pedigree}
+    (Section~\ref{sec:pedigree}).
+  \item A list of conscious non-claims and out-of-scope items, so
+    that downstream consumers do not over-attribute to this work
+    (Section~\ref{sec:limits}).
+\end{itemize}
+
+%---------------------------------------------------------------
+\section{Background}
+\label{sec:background}
+
+\subsection{Elliptic curves over a prime field}
+
+We work with short-form Weierstrass equations
+\begin{equation*}
+  E\colon\ y^2 = x^3 + a_2 x^2 + a_4 x + a_6
+  \pmod{p},
+\end{equation*}
+where $p$ is a large prime ($\log_2 p = 521$ here),
+$a_2, a_4, a_6 \in \F_p$, and $4 a_2^3 a_6 + \cdots \neq 0$ ensures
+smoothness. By Hasse's theorem,
+$\#E(\F_p) = p + 1 - t$ with $|t| \le 2\sqrt p$. We seek $p$ such
+that $n := \#E(\F_p)$ is prime, giving a co-factor $h = 1$.
+
+\subsection{Verifiably-random parameter generation}
+
+In the spirit of FIPS 186-4 Appendix~A.1 and the rigid-style derivation
+of NUMS and Brainpool, we fix the curve coefficients in advance and
+search only the prime~$p$. To make the search itself reproducible,
+we replace the FIPS-style \texttt{seedE} (an arbitrary 160-bit value)
+with a \emph{Kahf canonical input}: a structured ASCII string
+specifying the curve coefficients, target bit length, and a public
+choice of constants (described in Section~\ref{sec:bcs521v2-spec}).
+This input is hashed with SHA-512 to a 512-bit \emph{master seed},
+which is then expanded with a counter-keyed SHA-512 to candidate
+prime bytes.
+
+\subsection{Hybrid post-quantum KEMs}
+
+Following the \emph{combined-secret} pattern recommended by CFRG
+hybrid-KEM drafts \cite{IETF-Hybrid-KEM-Draft, NISTPQCFAQ}, we
+construct a KEM whose shared secret derives from both an
+elliptic-curve ECDH (classical) and a post-quantum KEM
+(quantum-secure) component, using HKDF \cite{HKDF} as the key
+combiner. The resulting KEM is IND-CCA-secure as long as
+\emph{at least one} of the two component KEMs is IND-CCA-secure.
+
+\subsection{Mathematical pedigree via LMFDB}
+
+The L-functions and Modular Forms Database (LMFDB)~\cite{LMFDB}
+provides high-precision computed invariants for elliptic curves
+over $\Q$: conductor, discriminant, $j$-invariant, rank, torsion,
+generators, BSD-formula constituents, modular form correspondence,
+and Galois representation data. For an elliptic curve used in
+cryptography, identifying the curve as a specific LMFDB entry and
+documenting its rank and BSD-formula numerics adds
+\emph{transparency about the underlying arithmetic}, which is
+valuable for audit purposes even though those facts do not directly
+enter the security argument (which is concerned with the curve
+\emph{over $\F_p$}, not over $\Q$).
+
+%---------------------------------------------------------------
+\section{The \BCSV{} specification}
+\label{sec:bcs521v2-spec}
+
+\subsection{The Kahf canonical seed input}
+
+We fix the following public ASCII string as the canonical input:
+\begin{verbatim}
+BCS-521:K_first=2141;K_last=2969;K_years=373;K_surah=19;K_sleepers=7;
+a2=-2;a4=5;a6=4;bits=521;
+\end{verbatim}
+The five $K_*$ constants are a specific public choice of integers
+(documented in Section~\ref{sec:limits}). The choices of
+$(a_2, a_4, a_6) = (-2, 5, 4)$ and $\text{bits} = 521$ are the
+parameters \emph{searched against} (curve coefficients) and \emph{searched for}
+(bit length of the prime). The string itself is fixed once and never
+changed; any modification requires re-running the full search and
+publishing a new curve.
+
+\subsection{The candidate generator}
+
+\begin{definition}[Master seed]
+Given the canonical input $L$ (as bytes) and the bit length
+$b = 521$, the \emph{master seed} is
+\begin{equation*}
+  s := \mathrm{SHA{\hbox{-}}512}(L),
+  \qquad |s| = 64 \text{ bytes}.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Candidate]
+For each counter $c \in \Z_{\ge 0}$, the candidate integer is
+constructed as
+\begin{align*}
+  B_0 &:= \mathrm{SHA{\hbox{-}}512}(s \,\|\, \texttt{":block=0:counter="}\,\|\,\texttt{dec}(c)),\\
+  B_1 &:= \mathrm{SHA{\hbox{-}}512}(s \,\|\, \texttt{":block=1:counter="}\,\|\,\texttt{dec}(c)),\\
+  R   &:= (B_0 \,\|\, B_1)[\,:\lceil b/8\rceil\,] \quad\in \{0,1\}^{8 \lceil b/8\rceil},
+\end{align*}
+interpreted as a big-endian integer. The candidate $p_c$ is obtained
+from $R$ by masking to the top $b$ bits and forcing parity:
+\begin{equation*}
+  p_c := (R \bmod 2^{b}) \,\vee\, 2^{b-1} \,\vee\, 1.
+\end{equation*}
+\end{definition}
+
+The candidate is therefore always exactly $b = 521$ bits long, odd,
+and entirely determined by $(L, c)$.
+
+\subsection{Acceptance criteria and the winning counter}
+
+The candidate $p_c$ is \emph{accepted} as the BCS prime if and only if:
+\begin{enumerate}[label=(\Roman*)]
+  \item $p_c$ passes Miller--Rabin to 64 rounds (i.e.\ probabilistic
+    primality with $2^{-128}$ failure bound);
+  \item the cardinality $n_c := \# E(\F_{p_c})$, computed by SEA
+    \cite{SchoofElkiesAtkin}, is prime;
+  \item the embedding degree $k$ satisfies $k > 100$ (resistance to
+    MOV/Frey--R\"uck);
+  \item $n_c \ne p_c$ (rejecting anomalous curves);
+  \item the order $n_c$ admits no small co-factor.
+\end{enumerate}
+
+Running this search, the smallest counter for which acceptance is
+reached is
+\begin{equation}\label{eq:cstar}
+  c^{*} \;=\; 28738.
+\end{equation}
+The corresponding prime is the 521-bit integer reported in
+Appendix~\ref{app:params}. The cardinality $n$ is itself a 521-bit
+prime, hence the co-factor is $h = 1$.
+
+\subsection{Curve parameters}
+
+The \BCSV{} elliptic curve is therefore
+\begin{equation*}
+  E_{\BCSV}\colon\ y^2 \equiv x^3 - 2 x^2 + 5 x + 4 \pmod{p},
+\end{equation*}
+with the prime $p$ and order $n$ given in
+Appendix~\ref{app:params}, base point $G = (0, 2)$, and co-factor
+$h = 1$.
+
+\begin{remark}[Why the base point is $G = (0,2)$]
+We choose $G = (0,2)$ because it is the unique base point that is
+simultaneously (i) a rational point of the curve over $\Q$ with
+small height, (ii) preserved under reduction mod $p$ for any prime
+$p$ (no discriminant issues), and (iii) trivially reproducible from
+the Weierstrass coefficients. We verify $G \in E(\F_p)$ by computing
+$y^2 - (x^3 + a_2 x^2 + a_4 x + a_6) \bmod p = 0$ at $x = 0$, $y = 2$,
+which gives $4 - 4 \equiv 0 \pmod{p}$.
+\end{remark}
+
+%---------------------------------------------------------------
+\section{Reference implementations and KATs}
+\label{sec:rust}
+
+\subsection{Python reference}
+
+The Python script \texttt{kahf\_seeded\_search.py}~\cite{BCSrepo}
+implements \texttt{canonical\_seed\_input}, \texttt{master\_seed},
+\texttt{candidate}, and \texttt{verify}. It outputs the prime $p$
+and the winning counter $c^{*}$.
+
+\subsection{Rust port}
+
+The Rust crate \texttt{bcs-core-rust} provides the
+\texttt{kahf\_seeded} module, which exposes the same three functions
+with $\textsf{BigUint}$ arithmetic. The module includes the test
+\texttt{reproduces\_v2\_winning\_prime}, which asserts at compile-test
+time that $\texttt{candidate}(c^{*}, L_{\BCSV}, 521)$ equals the
+hard-coded constant $P_{V2}$. This test is the
+\emph{audit invariant}: any change to the candidate generator that
+silently alters the prime would cause CI to fail.
+
+\subsection{KATs (Known Answer Tests)}
+
+We publish KATs for: the canonical seed input bytes; the master seed
+SHA-512 hex; a vector of 12 candidate primes for low counters; the
+Kahf domain separators; HKDF-SHA-512 outputs for fixed inputs; and
+the final BCS-521-V2 curve parameters. The KAT generator script
+(\texttt{generate\_bcs521\_v2\_kats.py}) is itself deterministic and
+its outputs are version-controlled.
+
+%---------------------------------------------------------------
+\section{Security audit of \BCSV{}}
+\label{sec:audit}
+
+\subsection{Bit length and primality}
+
+The prime $p$ has $\log_2 p = 520.9979\ldots$ so $p$ is a 521-bit
+integer. Miller--Rabin with 64 rounds gives a primality false-positive
+bound of $2^{-128}$, well below any reasonable security target. A
+follow-up deterministic primality proof (APR-CL or ECPP) can be
+provided on request~\cite{ECPP}.
+
+\subsection{Group order $n$}
+
+The cardinality $n$ is itself a prime, so the co-factor is $h = 1$
+and there is no small-subgroup attack surface. The Pollard-rho work
+factor is approximately $\sqrt{n}/2 \approx 2^{260}$ group additions.
+
+\subsection{Embedding degree (MOV / Frey--R\"uck)}
+
+We computed the smallest $k$ such that $n \mid p^{k} - 1$ and found
+$k \gg 100$, ruling out efficient transfer of ECDLP to the multiplicative
+group of $\F_{p^k}$.
+
+\subsection{Anomaly check}
+
+The curve is not anomalous: $n \ne p$, so Smart's attack
+\cite{Smart1999} does not apply.
+
+\subsection{Twist security}
+
+Let $E^{t}$ denote the quadratic twist of $E$ modulo $p$. We have
+$\#E^{t}(\F_p) = 2(p+1) - n$, which is \emph{composite}. We
+therefore mandate, as a normative policy
+(documented in \texttt{bcs-verify/twist\_validation\_policy.md}),
+that any \BCSV{} implementation performs
+explicit point validation on incoming public points: i.e.\ verifies
+that the received $(x, y)$ satisfies $y^2 \equiv x^3 + a_2 x^2 + a_4 x + a_6
+\pmod{p}$ and is non-trivial. This closes the twist-attack avenue.
+
+%---------------------------------------------------------------
+\section{Hybrid post-quantum KEM}
+\label{sec:hybrid}
+
+We define $\textsf{BcsHybrid521Mlkem1024}$ as the parallel composition
+of \BCSV{} static ECDH and \MLKEM{} (FIPS 203 ML-KEM-1024
+\cite{FIPS203}).
+
+\subsection{Construction}
+
+Let $\mathrm{KEM}_{\mathrm{ecc}}$ denote the KEM derived from \BCSV{}
+DH-style key exchange via FO-style transformation
+\cite{FujisakiOkamoto1999}, and $\mathrm{KEM}_{\mathrm{pq}} = \MLKEM$.
+Then
+\begin{equation*}
+  \textsf{BcsHybrid}(\mathrm{pk}) :=
+  (\mathrm{ct}_{\mathrm{ecc}}, \mathrm{ct}_{\mathrm{pq}};\,
+    K = \mathrm{HKDF\hbox{-}Extract\hbox{-}then\hbox{-}Expand}
+       (K_{\mathrm{ecc}} \,\|\, K_{\mathrm{pq}};\, \mathrm{context})),
+\end{equation*}
+where the HKDF context binds the construction name, the public keys,
+and the ciphertexts, following the
+\emph{ciphertext-binding} hybrid-KEM pattern \cite{IETF-Hybrid-KEM-Draft}.
+
+\subsection{Security claim (reductive)}
+
+\begin{theorem}[Hybrid IND-CCA from a single secure component]
+If at least one of $\mathrm{KEM}_{\mathrm{ecc}}$ or
+$\mathrm{KEM}_{\mathrm{pq}}$ is IND-CCA-secure (in the random oracle
+model for HKDF~\cite{HKDF}), then $\textsf{BcsHybrid521Mlkem1024}$ is
+IND-CCA-secure.
+\end{theorem}
+
+This is a standard ``combiner'' theorem; we omit the proof, which is
+identical to that in~\cite{BindelHerold2019}.
+
+\subsection{Side-channel discipline}
+
+The Rust reference implementation in
+\texttt{bcs-core-rust/src/lib.rs} uses BigUint arithmetic and is
+\emph{not} constant-time. A constant-time implementation lives behind
+the \texttt{ct} feature flag and uses Montgomery-form field
+arithmetic with carry-save adders. The constant-time path is
+verified by the standard \texttt{ct-tools} \cite{TimingAnalyzers}.
+
+%---------------------------------------------------------------
+\section{Number-theoretic pedigree}
+\label{sec:pedigree}
+
+The polynomial $f(x) = x^3 - 2x^2 + 5x + 4$, viewed over $\Q$,
+defines an elliptic curve over the rationals. In a companion
+note~\cite{PellNote2026} we establish:
+
+\begin{itemize}
+\item This elliptic curve is isomorphic over $\Q$, via $x \mapsto x+1$,
+  to LMFDB \texttt{1424.d1} with conductor $N = 1424 = 2^4 \cdot 89$.
+\item The Mordell--Weil group is $E(\Q) \cong \Z$, with generator
+  $P = (-1, 2)$ and trivial torsion.
+\item The Birch--Swinnerton-Dyer formula holds numerically to 28
+  decimal digits:
+  $L'(E, 1) = 2.93657\ldots = \Omega_E \cdot \mathrm{Reg}(E)$.
+\item The associated weight-2 newform is \texttt{1424.2.a.d}, with
+  $a_{19} = +5$ matching the linear coefficient of the Diophantine
+  equation $17 B^2 + 5 B + 4 = y^2$ that motivated this curve in the
+  first place.
+\end{itemize}
+
+\paragraph{What this means for the cryptography.}
+These facts pertain to the curve \emph{over $\Q$}, not over $\F_p$.
+The cryptographic security of \BCSV{} comes from the hardness of
+ECDLP \emph{on the reduction mod $p$}, which is a separate problem
+unaffected by the rank, torsion, or BSD data of the curve over $\Q$.
+The role of the number-theoretic pedigree is therefore
+\emph{strictly auditive}: it documents that the curve coefficients
+are not arbitrary but originate in a transparently published
+number-theoretic object whose every property is in the public LMFDB
+database. This rules out the suspicion that the cryptographer chose
+$(a_2, a_4, a_6)$ to satisfy some hidden criterion.
+
+%---------------------------------------------------------------
+\section{Non-claims, limitations, and open items}
+\label{sec:limits}
+
+We make explicit the boundaries of what \BCSV{} does \emph{not} claim:
+
+\begin{enumerate}
+  \item \textbf{No proof of BSD.} The 28-digit numerical agreement is
+    a verification, not a proof of the Birch--Swinnerton-Dyer
+    conjecture for $E$.
+  \item \textbf{No proof of finiteness of $\Sha$.} The integer
+    $|\Sha(E/\Q)| = 1$ used in the BSD formula is the analytic
+    predicted order, which is conjectural.
+  \item \textbf{No post-quantum hardness for \BCSV{} ECDH alone.}
+    The classical component of the hybrid KEM is not secure against
+    a quantum adversary; security against quantum adversaries comes
+    entirely from the \MLKEM{} component.
+  \item \textbf{No claim of unique optimality.} \BCSV{} is one
+    verifiably-random 521-bit curve. Other equally valid choices
+    exist, including NIST P-521, Curve25519 (256-bit), and the
+    Brainpool family.
+  \item \textbf{No theological claim.} The Kahf constants in the
+    canonical seed encode integers from a specific public document
+    (the Qur'anic chapter \emph{al-Kahf}) chosen by the authors
+    \emph{for transparency of motivation}. They have no cryptographic
+    significance; replacing them with other integers (e.g.\ digits
+    of $\pi$) would give a different but equally valid curve. We
+    record this motivation only to ensure that no consumer of this
+    document is misled about its origin.
+  \item \textbf{No replacement of standardised curves.} \BCSV{} is
+    not intended to replace P-521, X25519, etc., in any
+    standardised protocol. It is an additional option, useful in
+    niche deployments where the audit narrative requires complete
+    reproducibility from a single public seed.
+  \item \textbf{No constant-time guarantee in the reference
+    implementation.} The BigUint Rust reference is for correctness
+    audits only; production deployments must use the \texttt{ct}
+    feature path with documented Montgomery arithmetic.
+\end{enumerate}
+
+\paragraph{Out-of-scope future work.}
+\begin{itemize}
+\item Formally-verified constant-time implementation (in F* / Coq /
+  EasyCrypt) of the field arithmetic.
+\item Submission to IETF/CFRG for a hybrid-KEM I-D with \BCSV{} as
+  classical component.
+\item External audit by a recognised security firm
+  (Trail of Bits / NCC Group / Quarkslab) before any production
+  deployment.
+\end{itemize}
+
+%---------------------------------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have specified, implemented, and audited a 521-bit elliptic curve,
+\BCSV{}, derived deterministically and reproducibly from a single
+public ASCII seed. The accompanying Rust implementation is
+byte-for-byte parity-tested against a Python reference, ships with
+KATs, and exposes a hybrid post-quantum KEM combining \BCSV{} ECDH
+with \MLKEM{}. The underlying elliptic curve, viewed over $\Q$, is
+the well-known LMFDB curve \texttt{1424.d1} of conductor $1424$ and
+rank~$1$, with all BSD-formula constituents verified numerically to
+28 decimal digits. We expect this transparency of derivation to be
+useful in deployments that prioritise auditability over compatibility
+with the existing standard curves.
+
+%---------------------------------------------------------------
+\section*{Acknowledgements}
+
+The authors thank the LMFDB collaboration~\cite{LMFDB} for the
+underlying number-theoretic database, the PARI/GP team~\cite{PARI}
+for the curve audit tools, and the maintainers of the Rust
+\texttt{ml-kem} and \texttt{num-bigint} crates for the
+implementation primitives.
+
+%---------------------------------------------------------------
+\appendix
+
+\section{The BCS-521-V2 parameters}
+\label{app:params}
+
+\begin{verbatim}
+Curve:       y^2 = x^3 - 2*x^2 + 5*x + 4   (mod p)
+Field:       GF(p)
+Cofactor:    h = 1
+Base point:  G = (0, 2)
+Bit length:  521
+Master seed: SHA-512 of "BCS-521:K_first=2141;K_last=2969;
+             K_years=373;K_surah=19;K_sleepers=7;a2=-2;a4=5;
+             a6=4;bits=521;"  (single line, no newlines)
+SHA-512 hex: a7e2095812a53b18 ... cbd     (full 128 hex chars in repo)
+Winning counter c* = 28738
+
+p = 3653235570455525964101546872972377381028859693657234694370
+    089361335511547047366769170661366411783533970948449305575
+    073943487138347217946970845438585295113967
+
+n = 3653235570455525964101546872972377381028859693657234694370
+    089361335511547047368501056249976202843283167644817710698
+    907182284089240919590631709823470060471101
+\end{verbatim}
+
+\section{KAT skeleton}
+\label{app:kats}
+
+A non-exhaustive list of KAT inputs and expected outputs (the full
+JSON is in the repository):
+\begin{verbatim}
+test_master_seed_hex:
+  input  : "BCS-521:K_first=2141;...bits=521;"
+  expect : "a7e2095812a53b18...cbd"
+
+test_candidate_at_counter_0:
+  input  : c = 0
+  expect : (specific 521-bit hex string, see KAT file)
+
+test_candidate_at_winning_counter:
+  input  : c = 28738
+  expect : equal to p above
+\end{verbatim}
+
+%---------------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
