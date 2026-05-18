@@ -162,12 +162,16 @@ impl Scalar {
         }
 
         // --- Step 2: decide whether to subtract n (CT) ---
-        // `carry == 1` → sum >= 2^521 >= n → must subtract.
-        // `carry == 0` → sum might still be >= n; use ct_lt_n.
+        // `carry == 1` → sum >= 2^576 > n → must subtract.
+        // `carry == 0` → sum might still be >= n; use `ct_lt_n`.
+        //
+        // BUG-FIX (v0.3.0): the previous version used `(!lt.unwrap_u8()) as u64`
+        // to invert the `< n` flag, but `!` on a `u8` flips ALL 8 bits, so
+        // `!1u8 = 254` and `!0u8 = 255` — neither is a valid {0,1} flag.
+        // Use `^ 1u64` (or `1 - x`) to flip a {0,1} value.
         let sum_scalar = Self { limbs: sum };
-        // needs_sub = 1  iff  sum >= n
-        let lt = sum_scalar.ct_lt_n(); // 1 if sum < n
-        let needs_sub: u64 = carry | ((!lt.unwrap_u8()) as u64); // 1 if sum >= n
+        let lt = sum_scalar.ct_lt_n().unwrap_u8() as u64; // 1 iff sum < n, else 0
+        let needs_sub: u64 = carry | (lt ^ 1u64); // 1 iff sum >= n
 
         // --- Step 3: unconditional conditional-subtract via bitmask ---
         // mask = 0xFFFF...FFFF if needs_sub, 0 if not
@@ -332,71 +336,226 @@ mod tests {
         let _ = bytes; // silence unused
     }
 
+    // -----------------------------------------------------------------
+    // Helpers
+    // -----------------------------------------------------------------
+
     fn small_scalar(v: u64) -> Scalar {
         let mut b = [0u8; FIELD_BYTES];
         b[FIELD_BYTES - 8..].copy_from_slice(&v.to_be_bytes());
         Scalar::from_bytes_be(&b).expect("small scalar in range")
     }
 
+    /// Build the scalar `(n - 1)` directly from `N_521_LIMBS`.
+    fn n_minus_one() -> Scalar {
+        let mut limbs = N_521_LIMBS;
+        let (v, b) = limbs[0].overflowing_sub(1);
+        limbs[0] = v;
+        debug_assert!(!b, "n_521 is odd, n - 1 cannot underflow limb 0");
+        Scalar { limbs }
+    }
+
+    /// Build a scalar one (i.e. limbs = [1, 0, ...]).
+    fn one() -> Scalar {
+        let mut s = Scalar::ZERO;
+        s.limbs[0] = 1;
+        s
+    }
+
+    /// Reject any scalar that is not in [0, n).
+    fn assert_in_range(s: &Scalar) {
+        assert_eq!(
+            s.ct_lt_n().unwrap_u8(), 1,
+            "scalar must be in [0, n_521) but was not: limbs = {:?}",
+            s.limbs
+        );
+    }
+
+    // -----------------------------------------------------------------
+    // add_mod_n
+    // -----------------------------------------------------------------
+
     #[test]
     fn add_mod_n_small() {
-        let a = small_scalar(3);
-        let b = small_scalar(7);
-        let c = a.add_mod_n(&b);
+        let c = small_scalar(3).add_mod_n(&small_scalar(7));
         assert_eq!(c.to_bytes_be(), small_scalar(10).to_bytes_be());
     }
 
     #[test]
+    fn add_mod_n_zero_identity() {
+        let a = small_scalar(0xdead_beef);
+        let c = a.add_mod_n(&Scalar::ZERO);
+        assert_eq!(c.to_bytes_be(), a.to_bytes_be());
+        let c2 = Scalar::ZERO.add_mod_n(&a);
+        assert_eq!(c2.to_bytes_be(), a.to_bytes_be());
+    }
+
+    #[test]
+    fn add_mod_n_wraps_n_minus_one_plus_one() {
+        // (n-1) + 1 = n ≡ 0 (mod n)
+        let c = n_minus_one().add_mod_n(&one());
+        assert_eq!(c.to_bytes_be(), Scalar::ZERO.to_bytes_be());
+        assert_in_range(&c);
+    }
+
+    #[test]
+    fn add_mod_n_wraps_double_n_minus_one() {
+        // (n-1) + (n-1) = 2n - 2 ≡ n - 2 (mod n)
+        let c = n_minus_one().add_mod_n(&n_minus_one());
+        // Expected = n - 2
+        let mut expected = N_521_LIMBS;
+        let (v, _) = expected[0].overflowing_sub(2);
+        expected[0] = v;
+        let expected = Scalar { limbs: expected };
+        assert_eq!(c.to_bytes_be(), expected.to_bytes_be());
+        assert_in_range(&c);
+    }
+
+    #[test]
+    fn add_mod_n_commutative() {
+        let a = small_scalar(0x1234_5678_9abc_def0);
+        let b = small_scalar(0x0fed_cba9_8765_4321);
+        assert_eq!(
+            a.add_mod_n(&b).to_bytes_be(),
+            b.add_mod_n(&a).to_bytes_be()
+        );
+    }
+
+    // -----------------------------------------------------------------
+    // sub_mod_n
+    // -----------------------------------------------------------------
+
+    #[test]
     fn sub_mod_n_no_wrap() {
-        let a = small_scalar(10);
-        let b = small_scalar(3);
-        let c = a.sub_mod_n(&b);
+        let c = small_scalar(10).sub_mod_n(&small_scalar(3));
         assert_eq!(c.to_bytes_be(), small_scalar(7).to_bytes_be());
     }
 
     #[test]
     fn sub_mod_n_wraps() {
-        // 2 - 3 mod n = n - 1
-        let a = small_scalar(2);
-        let b = small_scalar(3);
-        let c = a.sub_mod_n(&b);
-        // n - 1
-        let mut n_minus_1 = N_521_LIMBS;
-        let (v, _) = n_minus_1[0].overflowing_sub(1);
-        n_minus_1[0] = v;
-        let expected = Scalar { limbs: n_minus_1 };
-        assert_eq!(c.to_bytes_be(), expected.to_bytes_be());
+        // 2 - 3 ≡ n - 1 (mod n)
+        let c = small_scalar(2).sub_mod_n(&small_scalar(3));
+        assert_eq!(c.to_bytes_be(), n_minus_one().to_bytes_be());
+    }
+
+    #[test]
+    fn sub_mod_n_self_is_zero() {
+        let a = small_scalar(0xc0ffee);
+        let c = a.sub_mod_n(&a);
+        assert_eq!(c.to_bytes_be(), Scalar::ZERO.to_bytes_be());
     }
 
     #[test]
     fn add_sub_inverse() {
         let a = small_scalar(12345);
         let b = small_scalar(67890);
-        let sum = a.add_mod_n(&b);
-        let back = sum.sub_mod_n(&b);
+        let back = a.add_mod_n(&b).sub_mod_n(&b);
         assert_eq!(a.to_bytes_be(), back.to_bytes_be());
     }
 
     #[test]
+    fn add_sub_inverse_with_wrap() {
+        // (n-1) + b - b = n-1 even though intermediate wrapped.
+        let a = n_minus_one();
+        let b = small_scalar(0x9999);
+        let back = a.add_mod_n(&b).sub_mod_n(&b);
+        assert_eq!(a.to_bytes_be(), back.to_bytes_be());
+    }
+
+    // -----------------------------------------------------------------
+    // mul_mod_n
+    // -----------------------------------------------------------------
+
+    #[test]
     fn mul_mod_n_small() {
-        let a = small_scalar(6);
-        let b = small_scalar(7);
-        let c = a.mul_mod_n(&b);
+        let c = small_scalar(6).mul_mod_n(&small_scalar(7));
         assert_eq!(c.to_bytes_be(), small_scalar(42).to_bytes_be());
     }
 
     #[test]
     fn mul_mod_n_by_zero() {
-        let a = small_scalar(999);
-        let c = a.mul_mod_n(&Scalar::ZERO);
+        let c = small_scalar(999).mul_mod_n(&Scalar::ZERO);
         assert_eq!(c.to_bytes_be(), Scalar::ZERO.to_bytes_be());
+        let c2 = Scalar::ZERO.mul_mod_n(&small_scalar(999));
+        assert_eq!(c2.to_bytes_be(), Scalar::ZERO.to_bytes_be());
     }
 
     #[test]
-    fn inv_mod_n_roundtrip() {
+    fn mul_mod_n_by_one() {
+        let a = small_scalar(0xabcd_ef01_2345_6789);
+        let c = a.mul_mod_n(&one());
+        assert_eq!(c.to_bytes_be(), a.to_bytes_be());
+        let c2 = one().mul_mod_n(&a);
+        assert_eq!(c2.to_bytes_be(), a.to_bytes_be());
+    }
+
+    #[test]
+    fn mul_mod_n_commutative() {
+        let a = small_scalar(0x1111_2222_3333_4444);
+        let b = small_scalar(0x5555_6666_7777_8888);
+        assert_eq!(
+            a.mul_mod_n(&b).to_bytes_be(),
+            b.mul_mod_n(&a).to_bytes_be()
+        );
+    }
+
+    #[test]
+    fn mul_mod_n_n_minus_one_squared() {
+        // (n-1)^2 ≡ 1 (mod n)   because (n-1) ≡ -1
+        let c = n_minus_one().mul_mod_n(&n_minus_one());
+        assert_eq!(c.to_bytes_be(), one().to_bytes_be());
+    }
+
+    // -----------------------------------------------------------------
+    // inv_mod_n  (Fermat)
+    // -----------------------------------------------------------------
+
+    #[test]
+    fn inv_mod_n_roundtrip_small() {
         let a = small_scalar(17);
         let inv = a.inv_mod_n();
-        let one = a.mul_mod_n(&inv);
-        assert_eq!(one.to_bytes_be(), small_scalar(1).to_bytes_be());
+        let one_back = a.mul_mod_n(&inv);
+        assert_eq!(one_back.to_bytes_be(), one().to_bytes_be());
+    }
+
+    #[test]
+    fn inv_mod_n_of_one_is_one() {
+        let inv = one().inv_mod_n();
+        assert_eq!(inv.to_bytes_be(), one().to_bytes_be());
+    }
+
+    #[test]
+    fn inv_mod_n_of_n_minus_one_is_n_minus_one() {
+        // (n-1)·(n-1) ≡ 1 ⇒ (n-1)^(-1) = n-1
+        let inv = n_minus_one().inv_mod_n();
+        assert_eq!(inv.to_bytes_be(), n_minus_one().to_bytes_be());
+    }
+
+    #[test]
+    fn inv_mod_n_random_values_roundtrip() {
+        // Use a handful of fixed but non-trivial values.
+        for v in [3u64, 5, 65537, 0xdead_beefu64, 0x1234_5678_9abc_def0u64] {
+            let a = small_scalar(v);
+            let inv = a.inv_mod_n();
+            let back = a.mul_mod_n(&inv);
+            assert_eq!(
+                back.to_bytes_be(), one().to_bytes_be(),
+                "a · a^(-1) ≠ 1 for v = {:#x}", v
+            );
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // ct_lt_n correctness
+    // -----------------------------------------------------------------
+
+    #[test]
+    fn ct_lt_n_boundary() {
+        assert_eq!(Scalar::ZERO.ct_lt_n().unwrap_u8(), 1, "0 < n");
+        assert_eq!(one().ct_lt_n().unwrap_u8(), 1, "1 < n");
+        assert_eq!(n_minus_one().ct_lt_n().unwrap_u8(), 1, "n-1 < n");
+        // Constructing exactly n violates the invariant; check the raw scalar.
+        let n_scalar = Scalar { limbs: N_521_LIMBS };
+        assert_eq!(n_scalar.ct_lt_n().unwrap_u8(), 0, "n ≮ n");
     }
 }
