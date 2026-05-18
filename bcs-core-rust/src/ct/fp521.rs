@@ -114,6 +114,26 @@ impl Fp521 {
             u64::conditional_swap(&mut a.limbs[i], &mut b.limbs[i], choice);
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// ConditionallySelectable — required by Fortress fault_injection module
+// ---------------------------------------------------------------------------
+
+impl ConditionallySelectable for Fp521 {
+    /// Select `a` when `choice == 0`, `b` when `choice == 1`.
+    /// Constant-time: always touches every limb of both inputs.
+    #[inline]
+    fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+        let mut limbs = [0u64; 9];
+        for i in 0..9 {
+            limbs[i] = u64::conditional_select(&a.limbs[i], &b.limbs[i], choice);
+        }
+        Self { limbs }
+    }
+}
+
+impl Fp521 {
 
     /// Constant-time comparison.  Returns 1 iff `self < P_521`.
     ///

@@ -191,6 +191,7 @@ fn scalar_sub_mod_n(a: &Scalar, b: &Scalar) -> Scalar {
 mod tests {
     use super::*;
     use super::super::consts::FIELD_BYTES;
+    use super::super::ladder::scalar_mul;
 
     fn scalar_from(x: u64) -> Scalar {
         let mut bytes = [0u8; FIELD_BYTES];

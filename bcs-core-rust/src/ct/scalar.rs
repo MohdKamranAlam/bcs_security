@@ -101,7 +101,7 @@ impl Scalar {
     /// module.
     #[inline]
     #[allow(clippy::needless_range_loop)]
-    fn ct_lt_n(&self) -> Choice {
+    pub(crate) fn ct_lt_n(&self) -> Choice {
         let mut borrow: u64 = 0;
         for i in 0..9 {
             let (diff, b1) = self.limbs[i].overflowing_sub(N_521_LIMBS[i]);

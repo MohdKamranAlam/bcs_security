@@ -110,6 +110,7 @@ fn scalar_mul_path_b(k: &Scalar, base: &ProjPoint) -> ProjPoint {
 mod tests {
     use super::*;
     use super::super::consts::FIELD_BYTES;
+    use super::super::ladder::scalar_mul_generator;
 
     fn scalar_from(x: u64) -> Scalar {
         let mut bytes = [0u8; FIELD_BYTES];

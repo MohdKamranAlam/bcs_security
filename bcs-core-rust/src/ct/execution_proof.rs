@@ -136,7 +136,7 @@ pub struct ExecutionProof {
 impl ExecutionProof {
     /// Create a proof for a Fortress operation.
     pub fn new(operation: OperationKind, flags: FortressFlags) -> Self {
-        let crate_version = *b"0.2.0-fortress\0\0\0";
+        let crate_version = *b"0.2.0-fortress\0\0";
         let timestamp = Self::current_timestamp();
 
         Self {
