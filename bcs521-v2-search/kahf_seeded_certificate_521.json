@@ -39,6 +39,41 @@
       "Sage E.cardinality(proof=True) == n",
       "Embedding degree k = znorder(Mod(p, n))",
       "Twist factorization"
-    ]
+    ],
+    "p_prime_APR_CL_PARI": true,
+    "n_prime_APR_CL_PARI": true,
+    "mov_attack_applicable": false,
+    "mov_note": "Embedding degree k infeasible to compute for 521-bit n; expected k >> 100, MOV inapplicable"
+  },
+  "twist": {
+    "twist_order_bits": 521,
+    "small_prime_factors": [
+      [
+        3,
+        3
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        97,
+        1
+      ],
+      [
+        283,
+        1
+      ],
+      [
+        38083,
+        1
+      ]
+    ],
+    "small_factors_total_bits": 37,
+    "remaining_cofactor_bits": 484,
+    "remaining_is_prime": false,
+    "factorization_status": "partial_trial_division_to_10_7",
+    "point_validation_mandatory": true,
+    "security_policy": "Twist composite \u2014 mandatory point validation enforced in all BCS implementations (matches BCS-521 V1 policy)"
   }
 }
