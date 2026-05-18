@@ -1,0 +1,31 @@
+[package]
+name = "bcs-cli"
+version = "0.1.0-fortress"
+edition = "2021"
+rust-version = "1.80.0"
+authors = ["Mohd Kamran Alam <your-email@example.com>"]
+description = "Islamic Fintech CLI — BCS-521 Fortress Edition with Kahf Seeding"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/MohdKamranAlam/bcs_security"
+keywords = ["crypto", "islamic", "fintech", "post-quantum", "bcs-521"]
+categories = ["command-line-utilities", "cryptography"]
+
+[[bin]]
+name = "bcs"
+path = "src/main.rs"
+
+[dependencies]
+bcs-core-rust = { path = "../bcs-core-rust", features = ["fortress"] }
+clap = { version = "4.5", features = ["derive"] }
+hex = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+rand = "0.8"
+zeroize = "1.7"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true
