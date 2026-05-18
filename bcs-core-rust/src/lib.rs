@@ -18,11 +18,15 @@
 //! curves is composite, so **strict point validation is mandatory** before
 //! every public-key operation. This is enforced inside `Curve::ecdh`.
 //!
-//! This crate is for **research and audit** purposes. It is not
-//! constant-time and must not be used in production unaudited.
+//! This crate is for **research and audit** purposes.  When the `ct`
+//! feature is enabled, all secret-scalar operations are constant-time;
+//! the BigUint reference path remains variable-time.  Production use
+//! requires an external cryptographic audit — see `SECURITY.md`.
+
+#![forbid(unsafe_code)]
 
 // ---------------------------------------------------------------------------
-// Constant-time core (experimental, opt-in via `--features ct`)
+// Constant-time core (opt-in via `--features ct`)
 // ---------------------------------------------------------------------------
 //
 // When the `ct` feature is enabled, `crate::ct::*` becomes available
@@ -53,6 +57,8 @@ pub mod hybrid;
 
 /// Kahf-seeded deterministic prime generator for BCS-521-V2.
 /// Byte-for-byte port of `bcs521-v2-search/kahf_seeded_search.py::candidate`.
+/// Required by `bcs521_v2()` to prove `p` is the frozen seed image and was
+/// not cherry-picked.
 pub mod kahf_seeded;
 
 #[cfg(feature = "hybrid")]
@@ -345,14 +351,18 @@ pub fn bcs521() -> Curve {
     }
 }
 
-
 /// BCS-521-V2 research curve (Kahf-seeded, verifiably random).
 ///
-/// `p` and `n` are deterministically derived from the canonical Kahf seed
-/// via [`kahf_seeded::candidate`]. See `reproduce_v2_prime()` — anyone can
-/// re-derive `p` byte-for-byte from the seed text alone.
+/// Same Weierstrass shape as V1, but `p` and `n` are now **deterministically
+/// derived** from the canonical Kahf seed input via
+/// [`kahf_seeded::candidate`]. Anyone can re-run
+/// `python3 kahf_seeded_search.py --bits 521 --verify 28738` and obtain the
+/// same `p` byte-for-byte — eliminating the trapdoor concern that plagues
+/// any cherry-picked random prime.
 ///
 /// Audit (PARI APR-CL): both `p` and `n` are constructively prime.
+/// See `bcs521-v2-search/kahf_seeded_certificate_521.json` for the full
+/// reproducibility certificate.
 pub fn bcs521_v2() -> Curve {
     let p = BigUint::parse_bytes(
         b"3653235570455525964101546872972377381028859693657234694370089361335511547047366769170661366411783533970948449305575073943487138347217946970845438585295113967",
@@ -368,7 +378,7 @@ pub fn bcs521_v2() -> Curve {
         name: "BCS-521-V2",
         p,
         n,
-        field_bytes: 66,
+        field_bytes: 66, // ceil(521 / 8) = 66
         g: Point::Affine {
             x: BigUint::zero(),
             y: BigUint::from(2u32),

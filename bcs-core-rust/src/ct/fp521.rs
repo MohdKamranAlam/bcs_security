@@ -8,7 +8,8 @@
 //! - [x] constant-time `conditional_swap`
 //! - [x] constant-time `add`, `sub`, `neg`  (canonical form, mod p)
 //! - [x] Montgomery `mont_mul`, `square`, `to_montgomery`, `from_montgomery`
-//! - [ ] Fermat inversion via addition chain
+//! - [x] Fermat inversion (square-and-multiply with always-mul + Choice select)
+//! - [ ] Optimal addition-chain inversion (v0.3.0 perf improvement)
 //!
 //! ### Operand-form convention
 //!

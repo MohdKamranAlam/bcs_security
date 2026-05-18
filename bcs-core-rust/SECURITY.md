@@ -176,8 +176,11 @@ this line is a known gap, *not* a known vulnerability.
   BCS-521 keygen ≈ 2.93 ms, ECDH ≈ 3.10 ms; P-521 keygen ≈ 918 µs,
   ECDH ≈ 759 µs (i.e. BCS-521 is **3–4× slower than P-521** in this
   configuration).  The gap is attributed to three known
-  un-applied optimisations (Solinas reduction, fixed-base comb,
-  mixed-add specialisation), all of which preserve the CT contract.
+  un-applied optimisations (specialised top-limb reduction, fixed-base
+  comb, mixed-add specialisation), all of which preserve the CT
+  contract.  Note: unlike NIST P-521, BCS-521's prime is not a
+  Mersenne number and does not admit Solinas-style fast reduction;
+  see `AUDIT_RESULTS.md` §2.3 for the honest analysis.
   See [`AUDIT_RESULTS.md`](AUDIT_RESULTS.md) §2 for the full table
   and reproducer.  A re-run on dedicated baremetal hardware is the
   next step.
@@ -211,8 +214,8 @@ We explicitly do **not** claim or attempt the following:
    acoustic, and microarchitectural attacks (Spectre, Meltdown, etc.)
    are not in the threat model addressed by this software.
 
-4. **Quantum-secure key exchange standalone.**  See §7 for the planned
-   hybrid construction.
+4. **Quantum-secure key exchange standalone.**  See §7 for the
+   implemented hybrid construction.
 
 ---
 
@@ -224,14 +227,15 @@ both classical and quantum adversaries, by the well-known principle
 that the security of a properly-combined hybrid is at least the
 maximum of the two component primitives.
 
-Construction (planned, **not yet implemented**):
+Construction (**implemented** in `src/hybrid.rs`, gated behind
+`--features hybrid`):
 
 ```text
-classical_ss = BCS-521-ECDH(sk_A, pk_B)   -- 32 bytes
-pq_ss        = ML-KEM-1024-Decap(ek_A, ct_B) -- 32 bytes
+classical_ss = BCS-521-ECDH(sk_A, pk_B)    -- 66 bytes (raw x-coordinate)
+pq_ss        = ML-KEM-1024-Decap(ct_B, dk_A) -- 32 bytes
 
 transcript = ek_A || ct_B || pk_A || pk_B
-final_ss   = HKDF-SHA-256(
+final_ss   = HKDF-SHA-512(
     salt = b"BCS-Hybrid-521-MLKEM1024-v1",
     ikm  = classical_ss || pq_ss,
     info = b"final-symmetric-key" || transcript
@@ -240,7 +244,8 @@ final_ss   = HKDF-SHA-256(
 
 Naming: `BCS-Hybrid-521-MLKEM1024`.
 
-Target release: `v0.3.0` (after the items in §5 are closed).
+See `BCS_PQ_ROADMAP.md` for the full specification, security
+properties, and future work.
 
 ---
 

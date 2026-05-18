@@ -87,9 +87,14 @@ cargo bench --features ct --bench ecdh_compare
   un-applied optimisations on the BCS-521 side, all of which **preserve
   the constant-time contract**:
 
-  1. **Solinas-style fast reduction.** `p₅₂₁ = 2⁵²¹ − 1` admits a
-     branch-free shift-and-add reduction that is roughly 2× faster
-     than the generic Montgomery reduction we currently use.
+  1. **Pseudo-Mersenne fast reduction.** Unlike NIST P-521 (whose
+     prime is the Mersenne number ^521 - 1\), BCS-521 prime is a
+     general 521-bit value that does **not** admit Solinas-style
+     shift-and-add reduction.  A specialised reduction exploiting the
+     top-limb structure of our specific \p\ (limb 8 holds only 9 bits)
+     could still save ~30% over generic Montgomery, but the 2x
+     speed-up available to P-521 is not achievable here.  This is an
+     inherent trade-off of the Kahf-seeded prime generation approach.
   2. **Fixed-base comb / window-NAF on `G`.** `scalar_mul_generator`
      can pre-compute 32 multiples of `G` and consume the scalar 5
      bits at a time. ~3× speed-up, no CT regression.

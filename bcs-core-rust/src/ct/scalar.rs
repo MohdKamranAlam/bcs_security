@@ -7,7 +7,7 @@
 //! - [x] type, byte (de)serialization
 //! - [x] MSB-first bit iterator (constant 521 iterations)
 //! - [x] `Zeroize` / `ZeroizeOnDrop`
-//! - [ ] `add`, `sub`, `mul` mod n via Barrett reduction
+//! - [ ] `add`, `sub`, `mul` mod n via Barrett reduction (v0.3.0, for EC-DSA-style sign)
 //!
 //! For the Montgomery ladder we only need bit-iteration, so this
 //! minimal API is sufficient for `v0.2.0-ct` to start producing

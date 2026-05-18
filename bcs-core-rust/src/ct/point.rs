@@ -18,7 +18,7 @@
 //! - [x] complete projective `double` (RCB 2016 Algorithm 3)
 //! - [x] `to_affine` via Montgomery inversion of `Z`
 //! - [x] `is_identity` constant-time
-//! - [ ] Montgomery ladder lives in `ladder.rs`
+//! - [x] Montgomery ladder lives in `ladder.rs`
 //!
 //! ## Coordinate-chart reminder
 //!
