@@ -2,6 +2,7 @@
 name = "bcs-core-rust"
 version = "0.2.0"
 edition = "2021"
+rust-version = "1.80.0"
 license = "MIT OR Apache-2.0"
 description = "BCS research reference core for BCS-256 and BCS-521 with strict point validation"
 

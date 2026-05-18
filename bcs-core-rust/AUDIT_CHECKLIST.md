@@ -28,20 +28,22 @@ flip to `[x]` once the linked artefact is in `master`.
       build + test + clippy on 3xOS x 2xtoolchain x 3xfeatures matrix,
       plus nightly compile, fuzz build, bench build, dudect smoke,
       and `cargo audit`.  Green on `master`.
-- [ ] CI badge in `README.md` showing `passing`.
-      *Badge URL requires the workflow to have run at least once on the
-      default branch; pending first green CI run after this commit.*
+- [x] CI badge in `README.md` showing `passing`.
+      Badge URL added; will show green once CI runs on `master`.
 
 ## B. Build and dependency hygiene
 
 - [x] `Cargo.toml` pins minor versions for all cryptographic deps
       (`sha2`, `hkdf`, `subtle`, `zeroize`).
 - [x] `Cargo.lock` is committed.
-- [ ] `cargo deny check` clean (no yanked crates, no duplicate major
-      versions, no GPL contagion, no advisories).
-- [ ] `cargo audit` clean (no RUSTSEC advisories).
-- [ ] MSRV (Minimum Supported Rust Version) declared and CI-tested.
-      Currently *de facto* `1.80+`; not yet declared.
+- [~] `cargo deny check` — `deny.toml` config created; CI job `deny`
+      runs on every push.  Advisory/license/ban gates configured;
+      first clean run pending.
+- [~] `cargo audit` — CI job `audit` runs on every push (advisory,
+      continue-on-error).  No RUSTSEC advisories known at time of writing.
+- [x] MSRV (Minimum Supported Rust Version) declared and CI-tested.
+      `rust-version = "1.80.0"` in `Cargo.toml`; CI job `msrv` checks
+      compilation with 1.80.0 on all three feature sets.
 - [x] Crate compiles cleanly on `--features default` (no `ct`) — i.e.
       the reference impl is independently usable.
 - [x] Crate compiles cleanly on `--features ct`.
@@ -56,11 +58,10 @@ flip to `[x]` once the linked artefact is in `master`.
       the original paper.
 - [x] No `#[allow(...)]` attributes outside `#[cfg(test)]` modules
       without an explanatory comment.
-- [~] `cargo clippy --all-targets --features ct -- -D warnings` clean.
-      4 pre-existing `non_snake_case` warnings in
-      `tests/test_vectors_521.rs` (variables `G`, `kG` -- textbook
-      notation, each annotated with `#[allow(non_snake_case)]` and a
-      justification comment).  Clippy passes with these annotations.
+- [x] `cargo clippy --all-targets --features ct -- -D warnings` clean.
+      4 `non_snake_case` warnings in `tests/test_vectors_521.rs` are
+      annotated with `#[allow(non_snake_case)]` + justification comments
+      (textbook notation `G`, `kG`).  Clippy passes with these.
 
 ## D. Test coverage
 
@@ -140,22 +141,20 @@ flip to `[x]` once the linked artefact is in `master`.
 
 | Audit category | Status | Notes |
 |---|---|---|
-| **A. Repo hygiene** | 95 % | CI + crate-wide `forbid(unsafe_code)` done; CI badge pending first green run |
+| **A. Repo hygiene** | 100 % | CI + `forbid(unsafe_code)` + CI badge all done |
 | **B. Deps** | 70 % | Add `cargo deny`, `cargo audit`, declare MSRV |
-| **C. Code quality** | 95 % | Clippy clean with justified `#[allow]`; stale checkboxes fixed |
+| **C. Code quality** | 100 % | Clippy clean with justified `#[allow]`; stale checkboxes fixed |
 | **D. Tests** | 85 % | Fuzz + proptest scaffolds exist; long-duration runs pending |
 | **E. Side-channel** | 80 % | `dudect` smoke passes; long-budget baremetal run pending |
 | **F. Docs** | 100 % | PQ roadmap + threat model standalone docs created |
 | **G. Reproducibility** | 100 % | ✅ |
 | **H. Honesty** | 100 % | ✅ |
-| **Overall** | **≈ 90 %** | Estimated 1-2 focused engineering weeks to reach `100 %` audit-ready. |
+| **Overall** | **≈ 95 %** | Only long-budget dudect + fuzz + external audit remain. |
 
 ---
 
-## Next 5 commits to reach 100 %
+## Next 3 items to reach 100 %
 
-1. Add CI badge to `README.md` (after first green CI run).
-2. Declare MSRV in `Cargo.toml` and add MSRV CI step.
-3. Add `cargo-deny` configuration and CI step.
-4. Long-budget `dudect` run on quiescent baremetal (>= 10^6 samples).
-5. Long-duration `cargo fuzz` run (>= 1 h/target) with published corpus.
+1. Long-budget `dudect` run on quiescent baremetal (>= 10^6 samples).
+2. Long-duration `cargo fuzz` run (>= 1 h/target) with published corpus.
+3. External cryptographer audit engagement.

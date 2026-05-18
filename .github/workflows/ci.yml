@@ -239,3 +239,42 @@ jobs:
         run: cargo install cargo-audit --locked
       - name: cargo audit
         run: cargo audit
+
+  # ===========================================================================
+  # 8. MSRV check — verify the declared rust-version still compiles.
+  # ===========================================================================
+  msrv:
+    name: MSRV check (1.80.0)
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.80.0"
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "bcs-core-rust -> target"
+          shared-key: "msrv"
+      - name: cargo check (default features)
+        run: cargo +1.80.0 check --all-targets
+      - name: cargo check (--features ct)
+        run: cargo +1.80.0 check --all-targets --features ct
+      - name: cargo check (--features hybrid)
+        run: cargo +1.80.0 check --all-targets --features hybrid
+
+  # ===========================================================================
+  # 9. Dependency lint — cargo-deny (advisories, licenses, bans).
+  # ===========================================================================
+  deny:
+    name: cargo deny check
+    needs: lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install cargo-deny
+        run: cargo install cargo-deny --locked
+      - name: cargo deny check
+        run: cargo deny check

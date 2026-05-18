@@ -1,5 +1,7 @@
 # bcs-core-rust
 
+[![CI](https://github.com/MohdKamranAlam/bcs_security/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/MohdKamranAlam/bcs_security/actions/workflows/ci.yml)
+
 Research reference implementation of the Bismillah Cryptosystem (BCS)
 elliptic curve family.
 
@@ -21,19 +23,20 @@ cofactor h = 1   (n is prime on both curves)
 
 ## Important status
 
-This crate is a correctness-oriented Rust reference, **not yet a
-constant-time production library**. The twist order on both curves is
-composite, so the API enforces **strict public-key validation** before
-every ECDH operation. Off-curve / infinity / out-of-range coordinates
-are rejected.
+This crate provides two implementation paths:
 
-Production hardening still requires:
+- **BigUint reference** (default) — correctness-oriented, variable-time,
+  suitable for testing and audit.
+- **Constant-time** (`--features ct`) — Montgomery ladder, `subtle::Choice`,
+  `ZeroizeOnDrop`, `dudect`-verified. This is the path for deployment.
+- **Hybrid PQ KEM** (`--features hybrid`) — BCS-521 ECDH + ML-KEM-1024
+  with HKDF-SHA-512 combiner.
 
-- fixed-width field representation instead of `BigUint`
-- constant-time scalar multiplication
-- no secret-dependent branches or memory accesses
-- audited RNG and key handling
-- fuzzing and external cryptographic review
+The twist order on both curves is composite, so the API enforces
+**strict public-key validation** before every ECDH operation.
+
+Production use still requires an external cryptographic audit — see
+`SECURITY.md`.
 
 ## API at a glance
 
@@ -118,8 +121,7 @@ The honest reading of the perf gap is in `AUDIT_RESULTS.md` §2.3.
 
 ## Roadmap
 
-- Sage independent cardinality proof for BCS-521
-- ML-KEM-1024 post-quantum hybrid wire protocol
-- Constant-time hardening (when moving toward production)
-- Long-budget dudect run on dedicated baremetal hardware
+- Long-budget `dudect` run on dedicated baremetal hardware
+- Perf optimisation (top-limb reduction, fixed-base comb)
+- MSRV + `cargo-deny` CI gates (done in this commit)
 - External cryptographer review (NCC Group / Cure53 / Trail of Bits)

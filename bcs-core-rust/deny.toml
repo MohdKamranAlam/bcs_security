@@ -1,0 +1,41 @@
+# cargo-deny configuration for bcs-core-rust
+# https://embarkstudios.github.io/cargo-deny/
+
+[advisories]
+# RUSTSEC advisories — fail on any known vulnerability in our dep graph.
+vulnerability = "deny"
+unmaintained = "warn"
+unsound = "deny"
+yanked = "warn"
+
+[licenses]
+# Only allow OSI-approved or explicitly permissive licenses.
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "CC0-1.0",
+    "Unicode-DFS-2016",
+]
+unlicensed = "deny"
+# Copyleft licenses are banned for a cryptographic library.
+copyleft = "deny"
+default = "deny"
+
+[bans]
+# Disallow multiple major versions of the same crate.
+multiple-versions = "warn"
+wildcards = "deny"
+# Allow duplicate minor versions (common in Rust ecosystem).
+allow-build-scripts = [
+    # cc / build scripts for native code are fine.
+]
+
+[sources]
+# Only allow crates from crates.io and our own git repo.
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
