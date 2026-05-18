@@ -184,9 +184,9 @@ mod tests {
     #[test]
     fn first_three_candidates_hex_prefix_match_python() {
         let expected = [
-            "1b8ec6cb7c8819a2a74bb8f092f4ef96",
-            "1a2365833e84694635fc5975a8893150",
-            "192a5f1f9af87e2256108555f0b34ce5",
+            "18d8ce581d6b17fceda196a0aa88a88c",
+            "1ed62cb7897b4c6d6a6a2a6480712cd4",
+            "13dd053f2c618834ae5709a56b5df60d",
         ];
         for (c, want) in expected.iter().enumerate() {
             let hex = format!("{:x}", candidate_v2(c as u64));

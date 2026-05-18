@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="Welcome to the LMFDB, the database of L-functions, modular forms, and related objects. These pages are intended to be a modern handbook including tables, formulas, links, and references for L-functions and their underlying objects."/>
+          <title>LMFDB - Elliptic curve with LMFDB label 1424.d1 (Cremona label 1424d1)  </title>
+        <link id="style_css" href="/style.css" rel="stylesheet" type="text/css" /> 
+
+    <!-- jQuery -->
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+            integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
+            crossorigin="anonymous"></script>
+    <!-- jQuery UI -->
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+            integrity="sha384-Dziy8F2VlJQLMShA6FHWNul/veM9bCkRUaLqr199K94ntO5QUrLJBEbYegdSkkqX"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+          href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"
+          integrity="sha384-Nlo8b0yiGl7Dn+BgLn4mxhIIBU6We7aeeiulNCjHdUv/eKHx59s3anfSUjExbDxn"
+          crossorigin="anonymous">
+
+          <!--reCAPTCHA-->
+      <script src="https://www.google.com/recaptcha/enterprise.js?render=6LchHWwpAAAAACFe52hZNEkUP5Bn5_0FfLiEuF3i&waf=session" async defer></script>
+    
+
+
+
+    <script type="text/javascript">var url_prefix = "";</script>
+
+    <script type="text/javascript" src="/static/lmfdb.js"></script>
+    <script type="text/javascript" src="/static/showdown.min.js"></script>
+
+    <script type="text/javascript" src="/static/raw_typeset.js"></script>
+    <script type="text/javascript" src="/static/notify.min.js"></script>
+
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+          integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j"
+          crossorigin="anonymous">
+    <script defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+          integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+          crossorigin="anonymous"></script>
+    <script defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js"
+          integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+          crossorigin="anonymous"></script>
+    <script>
+katexOpts = {
+  delimiters: [
+  {left: "$$", right: "$$", display: true},
+  {left: "\\[", right: "\\]", display: true},
+  {left: "$", right: "$", display: false},
+  {left: "\\(", right: "\\)", display: false}
+],
+  maxExpand: Infinity,
+  macros: {
+  "\\C": '{\\mathbb{C}}',
+  "\\R": '{\\mathbb{R}}',
+  "\\Q": '{\\mathbb{Q}}',
+  "\\Z": '{\\mathbb{Z}}',
+  "\\F": '{\\mathbb{F}}',
+  "\\H": '{\\mathbb{H}}',
+  "\\HH": '{\\mathcal{H}}',
+  "\\integers": '{\\mathcal{O}}',
+  "\\SL": '{\\textrm{SL}}',
+  "\\GL": '{\\textrm{GL}}',
+  "\\PSL": '{\\textrm{PSL}}',
+  "\\PGL": '{\\textrm{PGL}}',
+  "\\ASL": '{\\textrm{ASL}}',
+  "\\AGL": '{\\textrm{AGL}}',
+  "\\ASp": '{\\textrm{ASp}}',
+  "\\Sp": '{\\textrm{Sp}}',
+  "\\PSp": '{\\textrm{PSp}}',
+  "\\SO": '{\\textrm{SO}}',
+  "\\PSO": '{\\textrm{PSO}}',
+  "\\PO": '{\\textrm{PO}}',
+    "\\PGO": '{\\textrm{PO}}',
+  "\\SU": '{\\textrm{SU}}',
+  "\\PSU": '{\\textrm{PSU}}',
+  "\\SOPlus": '{\\textrm{SO}^+}',
+  "\\SOMinus": '{\\textrm{SO}^-}',
+    "\\GO": '{\\textrm{O}}',
+  "\\Orth": '{\\textrm{O}}',
+    "\\GOPlus": '{\\textrm{O}^+}',
+  "\\OPlus": '{\\textrm{O}^+}',
+  "\\OrthPlus": '{\\textrm{O}^+}',
+    "\\GOMinus": '{\\textrm{O}^-}',
+  "\\OrthMinus": '{\\textrm{O}^-}',
+  "\\OMinus": '{\\textrm{O}^-}',
+  "\\GU": '{\\textrm{GU}}',
+  "\\Unitary": '{\\textrm{U}}',
+    "\\CSp": '{\\textrm{GSp}}',
+  "\\GSp": '{\\textrm{GSp}}',
+    "\\CSO": '{\\textrm{GSO}}',
+  "\\GSO": '{\\textrm{GSO}}',
+    "\\CSOPlus": '{\\textrm{GSO}^+}',
+  "\\GSOPlus": '{\\textrm{GSO}^+}',
+    "\\CSOMinus": '{\\textrm{GSO}^-}',
+  "\\GSOMinus": '{\\textrm{GSO}^-}',
+    "\\CSU": '{\\textrm{GSU}}',
+  "\\GSU": '{\\textrm{GSU}}',
+    "\\CO": '{\\textrm{GO}}',
+  "\\GOrth": '{\\textrm{GO}}',
+    "\\COPlus": '{\\textrm{GO}^+}',
+  "\\GOrthPlus": '{\\textrm{GO}^+}',
+    "\\COMinus": '{\\textrm{GO}^-}',
+  "\\GOrthMinus": '{\\textrm{GO}^-}',
+    "\\CU": '{\\textrm{GU}}',
+  "\\GUnitary": '{\\textrm{GU}}',
+  "\\OmegaPlus": '{\\Omega^+}',
+  "\\OmegaMinus": '{\\Omega^-}',
+  "\\Spin": '{\\textrm{Spin}}',
+  "\\SpinPlus": '{\\textrm{Spin}^+}',
+  "\\SpinMinus": '{\\textrm{Spin}^-}',
+  "\\PSOPlus": '{\\textrm{PSO}^+}',
+  "\\POPlus": '{\\textrm{PO}^+}',
+    "\\PGOPlus": '{\\textrm{PO}^+}',
+  "\\PU": '{\\textrm{PU}}',
+    "\\PGU": '{\\textrm{PU}}',
+  "\\PSOMinus": '{\\textrm{PSO}^-}',
+  "\\POMinus": '{\\textrm{PO}^-}',
+    "\\PGOMinus": '{\\textrm{PO}^-}',
+  "\\POmega": '{\\textrm{P}\\Omega}',
+  "\\POmegaPlus": '{\\textrm{P}\\Omega^+}',
+  "\\POmegaMinus": '{\\textrm{P}\\Omega^-}',
+  "\\PGammaL": '{\\textrm{P}\\Gamma\\textrm{L}}',
+  "\\PSigmaL": '{\\textrm{P}\\Sigma\\textrm{L}}',
+  "\\PSigmaSp": '{\\textrm{P}\\Sigma\\textrm{Sp}}',
+  "\\PGammaU": '{\\textrm{P}\\Gamma\\textrm{U}}',
+  "\\AGammaL": '{\\textrm{A}\\Gamma\\textrm{L}}',
+  "\\ASigmaL": '{\\textrm{A}\\Sigma\\textrm{L}}',
+  "\\ASigmaSp": '{\\textrm{A}\\Sigma\\textrm{Sp}}',
+  "\\Dic": '{\\textrm{Dic}}',
+  "\\SD": '{\\textrm{SD}}',
+  "\\OD": '{\\textrm{OD}}',
+  "\\He": '{\\textrm{He}}',
+  "\\HS": '{\\textrm{HS}}',
+  "\\McL": '{\\textrm{McL}}',
+  "\\Ru": '{\\textrm{Ru}}',
+  "\\Co": '{\\textrm{Co}}',
+  "\\Aut": '\\operatorname{Aut}',
+  "\\Out": '\\operatorname{Out}',
+  "\\End": '\\operatorname{End}',
+  "\\Gal": '\\operatorname{Gal}',
+  "\\Hom": '\\operatorname{Hom}',
+  "\\Ord": '\\operatorname{Ord}',
+  "\\Pic": '\\operatorname{Pic}',
+  "\\Reg": '\\operatorname{Reg}',
+  "\\Res": '\\operatorname{Res}',
+  "\\sgn": '\\operatorname{sgn}',
+  "\\Spec": '\\operatorname{Spec}',
+  "\\Sym": '\\operatorname{Sym}',
+  "\\trace": '\\operatorname{tr}',
+  "\\mathstrut": '\\vphantom(',
+  "\\ideal": '{\\mathfrak{ #1 }}',
+  "\\classgroup": '{Cl(#1)}',
+  "\\modstar": '{\\left( #1/#2 \\right)^\\times}',
+  "\\card": '{\\# #1}',
+},
+};
+  document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, katexOpts);
+});
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.min.js" integrity="sha384-XhWAe6BtVcvEdS3FFKT7Mcft4HJjPqMQvi5V4YhzH9Qxw497jC13TupOEvjoIPy7" crossorigin="anonymous"></script>
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YVBFDNX374"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-YVBFDNX374');
+    </script>
+
+  </head><body class="ec"><div id="header">
+    <div id="logo"><a href="/">
+    <img src="/static/images/lmfdb-logo.png" />
+</a></div>
+    <div class="right">
+      <div class="upper">
+        <div class="bread">
+                      <a href="/">&#8962;</a>
+            &rarr; <a href="/EllipticCurve/"> Elliptic curves</a>
+            &rarr; <a href="/EllipticCurve/Q/"> $\Q$</a>
+            &rarr; <a href="/EllipticCurve/Q/1424/"> 1424</a>
+            &rarr; <a href="/EllipticCurve/Q/1424/d/"> d</a>
+            &rarr; <a href=" "> 1</a>
+                               </div>
+        <div class="topright">
+                                      <!--
+            <span id="communication-wrapper">
+              <img id="communication-img" src="/static/images/progress-green.gif" />
+              <span id="communication"></span>
+            </span>
+-->
+          <div class="undertopright">
+            <a href="/citation" >Citation</a>
+              &middot;
+            <a href="/contact" target="_blank">Feedback</a>
+              &middot;
+            <a href="#" id="menutoggle">Hide Menu
+                        </a>
+          </div>
+        </div>
+      
+        </div>
+        <div id="title">Elliptic curve with LMFDB label 1424.d1 (Cremona label 1424d1)</div>
+
+    </div>
+</div>
+
+<div id="sidebar">
+<h2 class="link"><a href="/intro">Introduction</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td scope="col" width="20%"><a href="/intro">Overview</a><td scope="col" width="20%"><a href="/random">Random</a></tr><tr><td scope="col" width="20%"><a href="/universe">Universe</a><td scope="col" width="20%"><a href="/knowledge/">Knowledge</a></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/L/contents">L-functions</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td scope="col" width="20%"><a href="/L/rational">Rational</a><td scope="col" width="20%"><a href="/L/">All</a></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/ModularForm/">Modular forms</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td scope="col" width="20%"><a href="/ModularForm/GL2/Q/holomorphic/">Classical</a><td scope="col" width="20%"><a href="/ModularForm/GL2/Q/Maass/">Maass</a></tr><tr><td scope="col" width="20%"><a href="/ModularForm/GL2/TotallyReal/">Hilbert</a><td scope="col" width="20%"><a href="/ModularForm/GL2/ImaginaryQuadratic/">Bianchi</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Variety/">Varieties</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/EllipticCurve/Q/">Elliptic curves over $\Q$</a></tr><tr></tr><tr><td colspan=2><a href="/EllipticCurve/">Elliptic curves over $\Q(\alpha)$</a></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/Genus2Curve/Q/">Genus 2 curves over $\Q$</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/HigherGenus/C/Aut/">Higher genus families</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/Variety/Abelian/Fq/">Abelian varieties over $\F_{q}$</a></tr><tr><td colspan=2><a href="/Belyi/">Belyi maps</a></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Field/">Fields</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/NumberField/">Number fields</a></tr><tr></tr><tr><td colspan=2><a href="/padicField/">$p$-adic fields</a></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Representation/">Representations</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/Character/Dirichlet/">Dirichlet characters</a></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/ArtinRepresentation/">Artin representations</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Group/">Groups</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/GaloisGroup/">Galois groups</a></tr><tr></tr><tr><td colspan=2><a href="/SatoTateGroup/">Sato-Tate groups</a></tr><tr><td colspan=2><a href="/Groups/Abstract/">Abstract groups</a></tr><tr></tr><tr></tr><tr><td scope="col" width="40%">    </td></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/api/options">Database</a></h2>
+
+
+
+
+ </div>
+ 
+ 
+
+      <div id="properties">
+       <div id="properties-collapser">&uarr;</div>
+           <h1 class="properties-header">Properties</h1>
+       <div class="properties-body">
+       <table>
+                  <tr><td class="label">Label</td><td>
+                  1424.d1</td></tr>           <tr><td colspan="2" align="center">
+                  <a href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjguMCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy81sbWrAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAyYElEQVR4nO3dd5hlVZX38e9qQiPQZBBBUCSDBMlIVkARERQD4ohg9m1GUUcZhnFQx8g46og4YkIFESUpKqigGEgCTaZRsoKoiECTm7TeP/apqWq4Heiuuvvec76f5znPxbq3rouqruZX6%2By9dmQmkiRJ6o5JtQuQJElSfxkAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgpJ6iWCoionYtkqTxZQCUNDtTgBnNoySpRQyAkiRJHWMAlCRJ6hgDoCRJUscYACVJkjrGAChpFhExNSKmAxfVrkWSnq4Ilq1dwzCIzKxdg6QBFBFLUXYBL52Z99auR5LmJIIVgA8BbwM2y%2BT3lUsaaAvXLkCSJGl%2BRbA48B7gX5sP/Sfwp3oVDQcDoCRJGjoRLAS8CfgosBLwJeBjmdxZtbAh4RpASZI0NCKICPYErgC%2BDpwLrJ/JIYa/eWcAlCRJQyGCrYBzgB8Dfwe2ymS/TG6sW9nwMQBKkqSBFsGaEXwP%2BB2wArAn8KJMLq5b2fAyAEqSpIEUwYoRfAH4PbAd8GZgk0zOyMQxJgvATSCSJGmgRLAEcAhwKJCU8S5fyOTBmnW1iQFQkiQNhAgWAd4C/AflVu/RwMfd3DH%2BvAUsSZKqimBSBPsD11LGuZwDrJfJew1/E8MAKEmSqhgz0uVS4DuUALhpJm/I5Ka61bWbAVCSJPVdBDsAv6WMdJkBbJ/JXplcWbeybjAASppFREyNiOnARbVrkdQ%2BEWwawU%2BA3wCLA3sAO2dyXt3KuiUy3UUt6akiYinKb%2BVLZ%2Ba9teuRNNwiWJtybNt%2BwHWUnb0nZ/JE1cI6yg6gJEmaMBGsGsExlPV92wNvAzbM5PuGv3ocAyNJksZdBM%2BkzPF7F/AA8EHgS5k8XLUwAQZASZI0jiJYAfgAcDDwGPAp4HOZuJRkgBgAJUnSAotgOeB9wHuaD30W%2BGwmd9erSrNjAJQkSfMtgqUpx7a9j5IrjgI%2B4wDnwWYAlCRJT1sEU4B3A/8CLEY5wePITP5WtTDNE3cBSy0WEatGxPER8Y%2BIeDAiLo%2BIzWvXJWl4RbBEBB8Ebqac2XscsGYm7zf8DQ87gFJLRcSywHmUMzX3AO4A1gTuqViWpCEVwTOAdwL/CiwLfB34RCa3Vi1M88UAKLXXocCtmXnQmI/dUqkWSUMqgsmU2X3/BqwEfBP4WKZ/nwwzbwFL7fUK4JKIOCki7oiIyyLibbWLkjQcIlgsgqnADcD/AGcB62byVsPf8DMASu31PMoA1uuBlwBfBr4QEQf0enFETI6IpUYuYEr/SpU0KCJYPIJDgJuAL1DO7N0wkzdlcmPV4jRuPAtYaqmIeAS4JDNfOOZjXwC2zMxte7z%2Bw8ARPd7Ks4ClDohgScoavw8Ay1M2d3wik%2BurFqYJYQdQaq%2B/ANOf9LFrgdVn8/pPAkuPuZ49caVJGhQRLBXBYZQ1wp8ETgfWyeQgw197uQlEaq/zgHWf9LF1gD/2enFmzgRmjvzviJi4yiRVF8EylDl%2BhwBLUHb1fjqz998RahcDoNRenwPOj4h/A74PbAW8vbkkdVQEy1NC37uBRYGvAP%2BVyW0161J/uQZQarGIeDnlls7alKGtn83Mr87j5y4FzMA1gFIrRLAi5bi2gylLwP6XcmTbX6sWpioMgJJ6MgBK7RDB6pTj2t4KPAF8EfhsJndULUxVeQtYkqQWimB9ykD4NwD3AkcCR2Xyj6qFaSAYACVJapEItgQOA/YBbgc%2BCHw1k/tr1qXBYgCUJGnIRRDAiyjB78WUAfBvA47PHN3dL41wDqAkSUMqgkkRvBL4HXA2sBzwWmD9TL5u%2BNPsGAAlSRoyESwSwZuAq4FTgQeAlwKbZ3JSJo9XLVADz1vAkiQNiQimAG8B3ks51ed04M2ZXFi1MA0dA6AkSQMugmdRBje/E1gS%2BC5wZCZXVy1MQ8sAKGkWETEVmIpLRKTqItgQeD/wT8DDwDHA/3hqhxaUg6Al9eQgaKmOZkfvzsAHgD2APwOfp4xymVGvMrWJHUBJkgZABAsDr6YEv82AK4EDgO9l8kjN2tQ%2BBkBJkiqKYEnKMW2HAM8BzgJeApyVibfpNCEMgJIkVRDBc4GDKeFvCeBEYJ9MLq9YljrCAChJUp806/u2p3T79qGc0XsM8MVMbq1XmbrGAChJ0gSLYDLwOuA9lPV9v6fstj8ukwdq1qZuMgBKkjRBIliJMrvv/wHPBH5K2dn780yeqFmbus0AKEnSOItgU0q3b3/gMeDbwBcyubZmXdIIA6AkSeMggoWAl1PW9%2B0M3Ap8CPhaJnfVq0x6KgOgJEkLIIIVKefzvpMyxuV84LXAaZk8VrM2aXYMgJIkPU3Nbt6tKBs5XgckZYzL0ZlcXLM2aV4YACVJmkcRLA7sRwl%2BmwE3A/8OfCOTf9SsTXo6DICSZhERUyn/cZtUuxZpUESwFuUW75uBZYAzKev9fprJ4xVLk%2BZLZHrKjKSnioilgBnA0pl5b%2B16pH5rNnXsQfmF6KXAXcA3gC9ncmPN2qQFZQdQkqQxIlgZOBB4B/BcYBql83diJg/Vq0waPwZASVLnRTAJ2BV4O7A3ZXbf94HXZXJRzdqkiWAAlCR1VtPtOwh4G7AGcA3wPuD4TO6uWZs0kQyAkqROabp9u1G6fa8AHgW%2BB7wBuDATF8er9QyAkqROiGAVSrfvrZS1fVdRTu34Tib3VCtMqsAAKElqrQgWpuzkfTOwFzCTMrD5K8BFdvvUVQZASVLrRLA%2Bpdv3RmBl4HLg3ZRu34yKpUkDwQAoSWqFCJamHMt2ELANZW7f8cCxmVxesTRp4BgAJUlDq9nQsRPlFu%2B%2BwGTgZ8BrgB9lMrNiedLAMgBKkoZOBM8D/okysHkN4HrgP4FvZ/LniqVJQ8EAKGkWngWsQRXBspTO3huB7YH7KcOaDwDOc0OHNO88C1hST54FrEEQwaKUc3gPoOziXRj4OXAc8MNMHqhYnjS07ABKkgZKBAFsRen07QcsT9nFexjw3Uz%2BUq86qR0MgJKkgRDBGpTTON4IrAPcDnwDOC6Tq2rWJrWNAVCSVE1zOsdrKJ2%2BbYAHgFMo61DPyeTxiuVJrWUAlCT1VQTLU0a27AfsDDwGnAnsTxndcn%2B96qRuMABKkiZcBEsBe1NC3%2B6UXea/oJzLe1omd1csT%2BocA6AkaUJE8AxgT0ro2xNYDDgXOAQ4OZO/1atO6jYDoCRp3DSh76WUW7x7A0sC04APAd/L5NaK5UlqOOhV6oCIOCwiMiI%2BX7sWtU8ES0bwugi%2BD/wdOBXYBPgvYN1MtsjkM4Y/aXDYAZRaLiK2BN4OXFm7FrVHBMtQBjPvC7yEcnt3GvBx4JRMrqtXnaS5MQBKLRYRSwLfAd4G/HvlcjTkIliBclt3X2BXYBHgAsqfrVMzublieZKeBgOg1G5HAz/JzLMjYo4BMCImA5PHfGjKhFamoRDBaox2%2BnYCAvgt8H7K7t3bKpYnaT4ZAKWWioj9gM2ALefxUw4Djpi4ijQMmmPYNqF0%2Bl5B%2BTP0GHAOZTjzD9y9Kw2/yMzaNUgaZxGxGnAJsHtmXtF87FfA5Zl5yGw%2Bp1cH8DZg6cy8d0ILVlURLErp7o2EvtWAe4EzgNOBMzO5p1qBksadAVBqoYjYBzgNZjlGayEggSeAyZk5xyO2ImIpYAYGwFaKYFlgD0ro24MS%2BP8E/JAS%2Bn6TySP1KpQ0kbwFLLXTL4CNnvSxY4HfA5%2BeW/hT%2BzS3dtelhL29gB0pvxRMo4xrOR24MhO7AlIHGAClFsrM%2B4Crx34sIh4A/pGZV/f%2BLLVNBItTztp9WXOtAcykrOc7GPixmzikbjIASlKLRLAWpcv3Mkr4Wwy4hbKe7wzgnEwerFWfpMHgGkBJPbkGcDg0Xb4dKcevvQxYG3gU%2BDVwJiX0/cFbu5LGsgMoSUMkgknApsDuwG7A9sCiwK2UsPcB4BeZ3F%2BrRkmDzwAoSQOuGca8GyX0vRhYAXiAspbvA8DPscsn6WkwAErSgIlgCmX93kjoW5cywudi4BhK4LvQMS2S5pcBUJIqa9bxbQfs0lxbUka03AKcRTlr95eZ3FWrRkntYgCUpD6L4BnAtpQu3y7A1sAiwB3Ar4BvAWcDN3pbV9JEMABK0gSLYDIl5I10%2BLahHLv3D0rge2/zON3AJ6kfDICSZhERU4GpwKTatQyrCJaidPh2oOzS3Zoyj%2B8eyniWQykbOK7O5IlKZUrqMOcASurJOYDzLoJVKEFve0ro25gSoP8O/BY4j9LhuyITj%2BGTVJ0dQEl6Gpozdddj1sC3RvP0DcC5wFHN4/Xe0pU0iAyAkjQHESwJbEFZt7cNJfQtDzwBXAacTgl752by11p1StLTYQCUpEZzysZ6lDV7I4Hv%2BZTbufcDFwFHUwLfhZncV6lUSVogBkBJnRXBCoyGva2BrYClKUOXrwF%2BR7mdeyFwrev3JLWFAVBSJzSz9zahDFneurnWap7%2BOyXkHUkJfRdn4sYXSa1lAJTUOhEsRgl7m1PW720ObEg5XeNRytq9Myih70LgFjdrSOoSA6CkodYMWd6Y0aC3BSXsLQw8BlxJ6eodDUyjzN6bWadaSRoMBkBJQ6MZsLwxpbu3KSXwbcRo2LsauAT4cvN4lWFPkp7KAChp4DSz9lajhLyRsLcp8LzmJY9SNmlcCnyNEvauzOThPpcqSUPJACipqggWBTZg1rC3CbBs85K7gMuBHwBXNP/8%2B0we6WuhktQiHgUnqafxPgqu6eqtTJmrtxGjYW99YJHmZTdQAt5I0Lsc%2BLMbNCRpfNkBlDSLiJgKTKUMP57P92AZStAbe20ELNe85CHgKsrmjGMoQe8qBytLUn/YAZTU07x0AJvZeusza8h7PvDs5iWPA3%2BgbM64mhL6rgZudqiyJNVjB1DSXEWwCLAmTw16azHaKbyFEu6OYzTw/cFduJI0eAyAkv5PM1NvbWADuO0FpZF314WUoDeyTu8OSrg7k9Ggd423byVpeBgApQ6KYHFgXcru27HXmpTTMoAl7iiPM8%2BlDFG%2BljJE%2BY5%2B1ytJGl%2BuAZRaLIIpwHo8NeitAUTzsj8D0590XQvxKOO4C1iSNDjsAEot0Oy63YCyIWNs0Ft9zMv%2BSAl3pzEm6GUyYzbvudQElixJqsgAKA2RCFbgqd28DYBnNS9J4EZKuDuBctt2OmVw8v19L1iSNJAMgNIAaoLehk%2B6NgBWbF7yOHA9Jdx9ndGO3nWZPNT3giVJQ8UAKFUUwbI8Neg9H1ipecljlDl604FzGA1613sUmiRpfhkApT5o1tNtQAl3Y8PeKs1LRjp61wBfbh6vwaAnSZoABkBpHEWwBCXoje3mbQis1rxkZI3eNcCxjAY9ByZLkvrGACjNhwiCssN2kyddazI6XuVmSrg7gWZYMmUzxkCv0RuPs4AlSYPNOYDSXDTn3T6fEvA2HvO4TPOSu4ErxlxXUcarPND3YsfRvJwFLEkaTnYApTEiWAnYHNiU0a7eOpRuWALXUULez4Arm3%2B%2BLRN/k5IkDQ07gOqsCJanhL0txlwja/XuZTTgjVxXZ/JghVKrsAMoSe1lB1Cd0Ixb2YxZw95zm6dnANOAE4FLmn%2B%2Bya6eJKmtDIBqnQgWpdzC3RbYBtiSsjkD4D7gUuAURsPejZk80f9KJUmqwwCooRfBqpSgt21zbQ5MBmZSAt6PKGHvEspcPcOeJKnTDIAaKs34lXWAHcdcqzdP/xG4EPg%2BcAFwuUOUJUl6KgOgBloEkygjWHYEdmoeV6KcnHEpcDJwHnBhJrfXqlOSpGFiANRAaTp8GwO7UgLfDpR5e48AFwFfA34DnJ/JfZXKHAoRcRjwKmA94CHgfODQzPxD1cIkSdU5BkbVRbAKsNuYayVGA8tvgF8DFw36CRqDJiJ%2BStnZfDHll72PAxsBG2TmXIdUOwZGktrLAKi%2Ba87L3YnRwLchZcjypcBZzXWeZ%2BOOr4hYEbgD2CkzfzMPrzcASlJLeQtYfRHB6sDLgb2AFwGLArdSwt5/Ar/I5M56FXbC0s3jXb2ejIjJlN3TI6ZMeEWSpCrsAGpCNJs3tqQEvr0o6/oeo9zS/RFwJnCdw5b7IyIC%2BCGwbGbuMJvXfBg4osdTdgAlqWUMgBo3ESwM7Ay8BtgbeCZwN3AGJfT9LJN7atXXZRFxNLAnsH1m3jab1/TqAN6GAVCSWsdbwFogESwC7EIJfa8ElgduAY4HTqfs1n2sWoEiIo4CXgHsOLvwB5CZM2F03WVpGkqS2sgAqKetub27PfBPwL7AcsBNlBEtJwPTvLVbX3Pb9yhKMN85M2%2BuXJIkaUAYADXPIlifEvreADyHcvLGV4CTgMsMfQPnaGB/yu34%2ByJi5ebjMzLTkTqS1GGuAdQcRbA0JUS8hXLG7j2Uo9aOp4xq8VzdARURs/vhPigzvzkPn%2B8YGElqKTuAeormNI6tgbcDr6NsDPgJ8AngjEwerlie5lFmuohPktSTAVD/J4KlgAMowW8jyi3eTwLHZvLnmrVJkqTxYwAUEawBvJtym/cZlN27HwDOzuTxmrVJkqTxZwDsqOY27/bAeymbBO6h7Bg9OpPbK5YmSZImmAGwY5rg93LgQ5STOq4F3gUcn8mDNWuTJEn9Mal2AeqPCCZF8CrgUsot3oeBlwHPz%2BQrhj9JkrrDANhyTfB7HXAFcApwF7BzJjtmcqZjXCRJ6h4DYItFsCswDTgR%2BDOwfSYvzuTXdSvTIIuIqRExHbiodi2SpInhIOgWimBj4EjgJcAFwAcyOa9uVRo2DoKWpPayA9giETwzgm8AlwNrAq8GtjP8SZKksdwF3AIRTALeBnwKeIIy0%2B%2BYTB6tWpgkSRpIBsAhF8GmwP8C2wDfAA7N5M6qRUmSpIHmLeAhFcHkCD4FXAJMAXbM5C2GP0mSNDd2AIdQBBsBxwPrA/8BfCaTR%2BpWJUmShoUdwCHSzPT7F0rXbxKwZSafMPxJkqSnwwA4JCJYHjiDMt7lC5Twd0XdqiRJ0jDyFvAQiGAL4GRgSeAlmZxVuSRJkjTE7AAOuAjeBJwH3AFsZviTJEkLygA4oCKICI4AvgkcB%2ByQyZ/qViVJktrAW8ADKIJFgC8Dbwb%2BDfhUJp7ZJ0mSxoUBcMBEsBhwCrAb8MZMjq9ckjomIqYCU/EOgSS1VmTaWBoUTfg7DdgJ2Nv1fqopIpYCZgBLZ%2Ba9teuRJI0fO4ADIoLJlPC3M/DyTH5RtyJJktRWBsABEMEk4FhgFwx/kiRpghkAB8PHgP2A12Zydu1iJElSuxkAK4vgIOAw4P2ZnFy7HkmS1H7u8qsogk2ALwFfAz5XuRxJktQR7gKuJIIlgcuA%2B4FtM3m4cknSLNwFLEnt5S3gej4JrAJsYviTJEn9ZACsIIIdgIOBQzK5oXY9kiSpW7wF3GcRLAxcBdwF7JjJ45VLknryFrAktZcdwP57M7AesLnhT5Ik1WAHsI8iWAK4HjgnkzfUrkeaEzuAktRejoHpr4OAlYAP1S5Emp2ImBoR04GLatciSZoYdgD7pDnu7ffAZZm8rnY90tzYAZSk9nINYP%2B8GFgbOLByHZIkqeO8Bdw/%2B1HW/11QuxBJktRtBsA%2BiGAR4JXASZl4z12SJFVlAOyPrYFlgR9UrkOSJMkA2CfbAQ9Qzv6VJEmqygDYHy8ELszksdqFSJIkGQD7Yx3g6tpFSJIkgQFwwjXz/9YAbqpdiyRJEhgA%2B2E5YDJwW%2B1CJEmSwEHQCyQiApgy51edunKZAX3L4xGbLNWPuqT5tCjll5URSzaPU8ofdUlqnfuyo0eieRTcAhhzVJYkSRo%2BnT3q0gC4AOatA/jVFeG1N8BBt8GpG05AGRcBWw3J%2B06h3Ap/NnDfOL7vMH0NBvl9n9wBfCYwDVgP%2BMsCvG8vg/o16Of7DtPPGPi1naj3Hbbv2TB9beflfTvbAfQW8AJo/tDM8TeHCB4u/7TypIn4LSMinhiW9x1zG/G%2B8XzvYfoaDNP7jvl%2B3T8BfxaG4mswke87TD9jzXt3%2Bms7Ue87bN%2BzYfraTuT7toGbQCZYJo8AD8AOF07Q/8XRQ/a%2BE2HYvgbD9r4TYdi%2BBhPxvsP0/QK/thP5vhPFr%2B3wfc/6xlvAfRDBFZRB0O%2BoXUtNY9ZMdnbNxTCJiFVpbk1l5p9r16O582ds%2BPg9Uy12APvjSmDj2kUMgJnAR5pHDb6ZT3rU4PNnbPj4PVMVdgD7IIL3Ap8Alsvkodr1SPPCzoQktZcdwP74ObAYsEPtQiRJkgyA/TGdspZqz9qFSJIkGQD7IJMETgJeH8EiteuRJEndZgDsn28BKwJ71C5EkiR1mwGwTzK5ArgYeF/tWgZBRBweEedHxIMRcU/teqRhFhE7RsSPIuL2iMiI2Kd2TZq9iDgsIi6OiPsi4o6I%2BEFErFu7LnWLAbC/PgXsFMG2tQsZAItSbov/b%2B1CpBZYArgCOLh2IZonO1EGFG8D7EY5levnEbFE1arUKY6B6aMIJgFXA7cDuzVrAzstIg4EPp%2BZy1QuRY2ImApMpfyCuC6OgRkqEZHAKzPzB7Vr0byJiBWBO4CdMvM3tetRN9gB7KNMngA%2BCLwYeEXlcqSeMvPozNyAiTmYXdJTLd083lW1CnWKAbD/fgL8DPhsBM%2BoXYwkqZ6ICOCzwLmZeXXtetQdBsA%2Ba277HgKsCny8bjXjKyI%2B3CxAn9O1Re06JWmAfJFyVOjraxeiblm4dgFdlMnvIzgc%2BEwEP8rknNo1jZMvAifO5TW39KEOSRp4EXEUZTnQjpl5W%2B161C0GwHo%2BD%2BwFnBDB5pncXrmeBZaZdwJ31q5DkgZZc9v3KOCVwM6ZeXPlktRBBsBKMnk8gv2AacBJEeySySO16%2BqXiFgdWA5YHVgoIjZtnrohM%2B%2BvVpg0hCJiSWCtMR9ao/mZuisz/1SnKs3B0cD%2BwN7AfRGxcvPxGZn5UL2y1CWOgaksgm2A31BOCnl7V0bDRMQ3gTf1eGqXzPxVf6tRLxGxFDADx8AMvIjYGXouJflWZh7Y12I0V82onl4Oysxv9rMWdZcBcABEcCBwLPCxTD5UuRwJMABKUpt5C3gAZPLNCFYCPh3BPzL5fO2aJElSexkAB0QmR0awPPC5CB7J5Eu1a5IkSe1kABws/0o5I/foCJbM5MjaBUmSpPYxAA6QTDKC9wH3UW4HLwsc3hwhJ0mSNC4MgAOm2QX8HxHMAD4DPC%2BCAzNxNID6IiKmAlPxpCBJai13AQ%2BwCF4FHA9cAbwqk79ULkkd4i5gSWovf8MfYJmcCuwEPAe4LIKd61YkSZLawAA44DK5GHgBMB34RQSHRvh9kyRJ888gMQQy%2BRuwO/Cp5vp5BKvVrUqSJA0rA%2BCQyOSxTA4HdgPWA66KYP8IonJpkiRpyBgAh0wmZwMbAWcA3wFOiWDVulVJkqRhYgAcQpncncn%2BwGuBbYFrI/jnCBaqXJokSRoCBsAhlslJwPqUUTH/A1wYwZZ1q5IkSYPOADjkMrknk/8HbEc5Ru6iCI6PYPXKpUmSpAFlAGyJTC4ANgfeDuwK/CGCj0cwpW5lkiRp0BgAW6TZKfxVYG3KMXLvA26I4D0RPKNudZIkaVAYAFsok/sy%2BRCwDmW38H8DN0bw7ggWq1udJEmqzQDYYpncmslBlLmBZwGfowTBf45g8brVaVBFxNSImA5cVLsWSdLEiMysXYP6JIK1gQ8BbwDuBr4EHN2cNCLNIiKWAmYAS2fmvbXrkSSNHzuAHZLJ9ZkcAKxFGSL9PuCPEXwlgvXqVidJkvrFDmCHRbAc8E7g3cAzgZ9SuoJnZPJ4zdpUnx1ASWovO4AdlsldmXwCeA7wZmAF4HTgpggOj%2BCZVQuUJEkTwg6gZhHBFsC7gNcDCwM/AL4F/CyTxyqWpj6zAyhJ7WUAVE8RLAu8idIZ3Aj4K2Xd4LczubJmbeoPA6AktZcBUHMUQQCbUsLg/sCKwOWUruAJmdxRrThNKAOgJLWXawA1R5lkJpdlcgiwKrA3cBNwJPCXCH4ZwbtcLzhYIuK5EfH1iLg5Ih6KiBsj4iMRsWjt2iRJ9RkANc8yeTST0zPZF3gW8A7gUeAo4PYIzolgagQrVy1UUIZ/T6J8jzYE3kvZ8f2JmkVJkgaDt4C1wCJYHtgHeA3wYmAh4LfAacCPMrmxXnUaEREfAN6Vmc%2Bbx9d7C1iSWsoOoBZYJv/I5OuZvBRYGXgr8CDwaeCGCK6N4MgIdoxg4arFdtvSwF21i5Ak1WcHUBMmginArsDLgT0pw6bvBs4EfgKc7SaS/oiINYFLgfdn5tdm85rJwOQxH5oC3IYdQElqHQOg%2BiKCScAWlDD4cuAFzVNXAGcBPwfOzeShOhUOh4j4MHDEXF62ZWZeMuZzVgF%2BDfw6M986H%2B9tAJSkljEAqopmo8iuwG7N9SxgJmXt4FnNdUUmT1QrcgBFxAqUE1vm5JbMfLh5/SrAOcDvgAMzc7ZfTzuAktQdBkBV18wa3IASBHcHdgIWp6xX%2By1N94oSCD2jeB5FxKqU8DcN%2BKfMfFpfOzeBSFJ7GQA1cCKYDGwD7EwJg9sCiwH3AudSwuBvgEszeaRSmQNtzG3fPwEHwGhwzsy/zuN7GAAlqaUMgBp4TSDckhIGdwJeCCxBuWV8CXABcD5wQSbzFG7aLiIOBI7t9Vxmxjy%2BhwFQklrKAKihE8EilE0k21LC4LbAas3TNzMmEAJXZvJYjTqHnQFQktrLAKhWiODZzBoINwMWocwjvIzSKRy5rnNzydwZACWpvQyAaqUInkEJgdsCm1NG0KzVPH0fZWPE2FB4Uyb%2BMIxhAJSk9jIAqjMiWJbRMDhyPad5%2Bm5KKJwGXE6ZT3hdl3cdGwAlqb0MgOq0CFZk1lC4OfDs5umHgKsZDYSXU9YU3tf3QiswAEpSexkApSeJYHlgY2DT5tqEMqdwkeYlNzIaCEceb23bLWQDoCS1lwFQmgcRLAqsz2ggHHlcrnnJ3cA1lI7hyHVNJnf2u9bxYgCUpPYyAErzqTnB5NmUILgJsCHwfGA9RruFf2NMIGQ0GA5soIqIqcBUYBKwLgZASWodA6A0zpo5hWszGghHrrUooQrgVp7ULQSuzeTBvhc8G3YAJam9DIBSn0SwGKU7OBIIRwLic5uXJGV94TXNNb15/H0mD/e/XgOgJLWVAVCqLIIplE0mGwIbNY8bAKs2L3mCEgxHAuFIOJzQYGgAlKT2MgBKAyqCZShBcCQc9jUYGgAlqb0MgNKQeRrBcOxt5GuAPzydYGgAlKT2MgBKLTEmGG7IrOFwleYlTysYGgAlqb0MgFLLPc1gOCYc7n87fPcODICS1DoGQKmj5h4MZzwBy0yCv/8YVriC0a7h07qVLEkaPAZASbMYDYY3bw7P%2BwLc%2BUtYfj1m7RjewFM3nxgMJWlIGAAl9fTkNYARLEs5Dm/sxpMn30o2GErSEDAASuppXjeBPI1gOHbzyVWUYPjohP0LSJJmywAoqacF3QU8D8FwJiUMXg5cMfKYyYwFrV2SNGcGQEmziIipwFTKucXrMs67gJtguBGwKbBJ87ghMLl5yS08KRQCt2TiX1aSNE4MgJJ66uccwAgWoYTNkUA4cq3QvGQGcCWzBsNrXFsoSfPHACipp9qDoCMI4FmMhsKRx3WAAB6j3EK%2BpLmmAVdmMrPftUrSsDEASuqpdgCcnQiWAJ4PvADYHNii%2Bd8LA49SNphMYzQYXp3JI3WqlaTBZACU1NOgBsBeIlgM2JgSBregBMMNgYWARyi3j0e6hJdQbh%2B7A1lSZxkAJfU0TAGwlwgWp9w2HukSbkHZlTyJsgP5cuBC4ILm8U9uNJHUFQZAST0NewDspbl9vCklDG4FbAM8r3n6r5QgOHJdkskDFcqUpAlnAJTUUxsDYC8RrARsTQmD21CC4ZLA45T1hCOB8ALgeruEktrAACipp64EwCeLYCHK0OptgG2bx/Wbp%2B%2BmhMHzgXOBizJ5sEadkrQgDICSeupqAOwlgmUYvWW8bXMtTdl1PI0SBn8LnJfJPyqVKUnzzAAoqScD4Ow1XcINge2bawfg2c3T11LC4LnN5SkmkgaOAVBSTwbAedcMrV6d0TC4PSUgAtwG/Ao4p7kMhJKqMwBK6skAuGAiWA7YDtgR2IUyuHoS8CdGw%2BCvMvljtSIldZYBUNIsImIqMJUSVtbFADgumnWEOwI7UwLhJpQj7W6mCYPAOZncVqdCSV1iAJTUkx3AidV0CHdiNBBu1Dx1AyUM/hI4O5O/16hPUrsZACX1ZADsrwhWZNZAuEHz1GXAz4GzKLuMH65SoKRWMQBK6skAWFcEzwJ2BXYHdgOeCTwE/JrRQHiNG0okzQ8DoKSeDICDo9llvBElDO5OWUs4GfgLo2Hw7Ez%2BVq1ISUPFACipJwPg4IrgGZRxM7tRAuHGzVOXA2cCPwEuzOTxKgVKGngGQEk9GQCHx5jbxS8BXgosD9wF/IwSBn/qCSWSxjIASurJADicmlNKtgJeBuxJmT/4BPA7Shj8CXCFawelbjMASi0XEZMp//HfBHhBZl4%2Bj59nAGyBCFYB9qCEwd2AJYHbgTMoYfAXmdxXr0JJNUyqXYCkCXck5T/46qBMbs/k65m8CliBcqv4e5Q1hKcBd0ZwRgTvaG4lS%2BoAO4BSi0XEHsBngX2Ba7ADqDEiWAt4ObA3JRAuROkW/xD4AfB7bxVL7WQAlFoqIp4JTAP2Ae6kHDlmAFRPESxPuU28N2UjyeLA9ZQg%2BEPcVSy1igFQaqGICMoar/My82MR8VzmEgCbtYKTx3xoCnAbBsDOacbMvJjyy8NewErAHcCPKIHwbE8kkYabawClIRIRH46InMu1BfDPwFLAJ5/G2x9G6fiNXLeN/7%2BBhkEmD2Xy40zeCqwCbAd8izKA%2BkfAHRF8J4JXRbB4zVolzR87gNIQiYgVKAv55%2BQW4ERK52bsD/hCwOPAdzLzTT3e2w6g5qg5kWR9yprSV1MGUD9I2U18MnBGJvfXq1DSvDIASi0UEatTOoAjVqEMBX418LvMnGt3zzWAmpsI1qGEwX2BzYGHgZ9SwuCPM5lRsTxJc2AAlDpgXtYA9vgcA6DmWQRrMBoGtwEeoYTBE4HTM3mgYnmSnsQ1gJKkBZbJzZl8JpNtgdWBQymbR06grBk8MYK9I2ZZZiCpEjuAknqyA6jx0HQG92uujSl/pk6ldAZ/mcljFcuTOssAKKknA6DGWwQbUILg64G1gL8DJwHfBc7P5ImK5UmdYgCU1JMBUBOl2U28GSUIvg54NnAr5Yi6E4FLPYFEmlgGQEk9GQDVDxFMoswZ3A94DbAicC3wbeA7mdxasTyptQyAknoyAKrfIlgY2BV4I/BKYDHgHEoYPDWT%2ByqWJ7WKAVBSTwZA1RTBUpSRMm8EdqEMnD6VEgZ/6bnE0oIxAErqyQCoQRHBc4A3AAcA6wK3A98Bvp3J1TVrk4aVAVDSLCJiKjCVMid0XQyAGhDN5pEtKEHw9cDywGWUruB3M/lbxfKkoWIAlNSTHUANsggWBfaghMG9KL%2Bw/Bj4OnCm8wWlOTMASurJAKhhEcFylI7gW4AXAH8FvgV8I5PratYmDSoDoKSeDIAaRhG8gBIE3wAsA/yW0hU82fOIpVGeBSxJao1MLsvkYGAVYH/gEeCbwF8i%2BEoEWzdrCaVOswMoqSc7gGqL5jziA4GDgNWAa4BvAN/K5B8VS5OqMQBK6skAqLaJYCHKoOm3APsAT1DOIj4GOM/j59QlBkBJPRkA1WYRrEjpCr4DWJPSFTwGOC6Te%2BpVJvWHAVBSTwZAdUFzFvGLgHdSuoKPACcCXwYutiuotjIASurJAKiuieBZwJuBtwOrA5dTguAJnkOstjEASurJAKiuatYKvoTSFdyTcg7xd4AvZ3J5xdKkcWMAlNSTAVCCCFYD3tpcqwDnA18ETsnkkZq1SQvCOYCSJM1GJrdmcgTwHGBfYCZwAvDHCD4cwSpVC5TmkwFQ0iwiYmpETAcuql2LNCgyeSyTUzN5EfB84DTgXyhB8LsRbOeAaQ0TbwFL6slbwNKcRbAM8CZgKrA2ZdPIUcB3M3moXmXS3NkBlCRpPmRyTyb/A6wHvBS4DfgacFsER0bw3Jr1SXNiAJQkaQFk8kQmP8tkL0on8FjgbcBNEfwggp29PaxBYwCUJGmcZHJjJv8CrEo5ZWQt4BxgWgRvjGDRqgVKDQOgJEnjLJMHM/kqsBFlpuDfgG8Dt0RweAQrVC1QnecmEEk9uQlEGl8RbAC8Bzig%2BdC3gc9ncm29qtRVdgAlSeqDTKZn8g5gNeDjwCuA6RGcEcFurhNUPxkAJUnqo0zuzORjwHMpY2SeBfwcuDKCt0SwWM361A0GQEmSKshkZibfBjYDdgFuBr4K/Kk5ZWTFqgWq1VwDKKkn1wBK/RfB2pR1ggcBAXwD%2BGwmN1UtTK1jB1CSpAGRyfWZHEw5e/hTwOuA65vj5jarW53axAAoSdKAadYJfpQSBN8NbE2ZJXiWG0Y0HgyAkmYREVMjYjpwUe1apK5r5gkeDawD7AcsT9kwMi2C/SJYuGqBGlquAZTUk2sApcHTdP5eDHwQ2I2yceS/gWMzebBmbRoudgAlSRoSmWQmZ2eyO2X38IXAFyg7h4/whBHNKwOgJElDKJPLMtmfct7wd4FDgT9G8PkInl23Og06A6AkSUMsk5sz%2BWdgdeAzlOHSN0VwTATPq1udBpUBUJKkFmh2Dh9B2Tn8IWAf4LoIjmvOIZb%2BjwFQkqQWyeTeTD4NrAG8F9gZuDqCU5wlqBEGQEmSWqgZIXMUsCbwdmATyviYMyLYrm51qs0AKLVYROwZEb%2BLiIci4s6IOLV2TZL6K5NHMvkasB7wBspawXMj%2BFUEuzpUupsMgFJLRcS%2BwHHAsZTf/LcDTqhalKRqMnkskxOAjYFXAksAZwEXRvAKg2C3OAhaaqGIWBi4BTgiM78%2Bn%2B/hIGipxZrAtztwOLADcAXwEeCHmTxRszZNPDuAUjttBqwKPBERl0XEXyLizIjYsHZhkgZDM1T6Z5nsCOwE3AmcClwWwasizAht5jdXaqeR2V8fBj4GvBy4G/h1RCzX6xMiYnJELDVyAVP6Uqmk6jL5TSa7UjqBdwCnAJdHsK9BsJ38pkpDJCI%2BHBE5l2sLRn%2B2P56Zp2TmNOAgIIHXzObtD6Pc8h25bpvofx9JgyWTczPZjRIE/wacDFwRwasNgu3iGkBpiETECjDXsz5vAbYFfgnskJnnjvn83wFnZ%2BbhPd57MjB5zIemUEKgawCljmrGxRwB7AZcDXwUOMU1gsNv4doFSJp3mXknZZ3OHEXENGAmsC5wbvOxRYDnAn%2BczXvPbD5n5D0WvGBJQy2T84DdI3ghJQh%2BH7gmgo8CJxsEh5ftXKmFmo7dl4GPRMTuEbEu8L/N0yfVq0zSMMrk/ExeAryQcmfge5Q1gvs4PmY4GQCl9voAcCJlFuDFlPNBX5SZd1etStLQyuSCTF5KCYJ3AKcBF0XwEoPgcHENoKSenAMoaW4i2IUyaeCFlOUm/57Jr%2BtWpXlhB1CSJM2XTM4BtgdeBiwO/CqCsyLYpm5lmhsDoCRJmm/NQOkzgS2AVwHPAi6I4EcRvKBudZodA6AkSVpgTRA8jXL2%2BP6UKQSXRnBSBBvUrU5PZgCUJEnjJpPHM/kusAHwFmAr4OoIjotgzbrVaYQBUJIkjbtMHsvkG8A6wMHAi4E/RPCVCFavW50MgJIkacJkMjOTLwFrAocCrwSuj%2BDzEaxYt7rucgyMpJ4cAyNpIkQwBXgP8MHmQ58BPpvJ/fWq6h47gJJmERFTI2I6cFHtWiS1Tyb3ZfIx4HnA14DDgRsjODiCRetW1x12ACX1ZAdQUj9E8BzgI8ABwM3AvwPf85zhiWUHUJIkVZPJHzM5kDI%2BZjpwAnCJx8tNLAOgJEmqLpOrMtkL2AF4CPgpcHYEW9atrJ0MgJIkaWBkci7leLm9gZWBi5ph0uvUraxdDICSJGmgNKeKnA5sDBwEbA1Mj%2BCYCFapW107GAAlSdJAak4V%2BSZlmPShwKuBGyL4RARLVy1uyBkAJUnSQMvk4Uz%2BmzI65nPAIZTRMe92dMz8MQBKkqShkMmMTA4H1gZ%2BQAmD0yN4jTuGnx4DoCRJGiqZ/DmTtwKbAtcB3wcuiGD7qoUNEQOgJEkaSs3omJcBuwKLAr%2BN4LQIVqtc2sAzAEqSpKGWyS%2BALYA3AmsBM%2BtWNPg8Ck7SLCJiKjCV8gviungUnKQhEkFkYriZCwOgpJ48C1iS2stbwJIkSR1jAJQkSeoYA6AkSVLHGAAlSZI6xgAoSZLUMe4CltRTRAQwBbgv/YtCklrFAChJktQx3gKWJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSx/x/%2BuH%2Bo8w9axwAAAAASUVORK5CYII%3D"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjguMCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy81sbWrAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAyYElEQVR4nO3dd5hlVZX38e9qQiPQZBBBUCSDBMlIVkARERQD4ohg9m1GUUcZhnFQx8g46og4YkIFESUpKqigGEgCTaZRsoKoiECTm7TeP/apqWq4Heiuuvvec76f5znPxbq3rouqruZX6%2By9dmQmkiRJ6o5JtQuQJElSfxkAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgpJ6iWCoionYtkqTxZQCUNDtTgBnNoySpRQyAkiRJHWMAlCRJ6hgDoCRJUscYACVJkjrGAChpFhExNSKmAxfVrkWSnq4Ilq1dwzCIzKxdg6QBFBFLUXYBL52Z99auR5LmJIIVgA8BbwM2y%2BT3lUsaaAvXLkCSJGl%2BRbA48B7gX5sP/Sfwp3oVDQcDoCRJGjoRLAS8CfgosBLwJeBjmdxZtbAh4RpASZI0NCKICPYErgC%2BDpwLrJ/JIYa/eWcAlCRJQyGCrYBzgB8Dfwe2ymS/TG6sW9nwMQBKkqSBFsGaEXwP%2BB2wArAn8KJMLq5b2fAyAEqSpIEUwYoRfAH4PbAd8GZgk0zOyMQxJgvATSCSJGmgRLAEcAhwKJCU8S5fyOTBmnW1iQFQkiQNhAgWAd4C/AflVu/RwMfd3DH%2BvAUsSZKqimBSBPsD11LGuZwDrJfJew1/E8MAKEmSqhgz0uVS4DuUALhpJm/I5Ka61bWbAVCSJPVdBDsAv6WMdJkBbJ/JXplcWbeybjAASppFREyNiOnARbVrkdQ%2BEWwawU%2BA3wCLA3sAO2dyXt3KuiUy3UUt6akiYinKb%2BVLZ%2Ba9teuRNNwiWJtybNt%2BwHWUnb0nZ/JE1cI6yg6gJEmaMBGsGsExlPV92wNvAzbM5PuGv3ocAyNJksZdBM%2BkzPF7F/AA8EHgS5k8XLUwAQZASZI0jiJYAfgAcDDwGPAp4HOZuJRkgBgAJUnSAotgOeB9wHuaD30W%2BGwmd9erSrNjAJQkSfMtgqUpx7a9j5IrjgI%2B4wDnwWYAlCRJT1sEU4B3A/8CLEY5wePITP5WtTDNE3cBSy0WEatGxPER8Y%2BIeDAiLo%2BIzWvXJWl4RbBEBB8Ebqac2XscsGYm7zf8DQ87gFJLRcSywHmUMzX3AO4A1gTuqViWpCEVwTOAdwL/CiwLfB34RCa3Vi1M88UAKLXXocCtmXnQmI/dUqkWSUMqgsmU2X3/BqwEfBP4WKZ/nwwzbwFL7fUK4JKIOCki7oiIyyLibbWLkjQcIlgsgqnADcD/AGcB62byVsPf8DMASu31PMoA1uuBlwBfBr4QEQf0enFETI6IpUYuYEr/SpU0KCJYPIJDgJuAL1DO7N0wkzdlcmPV4jRuPAtYaqmIeAS4JDNfOOZjXwC2zMxte7z%2Bw8ARPd7Ks4ClDohgScoavw8Ay1M2d3wik%2BurFqYJYQdQaq%2B/ANOf9LFrgdVn8/pPAkuPuZ49caVJGhQRLBXBYZQ1wp8ETgfWyeQgw197uQlEaq/zgHWf9LF1gD/2enFmzgRmjvzviJi4yiRVF8EylDl%2BhwBLUHb1fjqz998RahcDoNRenwPOj4h/A74PbAW8vbkkdVQEy1NC37uBRYGvAP%2BVyW0161J/uQZQarGIeDnlls7alKGtn83Mr87j5y4FzMA1gFIrRLAi5bi2gylLwP6XcmTbX6sWpioMgJJ6MgBK7RDB6pTj2t4KPAF8EfhsJndULUxVeQtYkqQWimB9ykD4NwD3AkcCR2Xyj6qFaSAYACVJapEItgQOA/YBbgc%2BCHw1k/tr1qXBYgCUJGnIRRDAiyjB78WUAfBvA47PHN3dL41wDqAkSUMqgkkRvBL4HXA2sBzwWmD9TL5u%2BNPsGAAlSRoyESwSwZuAq4FTgQeAlwKbZ3JSJo9XLVADz1vAkiQNiQimAG8B3ks51ed04M2ZXFi1MA0dA6AkSQMugmdRBje/E1gS%2BC5wZCZXVy1MQ8sAKGkWETEVmIpLRKTqItgQeD/wT8DDwDHA/3hqhxaUg6Al9eQgaKmOZkfvzsAHgD2APwOfp4xymVGvMrWJHUBJkgZABAsDr6YEv82AK4EDgO9l8kjN2tQ%2BBkBJkiqKYEnKMW2HAM8BzgJeApyVibfpNCEMgJIkVRDBc4GDKeFvCeBEYJ9MLq9YljrCAChJUp806/u2p3T79qGc0XsM8MVMbq1XmbrGAChJ0gSLYDLwOuA9lPV9v6fstj8ukwdq1qZuMgBKkjRBIliJMrvv/wHPBH5K2dn780yeqFmbus0AKEnSOItgU0q3b3/gMeDbwBcyubZmXdIIA6AkSeMggoWAl1PW9%2B0M3Ap8CPhaJnfVq0x6KgOgJEkLIIIVKefzvpMyxuV84LXAaZk8VrM2aXYMgJIkPU3Nbt6tKBs5XgckZYzL0ZlcXLM2aV4YACVJmkcRLA7sRwl%2BmwE3A/8OfCOTf9SsTXo6DICSZhERUyn/cZtUuxZpUESwFuUW75uBZYAzKev9fprJ4xVLk%2BZLZHrKjKSnioilgBnA0pl5b%2B16pH5rNnXsQfmF6KXAXcA3gC9ncmPN2qQFZQdQkqQxIlgZOBB4B/BcYBql83diJg/Vq0waPwZASVLnRTAJ2BV4O7A3ZXbf94HXZXJRzdqkiWAAlCR1VtPtOwh4G7AGcA3wPuD4TO6uWZs0kQyAkqROabp9u1G6fa8AHgW%2BB7wBuDATF8er9QyAkqROiGAVSrfvrZS1fVdRTu34Tib3VCtMqsAAKElqrQgWpuzkfTOwFzCTMrD5K8BFdvvUVQZASVLrRLA%2Bpdv3RmBl4HLg3ZRu34yKpUkDwQAoSWqFCJamHMt2ELANZW7f8cCxmVxesTRp4BgAJUlDq9nQsRPlFu%2B%2BwGTgZ8BrgB9lMrNiedLAMgBKkoZOBM8D/okysHkN4HrgP4FvZ/LniqVJQ8EAKGkWngWsQRXBspTO3huB7YH7KcOaDwDOc0OHNO88C1hST54FrEEQwaKUc3gPoOziXRj4OXAc8MNMHqhYnjS07ABKkgZKBAFsRen07QcsT9nFexjw3Uz%2BUq86qR0MgJKkgRDBGpTTON4IrAPcDnwDOC6Tq2rWJrWNAVCSVE1zOsdrKJ2%2BbYAHgFMo61DPyeTxiuVJrWUAlCT1VQTLU0a27AfsDDwGnAnsTxndcn%2B96qRuMABKkiZcBEsBe1NC3%2B6UXea/oJzLe1omd1csT%2BocA6AkaUJE8AxgT0ro2xNYDDgXOAQ4OZO/1atO6jYDoCRp3DSh76WUW7x7A0sC04APAd/L5NaK5UlqOOhV6oCIOCwiMiI%2BX7sWtU8ES0bwugi%2BD/wdOBXYBPgvYN1MtsjkM4Y/aXDYAZRaLiK2BN4OXFm7FrVHBMtQBjPvC7yEcnt3GvBx4JRMrqtXnaS5MQBKLRYRSwLfAd4G/HvlcjTkIliBclt3X2BXYBHgAsqfrVMzublieZKeBgOg1G5HAz/JzLMjYo4BMCImA5PHfGjKhFamoRDBaox2%2BnYCAvgt8H7K7t3bKpYnaT4ZAKWWioj9gM2ALefxUw4Djpi4ijQMmmPYNqF0%2Bl5B%2BTP0GHAOZTjzD9y9Kw2/yMzaNUgaZxGxGnAJsHtmXtF87FfA5Zl5yGw%2Bp1cH8DZg6cy8d0ILVlURLErp7o2EvtWAe4EzgNOBMzO5p1qBksadAVBqoYjYBzgNZjlGayEggSeAyZk5xyO2ImIpYAYGwFaKYFlgD0ro24MS%2BP8E/JAS%2Bn6TySP1KpQ0kbwFLLXTL4CNnvSxY4HfA5%2BeW/hT%2BzS3dtelhL29gB0pvxRMo4xrOR24MhO7AlIHGAClFsrM%2B4Crx34sIh4A/pGZV/f%2BLLVNBItTztp9WXOtAcykrOc7GPixmzikbjIASlKLRLAWpcv3Mkr4Wwy4hbKe7wzgnEwerFWfpMHgGkBJPbkGcDg0Xb4dKcevvQxYG3gU%2BDVwJiX0/cFbu5LGsgMoSUMkgknApsDuwG7A9sCiwK2UsPcB4BeZ3F%2BrRkmDzwAoSQOuGca8GyX0vRhYAXiAspbvA8DPscsn6WkwAErSgIlgCmX93kjoW5cywudi4BhK4LvQMS2S5pcBUJIqa9bxbQfs0lxbUka03AKcRTlr95eZ3FWrRkntYgCUpD6L4BnAtpQu3y7A1sAiwB3Ar4BvAWcDN3pbV9JEMABK0gSLYDIl5I10%2BLahHLv3D0rge2/zON3AJ6kfDICSZhERU4GpwKTatQyrCJaidPh2oOzS3Zoyj%2B8eyniWQykbOK7O5IlKZUrqMOcASurJOYDzLoJVKEFve0ro25gSoP8O/BY4j9LhuyITj%2BGTVJ0dQEl6Gpozdddj1sC3RvP0DcC5wFHN4/Xe0pU0iAyAkjQHESwJbEFZt7cNJfQtDzwBXAacTgl752by11p1StLTYQCUpEZzysZ6lDV7I4Hv%2BZTbufcDFwFHUwLfhZncV6lUSVogBkBJnRXBCoyGva2BrYClKUOXrwF%2BR7mdeyFwrev3JLWFAVBSJzSz9zahDFneurnWap7%2BOyXkHUkJfRdn4sYXSa1lAJTUOhEsRgl7m1PW720ObEg5XeNRytq9Myih70LgFjdrSOoSA6CkodYMWd6Y0aC3BSXsLQw8BlxJ6eodDUyjzN6bWadaSRoMBkBJQ6MZsLwxpbu3KSXwbcRo2LsauAT4cvN4lWFPkp7KAChp4DSz9lajhLyRsLcp8LzmJY9SNmlcCnyNEvauzOThPpcqSUPJACipqggWBTZg1rC3CbBs85K7gMuBHwBXNP/8%2B0we6WuhktQiHgUnqafxPgqu6eqtTJmrtxGjYW99YJHmZTdQAt5I0Lsc%2BLMbNCRpfNkBlDSLiJgKTKUMP57P92AZStAbe20ELNe85CHgKsrmjGMoQe8qBytLUn/YAZTU07x0AJvZeusza8h7PvDs5iWPA3%2BgbM64mhL6rgZudqiyJNVjB1DSXEWwCLAmTw16azHaKbyFEu6OYzTw/cFduJI0eAyAkv5PM1NvbWADuO0FpZF314WUoDeyTu8OSrg7k9Ggd423byVpeBgApQ6KYHFgXcru27HXmpTTMoAl7iiPM8%2BlDFG%2BljJE%2BY5%2B1ytJGl%2BuAZRaLIIpwHo8NeitAUTzsj8D0590XQvxKOO4C1iSNDjsAEot0Oy63YCyIWNs0Ft9zMv%2BSAl3pzEm6GUyYzbvudQElixJqsgAKA2RCFbgqd28DYBnNS9J4EZKuDuBctt2OmVw8v19L1iSNJAMgNIAaoLehk%2B6NgBWbF7yOHA9Jdx9ndGO3nWZPNT3giVJQ8UAKFUUwbI8Neg9H1ipecljlDl604FzGA1613sUmiRpfhkApT5o1tNtQAl3Y8PeKs1LRjp61wBfbh6vwaAnSZoABkBpHEWwBCXoje3mbQis1rxkZI3eNcCxjAY9ByZLkvrGACjNhwiCssN2kyddazI6XuVmSrg7gWZYMmUzxkCv0RuPs4AlSYPNOYDSXDTn3T6fEvA2HvO4TPOSu4ErxlxXUcarPND3YsfRvJwFLEkaTnYApTEiWAnYHNiU0a7eOpRuWALXUULez4Arm3%2B%2BLRN/k5IkDQ07gOqsCJanhL0txlwja/XuZTTgjVxXZ/JghVKrsAMoSe1lB1Cd0Ixb2YxZw95zm6dnANOAE4FLmn%2B%2Bya6eJKmtDIBqnQgWpdzC3RbYBtiSsjkD4D7gUuAURsPejZk80f9KJUmqwwCooRfBqpSgt21zbQ5MBmZSAt6PKGHvEspcPcOeJKnTDIAaKs34lXWAHcdcqzdP/xG4EPg%2BcAFwuUOUJUl6KgOgBloEkygjWHYEdmoeV6KcnHEpcDJwHnBhJrfXqlOSpGFiANRAaTp8GwO7UgLfDpR5e48AFwFfA34DnJ/JfZXKHAoRcRjwKmA94CHgfODQzPxD1cIkSdU5BkbVRbAKsNuYayVGA8tvgF8DFw36CRqDJiJ%2BStnZfDHll72PAxsBG2TmXIdUOwZGktrLAKi%2Ba87L3YnRwLchZcjypcBZzXWeZ%2BOOr4hYEbgD2CkzfzMPrzcASlJLeQtYfRHB6sDLgb2AFwGLArdSwt5/Ar/I5M56FXbC0s3jXb2ejIjJlN3TI6ZMeEWSpCrsAGpCNJs3tqQEvr0o6/oeo9zS/RFwJnCdw5b7IyIC%2BCGwbGbuMJvXfBg4osdTdgAlqWUMgBo3ESwM7Ay8BtgbeCZwN3AGJfT9LJN7atXXZRFxNLAnsH1m3jab1/TqAN6GAVCSWsdbwFogESwC7EIJfa8ElgduAY4HTqfs1n2sWoEiIo4CXgHsOLvwB5CZM2F03WVpGkqS2sgAqKetub27PfBPwL7AcsBNlBEtJwPTvLVbX3Pb9yhKMN85M2%2BuXJIkaUAYADXPIlifEvreADyHcvLGV4CTgMsMfQPnaGB/yu34%2ByJi5ebjMzLTkTqS1GGuAdQcRbA0JUS8hXLG7j2Uo9aOp4xq8VzdARURs/vhPigzvzkPn%2B8YGElqKTuAeormNI6tgbcDr6NsDPgJ8AngjEwerlie5lFmuohPktSTAVD/J4KlgAMowW8jyi3eTwLHZvLnmrVJkqTxYwAUEawBvJtym/cZlN27HwDOzuTxmrVJkqTxZwDsqOY27/bAeymbBO6h7Bg9OpPbK5YmSZImmAGwY5rg93LgQ5STOq4F3gUcn8mDNWuTJEn9Mal2AeqPCCZF8CrgUsot3oeBlwHPz%2BQrhj9JkrrDANhyTfB7HXAFcApwF7BzJjtmcqZjXCRJ6h4DYItFsCswDTgR%2BDOwfSYvzuTXdSvTIIuIqRExHbiodi2SpInhIOgWimBj4EjgJcAFwAcyOa9uVRo2DoKWpPayA9giETwzgm8AlwNrAq8GtjP8SZKksdwF3AIRTALeBnwKeIIy0%2B%2BYTB6tWpgkSRpIBsAhF8GmwP8C2wDfAA7N5M6qRUmSpIHmLeAhFcHkCD4FXAJMAXbM5C2GP0mSNDd2AIdQBBsBxwPrA/8BfCaTR%2BpWJUmShoUdwCHSzPT7F0rXbxKwZSafMPxJkqSnwwA4JCJYHjiDMt7lC5Twd0XdqiRJ0jDyFvAQiGAL4GRgSeAlmZxVuSRJkjTE7AAOuAjeBJwH3AFsZviTJEkLygA4oCKICI4AvgkcB%2ByQyZ/qViVJktrAW8ADKIJFgC8Dbwb%2BDfhUJp7ZJ0mSxoUBcMBEsBhwCrAb8MZMjq9ckjomIqYCU/EOgSS1VmTaWBoUTfg7DdgJ2Nv1fqopIpYCZgBLZ%2Ba9teuRJI0fO4ADIoLJlPC3M/DyTH5RtyJJktRWBsABEMEk4FhgFwx/kiRpghkAB8PHgP2A12Zydu1iJElSuxkAK4vgIOAw4P2ZnFy7HkmS1H7u8qsogk2ALwFfAz5XuRxJktQR7gKuJIIlgcuA%2B4FtM3m4cknSLNwFLEnt5S3gej4JrAJsYviTJEn9ZACsIIIdgIOBQzK5oXY9kiSpW7wF3GcRLAxcBdwF7JjJ45VLknryFrAktZcdwP57M7AesLnhT5Ik1WAHsI8iWAK4HjgnkzfUrkeaEzuAktRejoHpr4OAlYAP1S5Emp2ImBoR04GLatciSZoYdgD7pDnu7ffAZZm8rnY90tzYAZSk9nINYP%2B8GFgbOLByHZIkqeO8Bdw/%2B1HW/11QuxBJktRtBsA%2BiGAR4JXASZl4z12SJFVlAOyPrYFlgR9UrkOSJMkA2CfbAQ9Qzv6VJEmqygDYHy8ELszksdqFSJIkGQD7Yx3g6tpFSJIkgQFwwjXz/9YAbqpdiyRJEhgA%2B2E5YDJwW%2B1CJEmSwEHQCyQiApgy51edunKZAX3L4xGbLNWPuqT5tCjll5URSzaPU8ofdUlqnfuyo0eieRTcAhhzVJYkSRo%2BnT3q0gC4AOatA/jVFeG1N8BBt8GpG05AGRcBWw3J%2B06h3Ap/NnDfOL7vMH0NBvl9n9wBfCYwDVgP%2BMsCvG8vg/o16Of7DtPPGPi1naj3Hbbv2TB9beflfTvbAfQW8AJo/tDM8TeHCB4u/7TypIn4LSMinhiW9x1zG/G%2B8XzvYfoaDNP7jvl%2B3T8BfxaG4mswke87TD9jzXt3%2Bms7Ue87bN%2BzYfraTuT7toGbQCZYJo8AD8AOF07Q/8XRQ/a%2BE2HYvgbD9r4TYdi%2BBhPxvsP0/QK/thP5vhPFr%2B3wfc/6xlvAfRDBFZRB0O%2BoXUtNY9ZMdnbNxTCJiFVpbk1l5p9r16O582ds%2BPg9Uy12APvjSmDj2kUMgJnAR5pHDb6ZT3rU4PNnbPj4PVMVdgD7IIL3Ap8Alsvkodr1SPPCzoQktZcdwP74ObAYsEPtQiRJkgyA/TGdspZqz9qFSJIkGQD7IJMETgJeH8EiteuRJEndZgDsn28BKwJ71C5EkiR1mwGwTzK5ArgYeF/tWgZBRBweEedHxIMRcU/teqRhFhE7RsSPIuL2iMiI2Kd2TZq9iDgsIi6OiPsi4o6I%2BEFErFu7LnWLAbC/PgXsFMG2tQsZAItSbov/b%2B1CpBZYArgCOLh2IZonO1EGFG8D7EY5levnEbFE1arUKY6B6aMIJgFXA7cDuzVrAzstIg4EPp%2BZy1QuRY2ImApMpfyCuC6OgRkqEZHAKzPzB7Vr0byJiBWBO4CdMvM3tetRN9gB7KNMngA%2BCLwYeEXlcqSeMvPozNyAiTmYXdJTLd083lW1CnWKAbD/fgL8DPhsBM%2BoXYwkqZ6ICOCzwLmZeXXtetQdBsA%2Ba277HgKsCny8bjXjKyI%2B3CxAn9O1Re06JWmAfJFyVOjraxeiblm4dgFdlMnvIzgc%2BEwEP8rknNo1jZMvAifO5TW39KEOSRp4EXEUZTnQjpl5W%2B161C0GwHo%2BD%2BwFnBDB5pncXrmeBZaZdwJ31q5DkgZZc9v3KOCVwM6ZeXPlktRBBsBKMnk8gv2AacBJEeySySO16%2BqXiFgdWA5YHVgoIjZtnrohM%2B%2BvVpg0hCJiSWCtMR9ao/mZuisz/1SnKs3B0cD%2BwN7AfRGxcvPxGZn5UL2y1CWOgaksgm2A31BOCnl7V0bDRMQ3gTf1eGqXzPxVf6tRLxGxFDADx8AMvIjYGXouJflWZh7Y12I0V82onl4Oysxv9rMWdZcBcABEcCBwLPCxTD5UuRwJMABKUpt5C3gAZPLNCFYCPh3BPzL5fO2aJElSexkAB0QmR0awPPC5CB7J5Eu1a5IkSe1kABws/0o5I/foCJbM5MjaBUmSpPYxAA6QTDKC9wH3UW4HLwsc3hwhJ0mSNC4MgAOm2QX8HxHMAD4DPC%2BCAzNxNID6IiKmAlPxpCBJai13AQ%2BwCF4FHA9cAbwqk79ULkkd4i5gSWovf8MfYJmcCuwEPAe4LIKd61YkSZLawAA44DK5GHgBMB34RQSHRvh9kyRJ888gMQQy%2BRuwO/Cp5vp5BKvVrUqSJA0rA%2BCQyOSxTA4HdgPWA66KYP8IonJpkiRpyBgAh0wmZwMbAWcA3wFOiWDVulVJkqRhYgAcQpncncn%2BwGuBbYFrI/jnCBaqXJokSRoCBsAhlslJwPqUUTH/A1wYwZZ1q5IkSYPOADjkMrknk/8HbEc5Ru6iCI6PYPXKpUmSpAFlAGyJTC4ANgfeDuwK/CGCj0cwpW5lkiRp0BgAW6TZKfxVYG3KMXLvA26I4D0RPKNudZIkaVAYAFsok/sy%2BRCwDmW38H8DN0bw7ggWq1udJEmqzQDYYpncmslBlLmBZwGfowTBf45g8brVaVBFxNSImA5cVLsWSdLEiMysXYP6JIK1gQ8BbwDuBr4EHN2cNCLNIiKWAmYAS2fmvbXrkSSNHzuAHZLJ9ZkcAKxFGSL9PuCPEXwlgvXqVidJkvrFDmCHRbAc8E7g3cAzgZ9SuoJnZPJ4zdpUnx1ASWovO4AdlsldmXwCeA7wZmAF4HTgpggOj%2BCZVQuUJEkTwg6gZhHBFsC7gNcDCwM/AL4F/CyTxyqWpj6zAyhJ7WUAVE8RLAu8idIZ3Aj4K2Xd4LczubJmbeoPA6AktZcBUHMUQQCbUsLg/sCKwOWUruAJmdxRrThNKAOgJLWXawA1R5lkJpdlcgiwKrA3cBNwJPCXCH4ZwbtcLzhYIuK5EfH1iLg5Ih6KiBsj4iMRsWjt2iRJ9RkANc8yeTST0zPZF3gW8A7gUeAo4PYIzolgagQrVy1UUIZ/T6J8jzYE3kvZ8f2JmkVJkgaDt4C1wCJYHtgHeA3wYmAh4LfAacCPMrmxXnUaEREfAN6Vmc%2Bbx9d7C1iSWsoOoBZYJv/I5OuZvBRYGXgr8CDwaeCGCK6N4MgIdoxg4arFdtvSwF21i5Ak1WcHUBMmginArsDLgT0pw6bvBs4EfgKc7SaS/oiINYFLgfdn5tdm85rJwOQxH5oC3IYdQElqHQOg%2BiKCScAWlDD4cuAFzVNXAGcBPwfOzeShOhUOh4j4MHDEXF62ZWZeMuZzVgF%2BDfw6M986H%2B9tAJSkljEAqopmo8iuwG7N9SxgJmXt4FnNdUUmT1QrcgBFxAqUE1vm5JbMfLh5/SrAOcDvgAMzc7ZfTzuAktQdBkBV18wa3IASBHcHdgIWp6xX%2By1N94oSCD2jeB5FxKqU8DcN%2BKfMfFpfOzeBSFJ7GQA1cCKYDGwD7EwJg9sCiwH3AudSwuBvgEszeaRSmQNtzG3fPwEHwGhwzsy/zuN7GAAlqaUMgBp4TSDckhIGdwJeCCxBuWV8CXABcD5wQSbzFG7aLiIOBI7t9Vxmxjy%2BhwFQklrKAKihE8EilE0k21LC4LbAas3TNzMmEAJXZvJYjTqHnQFQktrLAKhWiODZzBoINwMWocwjvIzSKRy5rnNzydwZACWpvQyAaqUInkEJgdsCm1NG0KzVPH0fZWPE2FB4Uyb%2BMIxhAJSk9jIAqjMiWJbRMDhyPad5%2Bm5KKJwGXE6ZT3hdl3cdGwAlqb0MgOq0CFZk1lC4OfDs5umHgKsZDYSXU9YU3tf3QiswAEpSexkApSeJYHlgY2DT5tqEMqdwkeYlNzIaCEceb23bLWQDoCS1lwFQmgcRLAqsz2ggHHlcrnnJ3cA1lI7hyHVNJnf2u9bxYgCUpPYyAErzqTnB5NmUILgJsCHwfGA9RruFf2NMIGQ0GA5soIqIqcBUYBKwLgZASWodA6A0zpo5hWszGghHrrUooQrgVp7ULQSuzeTBvhc8G3YAJam9DIBSn0SwGKU7OBIIRwLic5uXJGV94TXNNb15/H0mD/e/XgOgJLWVAVCqLIIplE0mGwIbNY8bAKs2L3mCEgxHAuFIOJzQYGgAlKT2MgBKAyqCZShBcCQc9jUYGgAlqb0MgNKQeRrBcOxt5GuAPzydYGgAlKT2MgBKLTEmGG7IrOFwleYlTysYGgAlqb0MgFLLPc1gOCYc7n87fPcODICS1DoGQKmj5h4MZzwBy0yCv/8YVriC0a7h07qVLEkaPAZASbMYDYY3bw7P%2BwLc%2BUtYfj1m7RjewFM3nxgMJWlIGAAl9fTkNYARLEs5Dm/sxpMn30o2GErSEDAASuppXjeBPI1gOHbzyVWUYPjohP0LSJJmywAoqacF3QU8D8FwJiUMXg5cMfKYyYwFrV2SNGcGQEmziIipwFTKucXrMs67gJtguBGwKbBJ87ghMLl5yS08KRQCt2TiX1aSNE4MgJJ66uccwAgWoYTNkUA4cq3QvGQGcCWzBsNrXFsoSfPHACipp9qDoCMI4FmMhsKRx3WAAB6j3EK%2BpLmmAVdmMrPftUrSsDEASuqpdgCcnQiWAJ4PvADYHNii%2Bd8LA49SNphMYzQYXp3JI3WqlaTBZACU1NOgBsBeIlgM2JgSBregBMMNgYWARyi3j0e6hJdQbh%2B7A1lSZxkAJfU0TAGwlwgWp9w2HukSbkHZlTyJsgP5cuBC4ILm8U9uNJHUFQZAST0NewDspbl9vCklDG4FbAM8r3n6r5QgOHJdkskDFcqUpAlnAJTUUxsDYC8RrARsTQmD21CC4ZLA45T1hCOB8ALgeruEktrAACipp64EwCeLYCHK0OptgG2bx/Wbp%2B%2BmhMHzgXOBizJ5sEadkrQgDICSeupqAOwlgmUYvWW8bXMtTdl1PI0SBn8LnJfJPyqVKUnzzAAoqScD4Ow1XcINge2bawfg2c3T11LC4LnN5SkmkgaOAVBSTwbAedcMrV6d0TC4PSUgAtwG/Ao4p7kMhJKqMwBK6skAuGAiWA7YDtgR2IUyuHoS8CdGw%2BCvMvljtSIldZYBUNIsImIqMJUSVtbFADgumnWEOwI7UwLhJpQj7W6mCYPAOZncVqdCSV1iAJTUkx3AidV0CHdiNBBu1Dx1AyUM/hI4O5O/16hPUrsZACX1ZADsrwhWZNZAuEHz1GXAz4GzKLuMH65SoKRWMQBK6skAWFcEzwJ2BXYHdgOeCTwE/JrRQHiNG0okzQ8DoKSeDICDo9llvBElDO5OWUs4GfgLo2Hw7Ez%2BVq1ISUPFACipJwPg4IrgGZRxM7tRAuHGzVOXA2cCPwEuzOTxKgVKGngGQEk9GQCHx5jbxS8BXgosD9wF/IwSBn/qCSWSxjIASurJADicmlNKtgJeBuxJmT/4BPA7Shj8CXCFawelbjMASi0XEZMp//HfBHhBZl4%2Bj59nAGyBCFYB9qCEwd2AJYHbgTMoYfAXmdxXr0JJNUyqXYCkCXck5T/46qBMbs/k65m8CliBcqv4e5Q1hKcBd0ZwRgTvaG4lS%2BoAO4BSi0XEHsBngX2Ba7ADqDEiWAt4ObA3JRAuROkW/xD4AfB7bxVL7WQAlFoqIp4JTAP2Ae6kHDlmAFRPESxPuU28N2UjyeLA9ZQg%2BEPcVSy1igFQaqGICMoar/My82MR8VzmEgCbtYKTx3xoCnAbBsDOacbMvJjyy8NewErAHcCPKIHwbE8kkYabawClIRIRH46InMu1BfDPwFLAJ5/G2x9G6fiNXLeN/7%2BBhkEmD2Xy40zeCqwCbAd8izKA%2BkfAHRF8J4JXRbB4zVolzR87gNIQiYgVKAv55%2BQW4ERK52bsD/hCwOPAdzLzTT3e2w6g5qg5kWR9yprSV1MGUD9I2U18MnBGJvfXq1DSvDIASi0UEatTOoAjVqEMBX418LvMnGt3zzWAmpsI1qGEwX2BzYGHgZ9SwuCPM5lRsTxJc2AAlDpgXtYA9vgcA6DmWQRrMBoGtwEeoYTBE4HTM3mgYnmSnsQ1gJKkBZbJzZl8JpNtgdWBQymbR06grBk8MYK9I2ZZZiCpEjuAknqyA6jx0HQG92uujSl/pk6ldAZ/mcljFcuTOssAKKknA6DGWwQbUILg64G1gL8DJwHfBc7P5ImK5UmdYgCU1JMBUBOl2U28GSUIvg54NnAr5Yi6E4FLPYFEmlgGQEk9GQDVDxFMoswZ3A94DbAicC3wbeA7mdxasTyptQyAknoyAKrfIlgY2BV4I/BKYDHgHEoYPDWT%2ByqWJ7WKAVBSTwZA1RTBUpSRMm8EdqEMnD6VEgZ/6bnE0oIxAErqyQCoQRHBc4A3AAcA6wK3A98Bvp3J1TVrk4aVAVDSLCJiKjCVMid0XQyAGhDN5pEtKEHw9cDywGWUruB3M/lbxfKkoWIAlNSTHUANsggWBfaghMG9KL%2Bw/Bj4OnCm8wWlOTMASurJAKhhEcFylI7gW4AXAH8FvgV8I5PratYmDSoDoKSeDIAaRhG8gBIE3wAsA/yW0hU82fOIpVGeBSxJao1MLsvkYGAVYH/gEeCbwF8i%2BEoEWzdrCaVOswMoqSc7gGqL5jziA4GDgNWAa4BvAN/K5B8VS5OqMQBK6skAqLaJYCHKoOm3APsAT1DOIj4GOM/j59QlBkBJPRkA1WYRrEjpCr4DWJPSFTwGOC6Te%2BpVJvWHAVBSTwZAdUFzFvGLgHdSuoKPACcCXwYutiuotjIASurJAKiuieBZwJuBtwOrA5dTguAJnkOstjEASurJAKiuatYKvoTSFdyTcg7xd4AvZ3J5xdKkcWMAlNSTAVCCCFYD3tpcqwDnA18ETsnkkZq1SQvCOYCSJM1GJrdmcgTwHGBfYCZwAvDHCD4cwSpVC5TmkwFQ0iwiYmpETAcuql2LNCgyeSyTUzN5EfB84DTgXyhB8LsRbOeAaQ0TbwFL6slbwNKcRbAM8CZgKrA2ZdPIUcB3M3moXmXS3NkBlCRpPmRyTyb/A6wHvBS4DfgacFsER0bw3Jr1SXNiAJQkaQFk8kQmP8tkL0on8FjgbcBNEfwggp29PaxBYwCUJGmcZHJjJv8CrEo5ZWQt4BxgWgRvjGDRqgVKDQOgJEnjLJMHM/kqsBFlpuDfgG8Dt0RweAQrVC1QnecmEEk9uQlEGl8RbAC8Bzig%2BdC3gc9ncm29qtRVdgAlSeqDTKZn8g5gNeDjwCuA6RGcEcFurhNUPxkAJUnqo0zuzORjwHMpY2SeBfwcuDKCt0SwWM361A0GQEmSKshkZibfBjYDdgFuBr4K/Kk5ZWTFqgWq1VwDKKkn1wBK/RfB2pR1ggcBAXwD%2BGwmN1UtTK1jB1CSpAGRyfWZHEw5e/hTwOuA65vj5jarW53axAAoSdKAadYJfpQSBN8NbE2ZJXiWG0Y0HgyAkmYREVMjYjpwUe1apK5r5gkeDawD7AcsT9kwMi2C/SJYuGqBGlquAZTUk2sApcHTdP5eDHwQ2I2yceS/gWMzebBmbRoudgAlSRoSmWQmZ2eyO2X38IXAFyg7h4/whBHNKwOgJElDKJPLMtmfct7wd4FDgT9G8PkInl23Og06A6AkSUMsk5sz%2BWdgdeAzlOHSN0VwTATPq1udBpUBUJKkFmh2Dh9B2Tn8IWAf4LoIjmvOIZb%2BjwFQkqQWyeTeTD4NrAG8F9gZuDqCU5wlqBEGQEmSWqgZIXMUsCbwdmATyviYMyLYrm51qs0AKLVYROwZEb%2BLiIci4s6IOLV2TZL6K5NHMvkasB7wBspawXMj%2BFUEuzpUupsMgFJLRcS%2BwHHAsZTf/LcDTqhalKRqMnkskxOAjYFXAksAZwEXRvAKg2C3OAhaaqGIWBi4BTgiM78%2Bn%2B/hIGipxZrAtztwOLADcAXwEeCHmTxRszZNPDuAUjttBqwKPBERl0XEXyLizIjYsHZhkgZDM1T6Z5nsCOwE3AmcClwWwasizAht5jdXaqeR2V8fBj4GvBy4G/h1RCzX6xMiYnJELDVyAVP6Uqmk6jL5TSa7UjqBdwCnAJdHsK9BsJ38pkpDJCI%2BHBE5l2sLRn%2B2P56Zp2TmNOAgIIHXzObtD6Pc8h25bpvofx9JgyWTczPZjRIE/wacDFwRwasNgu3iGkBpiETECjDXsz5vAbYFfgnskJnnjvn83wFnZ%2BbhPd57MjB5zIemUEKgawCljmrGxRwB7AZcDXwUOMU1gsNv4doFSJp3mXknZZ3OHEXENGAmsC5wbvOxRYDnAn%2BczXvPbD5n5D0WvGBJQy2T84DdI3ghJQh%2BH7gmgo8CJxsEh5ftXKmFmo7dl4GPRMTuEbEu8L/N0yfVq0zSMMrk/ExeAryQcmfge5Q1gvs4PmY4GQCl9voAcCJlFuDFlPNBX5SZd1etStLQyuSCTF5KCYJ3AKcBF0XwEoPgcHENoKSenAMoaW4i2IUyaeCFlOUm/57Jr%2BtWpXlhB1CSJM2XTM4BtgdeBiwO/CqCsyLYpm5lmhsDoCRJmm/NQOkzgS2AVwHPAi6I4EcRvKBudZodA6AkSVpgTRA8jXL2%2BP6UKQSXRnBSBBvUrU5PZgCUJEnjJpPHM/kusAHwFmAr4OoIjotgzbrVaYQBUJIkjbtMHsvkG8A6wMHAi4E/RPCVCFavW50MgJIkacJkMjOTLwFrAocCrwSuj%2BDzEaxYt7rucgyMpJ4cAyNpIkQwBXgP8MHmQ58BPpvJ/fWq6h47gJJmERFTI2I6cFHtWiS1Tyb3ZfIx4HnA14DDgRsjODiCRetW1x12ACX1ZAdQUj9E8BzgI8ABwM3AvwPf85zhiWUHUJIkVZPJHzM5kDI%2BZjpwAnCJx8tNLAOgJEmqLpOrMtkL2AF4CPgpcHYEW9atrJ0MgJIkaWBkci7leLm9gZWBi5ph0uvUraxdDICSJGmgNKeKnA5sDBwEbA1Mj%2BCYCFapW107GAAlSdJAak4V%2BSZlmPShwKuBGyL4RARLVy1uyBkAJUnSQMvk4Uz%2BmzI65nPAIZTRMe92dMz8MQBKkqShkMmMTA4H1gZ%2BQAmD0yN4jTuGnx4DoCRJGiqZ/DmTtwKbAtcB3wcuiGD7qoUNEQOgJEkaSs3omJcBuwKLAr%2BN4LQIVqtc2sAzAEqSpKGWyS%2BALYA3AmsBM%2BtWNPg8Ck7SLCJiKjCV8gviungUnKQhEkFkYriZCwOgpJ48C1iS2stbwJIkSR1jAJQkSeoYA6AkSVLHGAAlSZI6xgAoSZLUMe4CltRTRAQwBbgv/YtCklrFAChJktQx3gKWJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSxxgAJUmSOsYAKEmS1DEGQEmSpI4xAEqSJHWMAVCSJKljDICSJEkdYwCUJEnqGAOgJElSx/x/%2BuH%2Bo8w9axwAAAAASUVORK5CYII%3D" width="200" height="150"/></a></td></tr>           <tr><td class="label">Conductor</td><td>
+                  $1424$</td></tr>           <tr><td class="label">Discriminant</td><td>
+                  $-22784$</td></tr>           <tr><td class="label">j-invariant</td><td>
+                  \( \frac{21296}{89} \)</td></tr>           <tr><td class="label">CM</td><td>
+                  no</td></tr>           <tr><td class="label">Rank</td><td>
+                  $1$</td></tr>           <tr><td class="label">Torsion structure</td><td>
+                  trivial</td></tr>      </table>
+      </div>
+    
+   
+   
+       <h1 class="properties-header">Related objects</h1>
+    <div class="properties-body">
+        <ul>
+                           <li><a href="/EllipticCurve/Q/1424.d/">Isogeny class 1424.d</a></li>
+                                   <li><a href="/EllipticCurve/Q/356.a1/">Minimal quadratic twist 356.a1</a></li>
+                                   <li><a href="/EllipticCurve/Q/?jinv=21296/89">All twists </a></li>
+                                   <li><a href="/EllipticCurve/?base_change_label=1424.d1">Base changes </a></li>
+                                   <li><a href="/L/EllipticCurve/Q/1424/d/">L-function</a></li>
+                                   <li><a href="/ModularForm/GL2/Q/holomorphic/1424/2/a/d/">Modular form 1424.2.a.d</a></li>
+                    </ul>
+      </div>
+   
+   
+   
+       <h1 class="properties-header">Downloads</h1>
+    <div class="properties-body">
+        <ul>
+                           <li><a href="/EllipticCurve/Q/download_qexp/1424.d1/1000">q-expansion to text</a></li>
+                                   <li><a href="/EllipticCurve/Q/download_all/1424.d1">All stored data to text</a></li>
+                                   <li><a href="/EllipticCurve/Q/1424/d/1/download/magma?label=1424.d1">Magma commands</a></li>
+                                   <li><a href="/EllipticCurve/Q/1424/d/1/download/oscar?label=1424.d1">Oscar commands</a></li>
+                                   <li><a href="/EllipticCurve/Q/1424/d/1/download/gp?label=1424.d1">PariGP commands</a></li>
+                                   <li><a href="/EllipticCurve/Q/1424/d/1/download/sage?label=1424.d1">SageMath commands</a></li>
+                                   <li><a href="/EllipticCurve/Q/data/1424.d1">Underlying data</a></li>
+                    </ul>
+      </div>
+   
+       <h1 class="properties-header">Learn more</h1>
+    <div class="properties-body">
+        <ul>
+                           <li><a href="/EllipticCurve/Q/Source">Source and acknowledgments</a></li>
+                                   <li><a href="/EllipticCurve/Q/Completeness">Completeness of the data</a></li>
+                                   <li><a href="/EllipticCurve/Q/Reliability">Reliability of the data</a></li>
+                                   <li><a href="/EllipticCurve/Q/Labels">Elliptic curve labels</a></li>
+                                   <li><a href="/EllipticCurve/Q/CongruentNumbers">Congruent number curves</a></li>
+                                   <li><a href="/EllipticCurve/Q/stein-watkins">Stein-Watkins dataset</a></li>
+                                   <li><a href="/EllipticCurve/Q/BHKSSW">BHKSSW dataset</a></li>
+                                   <li><a href="/EllipticCurve/Q/CurvePictures">Picture description</a></li>
+                    </ul>
+      </div>
+   
+    </div>
+<div id="main">
+  <div id="content">
+    <div id="flashes">
+              </div>    <div align="right" style="float: right; padding-left:10px;" id="rawtseticonspot" title="raw/typeset toggle"></div>
+        
+        <script>
+        var cur_lang = null;
+        function show_code(new_lang, langs) {
+           for(var lang of langs){$('.'+lang).hide()}
+            if (cur_lang == new_lang) {
+              cur_lang = null;
+            } else {
+              $('.'+new_lang).show();
+              $('.'+new_lang).css('display','inline-flex');
+              cur_lang = new_lang;
+            }
+        }
+        </script>
+        <div align="right" style="float: right; margin-top:2px; margin-left:10px;">Show commands: <a onclick="show_code('magma',['magma', 'oscar', 'pari', 'sage'] ); return false" href='#'>Magma</a> / <a onclick="show_code('oscar',['magma', 'oscar', 'pari', 'sage'] ); return false" href='#'>Oscar</a> / <a onclick="show_code('pari',['magma', 'oscar', 'pari', 'sage'] ); return false" href='#'>Pari/GP</a> / <a onclick="show_code('sage',['magma', 'oscar', 'pari', 'sage'] ); return false" href='#'>SageMath</a></div>
+                    
+            <style>
+<div.ip>span { white-space: nowrap; font-family: serif; }
+</style>
+
+<script>
+var cur_invstyle = null;
+function show_eqns(invstyle) {
+    $('.min_eqn').hide();
+    $('.proj_eqn').hide();
+    $('.simp_eqn').hide();
+    $('.'+invstyle).show();
+  }
+</script>
+
+
+
+
+    <h2 class='min_eqn' style='margin-top:0px;'>            <a title="Minimal Weierstrass equation over $\mathbb Q$ [ec.q.minimal_weierstrass_equation]" knowl="ec.q.minimal_weierstrass_equation" kwargs="">Minimal Weierstrass equation</a> </h2>
+    <h2 class='proj_eqn nodisplay' style='margin-top:0px;'> <a title="Minimal Weierstrass equation over $\mathbb Q$ [ec.q.minimal_weierstrass_equation]" knowl="ec.q.minimal_weierstrass_equation" kwargs="">Minimal Weierstrass equation</a> </h2>
+    <h2 class='simp_eqn nodisplay' style='margin-top:0px;'> <a title="Simplified equation [ec.simple_equation]" knowl="ec.simple_equation" kwargs="">Simplified equation</a> </h2>
+
+    <table>
+    <tr class='min_eqn'>
+        <td>
+<span class="raw-tset-container tset ">
+    <span class="tset-container">\(y^2=x^3+x^2+4x+8\)</span>
+    <textarea readonly rows="1" cols="16" class="raw-container">y^2=x^3+x^2+4x+8</textarea>
+    
+    <span class="raw-tset-copy-btn" onclick="copyrawcontainer(this)">
+        <img alt="Copy content"
+        class="tset-icon">
+    </span>
+    <span class="raw-tset-toggle" onclick="iconrawtset(this)">
+        <img alt="Toggle raw display"
+        class="tset-icon">
+    </span>
+</span></td>
+        <td>(<a onclick="show_eqns('proj_eqn'); return false" href='#'>homogenize</a>, <a onclick="show_eqns('simp_eqn'); return false" href='#'>simplify</a>)</td>
+    <tr>
+    <tr class='proj_eqn nodisplay'>
+        <td>
+<span class="raw-tset-container tset ">
+    <span class="tset-container">\(y^2z=x^3+x^2z+4xz^2+8z^3\)</span>
+    <textarea readonly rows="1" cols="24" class="raw-container">y^2z=x^3+x^2z+4xz^2+8z^3</textarea>
+    
+    <span class="raw-tset-copy-btn" onclick="copyrawcontainer(this)">
+        <img alt="Copy content"
+        class="tset-icon">
+    </span>
+    <span class="raw-tset-toggle" onclick="iconrawtset(this)">
+        <img alt="Toggle raw display"
+        class="tset-icon">
+    </span>
+</span></td>
+        <td>(<a onclick="show_eqns('min_eqn'); return false" href='#'>dehomogenize</a>, <a onclick="show_eqns('simp_eqn'); return false" href='#'>simplify</a>)</td>
+    <tr>
+    <tr class='simp_eqn nodisplay'>
+        <td>
+<span class="raw-tset-container tset ">
+    <span class="tset-container">\(y^2=x^3+297x+4914\)</span>
+    <textarea readonly rows="1" cols="17" class="raw-container">y^2=x^3+297x+4914</textarea>
+    
+    <span class="raw-tset-copy-btn" onclick="copyrawcontainer(this)">
+        <img alt="Copy content"
+        class="tset-icon">
+    </span>
+    <span class="raw-tset-toggle" onclick="iconrawtset(this)">
+        <img alt="Toggle raw display"
+        class="tset-icon">
+    </span>
+</span></td>
+        <td>(<a onclick="show_eqns('proj_eqn'); return false" href='#'>homogenize</a>, <a onclick="show_eqns('min_eqn'); return false" href='#'>minimize</a>)</td>
+    <tr>
+    </table>
+
+    <p>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 50%;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Define the curve</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 50%;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E = EllipticCurve([0, 1, 0, 4, 8])</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 50%;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">E = ellinit([0, 1, 0, 4, 8])</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 50%;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">E := EllipticCurve([0, 1, 0, 4, 8]);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 50%;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">E = elliptic_curve([0, 1, 0, 4, 8])</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Simplified equation</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.short_weierstrass_model()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">WeierstrassModel(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">short_weierstrass_model(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</p>
+
+    <h2> <a title="Mordell-Weil group [ec.mordell_weil_group]" knowl="ec.mordell_weil_group" kwargs="">Mordell-Weil group</a> structure</h2>
+    <p>
+        \(\Z\)
+        </p>
+
+    <p>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Mordell-Weil group</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">MordellWeilGroup(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</p>
+
+        <h2> <a title="Mordell-Weil generators [ec.mw_generators]" knowl="ec.mw_generators" kwargs="">Mordell-Weil generators</a> </h2>
+    <div class='min_eqn'>
+      <p>
+	<table>
+	  <tr><th>$P$</th><th><a title="Canonical height on an elliptic curve [ec.canonical_height]" knowl="ec.canonical_height" kwargs="">$\hat{h}(P)$</a></th><th>Order</th></tr>
+	  	  <tr><td>\( \left(-1, 2\right) \)</td><td>$1.0801590415284910330880253591$</td><td>$\infty$</td></tr>
+	  	  	</table>
+      </p>
+      </div>
+    <div class='proj_eqn nodisplay'>
+      <p>
+	<table>
+	  <tr><th>$P$</th><th><a title="Canonical height on an elliptic curve [ec.canonical_height]" knowl="ec.canonical_height" kwargs="">$\hat{h}(P)$</a></th><th>Order</th></tr>
+	  	  <tr><td>\([-1:2:1]\)</td><td>$1.0801590415284910330880253591$</td><td>$\infty$</td></tr>
+	  	  	</table>
+      </p>
+      </div>
+    <div class='simp_eqn nodisplay'>
+      <p>
+	<table>
+	  <tr><th>$P$</th><th><a title="Canonical height on an elliptic curve [ec.canonical_height]" knowl="ec.canonical_height" kwargs="">$\hat{h}(P)$</a></th><th>Order</th></tr>
+	  	  <tr><td>\( \left(-6, 54\right) \)</td><td>$1.0801590415284910330880253591$</td><td>$\infty$</td></tr>
+	  	  	</table>
+      </p>
+    </div>
+    
+        <p><h2> <a title="Integral points [ec.q.integral_points]" knowl="ec.q.integral_points" kwargs="">Integral points</a></h2>
+    <div class="ip min_eqn">
+      <p>
+      
+<span class="raw-tset-container tset ">
+    <span class="tset-container">\((-1,\pm 2)\)</span>
+    <textarea readonly rows="1" cols="17" class="raw-container">(-1, 2), (-1, -2)</textarea>
+    
+    <span class="raw-tset-copy-btn" onclick="copyrawcontainer(this)">
+        <img alt="Copy content"
+        class="tset-icon">
+    </span>
+    <span class="raw-tset-toggle" onclick="iconrawtset(this)">
+        <img alt="Toggle raw display"
+        class="tset-icon">
+    </span>
+</span>
+      </p>
+    </div>
+    <div class="ip proj_eqn  nodisplay">
+      <p>
+	
+<span class="raw-tset-container tset ">
+    <span class="tset-container">\([-1:\pm 2:1]\)</span>
+    <textarea readonly rows="1" cols="23" class="raw-container">(-1, 2, 1), (-1, -2, 1)</textarea>
+    
+    <span class="raw-tset-copy-btn" onclick="copyrawcontainer(this)">
+        <img alt="Copy content"
+        class="tset-icon">
+    </span>
+    <span class="raw-tset-toggle" onclick="iconrawtset(this)">
+        <img alt="Toggle raw display"
+        class="tset-icon">
+    </span>
+</span>
+      </p>
+    </div>
+    <div class="ip simp_eqn nodisplay">
+            <p>
+	
+<span class="raw-tset-container tset ">
+    <span class="tset-container">\((-1,\pm 2)\)</span>
+    <textarea readonly rows="1" cols="17" class="raw-container">(-1, 2), (-1, -2)</textarea>
+    
+    <span class="raw-tset-copy-btn" onclick="copyrawcontainer(this)">
+        <img alt="Copy content"
+        class="tset-icon">
+    </span>
+    <span class="raw-tset-toggle" onclick="iconrawtset(this)">
+        <img alt="Toggle raw display"
+        class="tset-icon">
+    </span>
+</span>
+      </p>
+    </div>
+    
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Integral points</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.integral_points()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">IntegralPoints(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+
+        
+    <h2> Invariants </h2>
+        <table>
+
+        <tr>
+        <td><a title="Conductor of an elliptic curve over $\Q$ [ec.q.conductor]" knowl="ec.q.conductor" kwargs="">Conductor</a>:</td>
+        <td>$N$</td>
+        <td>&nbsp;=&nbsp;</td>
+        <td>\( 1424 \)</td><td>&nbsp;=&nbsp;</td><td>$2^{4} \cdot 89$</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Conductor</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.conductor().factor()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">ellglobalred(E)[1]</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">Conductor(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">conductor(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+ </td>
+        </tr>
+
+        <tr>
+        <td><a title="Discriminant of a Weierstrass equation [ec.discriminant]" knowl="ec.discriminant" kwargs="">Minimal Discriminant</a>:</td>
+        <td>$\Delta$</td>
+        <td>&nbsp;=&nbsp;</td>
+        <td>$-22784$</td><td>&nbsp;=&nbsp;</td><td>$-1 \cdot 2^{8} \cdot 89 $</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Discriminant</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.discriminant().factor()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">E.disc</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">Discriminant(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">discriminant(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="j-invariant of an elliptic curve [ec.j_invariant]" knowl="ec.j_invariant" kwargs="">j-invariant</a>:</td>
+        <td>$j$</td>
+        <td>&nbsp;=&nbsp;</td>
+        <td>\( \frac{21296}{89} \)</td><td>&nbsp;=&nbsp;</td><td>$2^{4} \cdot 11^{3} \cdot 89^{-1}$</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">j-invariant</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.j_invariant().factor()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">E.j</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">jInvariant(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">j_invariant(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+
+        </tr>
+
+        <tr>
+        <td><a title="Endomorphism ring of an elliptic curve [ec.endomorphism_ring]" knowl="ec.endomorphism_ring" kwargs="">Endomorphism ring</a>:</td>
+        <td>$\mathrm{End}(E)$</td><td>&nbsp;=&nbsp;</td><td colspan=3>$\Z$</td>
+        </tr>
+
+        <tr>
+        <td><a title="Geometric endomorphism ring [ec.geom_endomorphism_ring]" knowl="ec.geom_endomorphism_ring" kwargs="">Geometric endomorphism ring</a>:</td>
+        <td>$\mathrm{End}(E_{\overline{\Q}})$</td>
+	<td>&nbsp;=&nbsp;</td>
+	<td colspan=3>\(\Z\)
+	  &nbsp;&nbsp;
+                    (no <a title="Complex multiplication [ec.complex_multiplication]" knowl="ec.complex_multiplication" kwargs="">potential complex multiplication</a>)
+                  </td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Potential complex multiplication</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.has_cm()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">HasComplexMultiplication(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Sato-Tate group [st_group.definition]" knowl="st_group.definition" kwargs="">Sato-Tate group</a>:</td>
+        <td>$\mathrm{ST}(E)$</td><td>&nbsp;=&nbsp;</td><td colspan=3><a title="Sato-Tate group data [st_group.data]" knowl="st_group.data" kwargs="label=1.2.A.1.1a">$\mathrm{SU}(2)$</a></td>
+        </tr>
+
+        <tr>
+        <td><a title="Faltings height of an elliptic curve [ec.q.faltings_height]" knowl="ec.q.faltings_height" kwargs="">Faltings height</a>:</td>
+        <td>$h_{\mathrm{Faltings}}$</td><td>&nbsp;&approx;&nbsp;</td><td colspan=3>$-0.48125538293799635743963326605$</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Faltings height</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">ellheight(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">FaltingsHeight(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">faltings_height(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Faltings height of an elliptic curve [ec.q.faltings_height]" knowl="ec.q.faltings_height" kwargs="">Stable Faltings height</a>:</td>
+        <td>$h_{\mathrm{stable}}$</td><td>&nbsp;&approx;&nbsp;</td><td colspan=3>$-0.94335350331129323038445468035$</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Stable Faltings height</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">StableFaltingsHeight(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">stable_faltings_height(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="$abc$ quality [ec.q.abc_quality]" knowl="ec.q.abc_quality" kwargs="">$abc$ quality</a>:</td>
+        <td>$Q$</td><td>&nbsp;&approx;&nbsp;</td><td colspan=3>$0.6953266258214518$</td>
+        <td></td>
+        </tr>
+
+        <tr>
+        <td><a title="Szpiro ratio [ec.q.szpiro_ratio]" knowl="ec.q.szpiro_ratio" kwargs="">Szpiro ratio</a>:</td>
+        <td>$\sigma_{m}$</td><td>&nbsp;&approx;&nbsp;</td><td colspan=3>$2.3879558834946106$</td>
+        <td></td>
+        </tr>
+
+        <tr>
+        <td><a title="Order of the Intrinsic Subgroup [ec.intrinsic_torsion]" knowl="ec.intrinsic_torsion" kwargs="">Intrinsic torsion order</a>:</td>
+        <td>$\#E(\mathbb Q)_\text{tors}^\text{is}$</td><td>&nbsp;=&nbsp;</td><td colspan=3>$1$</td>
+        <td></td>
+        </tr>
+
+       </table>
+
+    <h2> <a title="Birch and Swinnerton-Dyer conjecture [ec.q.bsdconjecture]" knowl="ec.q.bsdconjecture" kwargs="">BSD invariants</a></h2>
+        <table>
+        <tbody>
+        <tr>
+        <td><a title="Analytic rank of an elliptic curve over $\Q$ [ec.q.analytic_rank]" knowl="ec.q.analytic_rank" kwargs="">Analytic rank</a>:</td>
+        <td>$r_{\mathrm{an}}$</td><td>&nbsp;=&nbsp;</td><td>$ 1$
+        </td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Analytic rank</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.analytic_rank()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">ellanalyticrank(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">AnalyticRank(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Rank of an elliptic curve over a number field [ec.rank]" knowl="ec.rank" kwargs="">Mordell-Weil rank</a>:</td>
+        <td>$r$</td><td>&nbsp;=&nbsp;</td><td>$ 1$
+        </td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Mordell-Weil rank</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.rank()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">[lower,upper] = ellrank(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">Rank(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Regulator of an elliptic curve [ec.regulator]" knowl="ec.regulator" kwargs="">Regulator</a>:</td>
+      	                      <td> $\mathrm{Reg}(E/\Q)$</td><td>&nbsp;&approx;&nbsp;</td><td>$1.0801590415284910330880253591$</td>
+                          <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Regulator</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.regulator()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">G = E.gen \\ if available
+matdet(ellheightmatrix(E,G))</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">Regulator(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+
+        </tr>
+
+        <tr>
+        <td><a title="Real period [ec.q.real_period]" knowl="ec.q.real_period" kwargs="">Real period</a>:</td>
+        <td> $\Omega$</td><td>&nbsp;&approx;&nbsp;</td><td>$2.7186498890579407473066415592$</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Real Period</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.period_lattice().omega()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">if(E.disc&gt;0,2,1)*E.omega[1]</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">(Discriminant(E) gt 0 select 2 else 1) * RealPeriod(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Tamagawa number [ec.tamagawa_number]" knowl="ec.tamagawa_number" kwargs="">Tamagawa product</a>:</td>
+        <td>$\prod_{p}c_p$</td><td>&nbsp;=&nbsp;</td><td>$ 1 $
+                  </td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Tamagawa numbers</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.tamagawa_numbers()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">gr=ellglobalred(E); [[gr[4][i,1],gr[5][i][4]] | i&lt;-[1..#gr[4][,1]]]</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">TamagawaNumbers(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">tamagawa_numbers(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Torsion order of an elliptic curve [ec.torsion_order]" knowl="ec.torsion_order" kwargs="">Torsion order</a>:</td>
+        <td>$\#E(\Q)_{\mathrm{tor}}$</td><td>&nbsp;=&nbsp;</td><td>$1$</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Torsion order</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.torsion_order()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">elltors(E)[1]</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">Order(TorsionSubgroup(E));</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">prod(torsion_structure(E)[1])</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Special value of an elliptic curve L-function [ec.special_value]" knowl="ec.special_value" kwargs="special_value=">Special value</a>:</td>
+        <td>$ L&#39;(E,1)$</td><td>&nbsp;&approx;&nbsp;</td><td>$2.9365742584163637595184419147 $</td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Special L-value</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">r = E.rank();
+E.lseries().dokchitser().derivative(1,r)/r.factorial()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">[r,L1r] = ellanalyticrank(E); L1r/r!</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">Lr1 where r,Lr1 := AnalyticRank(E: Precision:=12);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+
+        <tr>
+        <td><a title="Analytic order of &amp;#1064; [ec.analytic_sha_order]" knowl="ec.analytic_sha_order" kwargs="">Analytic order of &#1064;</a>:</td>
+        <td> &#1064;${}_{\mathrm{an}}$</td>
+	<td>&nbsp;&approx;&nbsp;</td>
+	<td>$1$ &nbsp;&nbsp;
+                          (<a title="Analytic order of Sha (numerical value) [ec.q.analytic_sha_value]" knowl="ec.q.analytic_sha_value" kwargs="">rounded</a>)
+                              </td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Order of Sha</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.sha().an_numerical()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">MordellWeilShaInformation(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+      	        </tbody>
+        </table>
+
+<h2> <a title="Birch Swinnerton-Dyer conjecture [ec.bsdconjecture]" knowl="ec.bsdconjecture" kwargs="">BSD formula</a></h2>
+<p>
+$$\begin{aligned} 2.936574258 \approx L&#39;(E,1) &amp; = \frac{\# Ш(E/\Q)\cdot \Omega_E \cdot \mathrm{Reg}(E/\Q) \cdot \prod_p c_p}{\#E(\Q)_{\rm tor}^2} \\ &amp; \approx \frac{1 \cdot 2.718650 \cdot 1.080159 \cdot 1}{1^2} \\ &amp; \approx 2.936574258\end{aligned}$$
+</p>
+<center>
+
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">BSD formula</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code"># self-contained SageMath code snippet for the BSD formula (checks rank, computes analytic sha)
+E = EllipticCurve([0, 1, 0, 4, 8]); r = E.rank(); ar = E.analytic_rank(); assert r == ar;
+Lr1 = E.lseries().dokchitser().derivative(1,r)/r.factorial(); sha = E.sha().an_numerical();
+omega = E.period_lattice().omega(); reg = E.regulator(); tam = E.tamagawa_product(); tor = E.torsion_order();
+assert r == ar; print("analytic sha: " + str(RR(Lr1) * tor^2 / (omega * reg * tam)))</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">/* self-contained Magma code snippet for the BSD formula (checks rank, computes analytic sha) */
+E := EllipticCurve([0, 1, 0, 4, 8]); r := Rank(E); ar,Lr1 := AnalyticRank(E: Precision := 12); assert r eq ar;
+sha := MordellWeilShaInformation(E); omega := RealPeriod(E) * (Discriminant(E) gt 0 select 2 else 1);
+reg := Regulator(E); tam := &*TamagawaNumbers(E); tor := #TorsionSubgroup(E);
+assert r eq ar; print "analytic sha:", Lr1 * tor^2 / (omega * reg * tam);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+
+</center>
+
+
+    <h2> <a title="Modular parametrization of an elliptic curve over $\mathbb Q$ [ec.q.modular_parametrization]" knowl="ec.q.modular_parametrization" kwargs="">Modular invariants</a></h2>
+<p>
+<a title="Modular form associated to an elliptic curve/$\mathbb Q$ [ec.q.modular_form]" knowl="ec.q.modular_form" kwargs="">Modular form</a>
+&nbsp;&nbsp;<a href="/ModularForm/GL2/Q/holomorphic/1424/2/a/d/">1424.2.a.d</a>
+</p>
+    <div class="output" style="margin-left:1ch;"><span id="modform_output">
+<span class="raw-tset-container tset ">
+    <span class="tset-container">\( q +  q^{3} -  q^{5} - 2 q^{9} - 4 q^{13} -  q^{15} -  q^{17} + 5 q^{19} + O(q^{20}) \)</span>
+    <textarea readonly rows="1" cols="63" class="raw-container">q + q^3 - q^5 - 2*q^9 - 4*q^13 - q^15 - q^17 + 5*q^19 + O(q^20)</textarea>
+    
+    <span class="raw-tset-copy-btn" onclick="copyrawcontainer(this)">
+        <img alt="Copy content"
+        class="tset-icon">
+    </span>
+    <span class="raw-tset-toggle" onclick="iconrawtset(this)">
+        <img alt="Toggle raw display"
+        class="tset-icon">
+    </span>
+</span></span></div>
+    <p>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">q-expansion of modular form</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.q_eigenform(20)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">Ser(ellan(E,20),q)*q</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">ModularForm(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</p>
+    <p>For more coefficients, see the Downloads section to the right.    </p>
+
+            <p>
+        <table>
+
+        <tr>
+        </tr>
+        <tr>
+        <td><a title="Modular degree of an elliptic curve over $\mathbb Q$ [ec.q.modular_degree]" knowl="ec.q.modular_degree" kwargs="">Modular degree</a>:</td>
+        <td>
+	  	  48
+	          </td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Modular degree</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.modular_degree()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">ellmoddegree(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">ModularDegree(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+	        <tr>
+        <td><a title="Optimal  elliptic curve over $\mathbb Q$ [ec.q.optimal]" knowl="ec.q.optimal" kwargs="">$ \Gamma_0(N) $-optimal</a>:</td>
+        <td>
+	  yes        </td>
+        <td>
+        </tr>
+        <tr>
+        <td><a title="Manin constant for elliptic curves over $\Q$ [ec.q.manin_constant]" knowl="ec.q.manin_constant" kwargs="">Manin constant</a>:</td>
+	      <td>1 </td>
+        <td>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Manin constant</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">ManinConstant(E);</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</td>
+        </tr>
+		</table>
+
+	
+			</p>
+
+<h2><a title="Local data of an elliptic curve [ec.local_data]" knowl="ec.local_data" kwargs="">Local data</a> at <a title="Bad reduction of an elliptic curve at a prime [ec.bad_reduction]" knowl="ec.bad_reduction" kwargs="">primes of bad reduction</a> </h2>
+
+<style type="text/css">
+#local_data th, #local_data td, #serre_data th, #serre_data td {
+padding : 4px;
+text-align: center;
+}
+</style>
+
+<p>
+  This elliptic curve is not <a title="Semistable elliptic curve [ec.semistable]" knowl="ec.semistable" kwargs="">semistable</a>.
+  There
+    are 2 primes $p$
+    of <a title="Reduction type of an elliptic curve over $\mathbb Q$ [ec.q.reduction_type]" knowl="ec.q.reduction_type" kwargs="">bad reduction</a>:
+</p>
+
+<table id = "local_data" class="ntdata"><thead>
+<tr>
+<th>$p$</th>
+<th><a title="Tamagawa numbers for an elliptic curve  [ec.q.tamagawa_numbers]" knowl="ec.q.tamagawa_numbers" kwargs="">Tamagawa number</a></th>
+<th><a title="Kodaira symbol [ec.q.kodaira_symbol]" knowl="ec.q.kodaira_symbol" kwargs="">Kodaira symbol</a></th>
+<th><a title="Reduction type of an elliptic curve over $\mathbb Q$ [ec.q.reduction_type]" knowl="ec.q.reduction_type" kwargs="">Reduction type</a></th>
+<th><a title="Local root number [ec.local_root_number]" knowl="ec.local_root_number" kwargs="">Root number</a></th>
+<th><a title="Conductor valuation [ec.conductor_valuation]" knowl="ec.conductor_valuation" kwargs="">$\mathrm{ord}_p(N)$</a></th>
+<th><a title="Discriminant valuation [ec.discriminant_valuation]" knowl="ec.discriminant_valuation" kwargs="">$\mathrm{ord}_p(\Delta)$</a></th>
+<th><a title="j-invariant denominator valuation [ec.j_invariant_denominator_valuation]" knowl="ec.j_invariant_denominator_valuation" kwargs="">$\mathrm{ord}_p(\mathrm{den}(j))$</a></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>$2$</td>
+<td>$1$</td>
+<td>$I_0^{*}$</td>
+<td>additive</td>
+<td>-1</td>
+<td>4</td>
+<td>8</td>
+<td>0</td>
+</tr>
+<tr>
+<td>$89$</td>
+<td>$1$</td>
+<td>$I_{1}$</td>
+<td>split multiplicative</td>
+<td>-1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Local data</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">E.local_data()</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">ellglobalred(E)[5]</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">[LocalInformation(E,p) : p in BadPrimes(E)];</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="oscar nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">oscar:</span><span class="code">[(p,tamagawa_number(E,p), kodaira_symbol(E,p), reduction_type(E,p)) for p in bad_primes(E)]</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</p>
+
+<h2> <a title="Galois representations attached to an elliptic curve [ec.galois_rep]" knowl="ec.galois_rep" kwargs="">Galois representations</a> </h2>
+
+<p>
+The <a title="Galois representations attached to an elliptic curve [ec.galois_rep]" knowl="ec.galois_rep" kwargs=""> $\ell$-adic Galois representation</a> has <a title="Maximal $\ell$-adic Galois representation [ec.maximal_elladic_galois_rep]" knowl="ec.maximal_elladic_galois_rep" kwargs="">maximal image</a>
+   for all primes $\ell$.
+  </p>
+  <p>
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Mod p Galois image</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">rho = E.galois_representation(); [rho.image_type(p) for p in rho.non_surjective()]</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">[GaloisRepresentation(E,p): p in PrimesUpTo(20)];</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+</p>
+
+
+  
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Adelic image of Galois representation</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="sage nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">sage:</span><span class="code">gens = [[355, 2, 354, 3], [181, 2, 181, 3], [1, 1, 355, 0], [179, 2, 179, 3], [1, 0, 2, 1], [1, 2, 0, 1]]
+GL(2,Integers(356)).subgroup(gens)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="magma nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">magma:</span><span class="code">Gens := [[355, 2, 354, 3], [181, 2, 181, 3], [1, 1, 355, 0], [179, 2, 179, 3], [1, 0, 2, 1], [1, 2, 0, 1]];
+sub&lt;GL(2,Integers(356))|Gens&gt;;</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+
+
+<p> The image $H:=\rho_E(\Gal(\overline{\Q}/\Q))$ of the <a title="Galois representations attached to an elliptic curve [ec.galois_rep]" knowl="ec.galois_rep" kwargs="">adelic Galois representation</a> has
+    <a title="Image of the adelic Galois representation [ec.galois_rep_adelic_image]" knowl="ec.galois_rep_adelic_image" kwargs="">level</a> \(  356 =  2^{2} \cdot 89   \), <a title="Image of the adelic Galois representation [ec.galois_rep_adelic_image]" knowl="ec.galois_rep_adelic_image" kwargs="">index</a> $2$, <a title="Image of the adelic Galois representation [ec.galois_rep_adelic_image]" knowl="ec.galois_rep_adelic_image" kwargs="">genus</a> $0$, and generators</p>
+<p>$\left(\begin{array}{rr}
+355 &amp; 2 \\
+354 &amp; 3
+\end{array}\right),\left(\begin{array}{rr}
+181 &amp; 2 \\
+181 &amp; 3
+\end{array}\right),\left(\begin{array}{rr}
+1 &amp; 1 \\
+355 &amp; 0
+\end{array}\right),\left(\begin{array}{rr}
+179 &amp; 2 \\
+179 &amp; 3
+\end{array}\right),\left(\begin{array}{rr}
+1 &amp; 0 \\
+2 &amp; 1
+\end{array}\right),\left(\begin{array}{rr}
+1 &amp; 2 \\
+0 &amp; 1
+\end{array}\right)$.</p>
+<div id="sage_modm_image" style="display: none;"></div>
+<div id="magma_modm_image" style="display: none;"></div>
+<form><p> Input positive integer $m$ to see the generators of the reduction of $H$ to $\mathrm{GL}_2(\Z/m\Z)$: <label for="modm"></label> <input type="text" id="modm">
+<button title="Reduce mod $m$" onclick="modm_reduction('1424.d1', $('#modm').val(), cur_lang); return false;">submit</button></p></form>
+<p id="modm_reduction"></p>
+<p>The torsion field $K:=\Q(E[356])$ is a degree-$2977413120$ Galois extension of $\Q$ with $\Gal(K/\Q)$ isomorphic to the projection of $H$ to $\GL_2(\Z/356\Z)$.
+
+<p> The table below list all primes $\ell$ for which the <a title="Serre invariants [ec.q.serre_invariants]" knowl="ec.q.serre_invariants" kwargs="">Serre invariants</a> associated to the mod-$\ell$ Galois representation are exceptional. </p> 
+
+<table id = "serre_data" class="ntdata"><thead>
+<tr>
+<th>$\ell$</th>
+<th><a title="Reduction type [ec.reduction_type]" knowl="ec.reduction_type" kwargs="">Reduction type</a></th>
+<th><a title="Serre invariants [ec.q.serre_invariants]" knowl="ec.q.serre_invariants" kwargs="">Serre weight</a></th>
+<th><a title="Serre invariants [ec.q.serre_invariants]" knowl="ec.q.serre_invariants" kwargs="">Serre conductor</a></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>$2$</td>
+<td>additive</td>
+<td>$2$</td>
+<td>\( 89 \)</td>
+</tr>
+<tr>
+<td>$89$</td>
+<td>split multiplicative</td>
+<td>$90$</td>
+<td>\(  16 =  2^{4}   \)</td>
+</tr>
+</tbody>
+</table>
+
+<h2><a title="Isogeny between elliptic curves  [ec.isogeny]" knowl="ec.isogeny" kwargs="">Isogenies</a> </h2>
+    
+    <div class="comment nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">comment:</span><span class="code">Isogenies</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+    <div class="pari nodisplay codebox" style="user-select: none; margin-bottom: 12px; align-items: baseline;  max-width: 1200px;">
+        <span class="raw-tset-copy-btn" onclick="copycode(this)" style="max-height: 16px; margin: 3px"><img alt="Copy content" class="tset-icon"></span>
+        <span class="prompt">gp:</span><span class="code">ellisomat(E)</span>
+        <div style="margin: 0; padding: 0; height: 0;">&nbsp;</div>
+    </div>
+    
+
+<p>
+This curve has no rational isogenies.  Its isogeny class <a href=/EllipticCurve/Q/1424.d/>1424.d</a>
+    consists of this curve only.
+</p>
+
+<h2><a title="Twists of elliptic curves [ec.twists]" knowl="ec.twists" kwargs="">Twists</a> </h2>
+<p>
+    The <a title="Minimal twists of elliptic curves over $\mathbb{Q}$ [ec.q.minimal_twist]" knowl="ec.q.minimal_twist" kwargs="">minimal quadratic twist</a> of this elliptic curve is
+  <a href=/EllipticCurve/Q/356.a1/>356.a1</a>, its twist by $-4$.
+    
+  
+
+<h2><a title="Torsion growth in number fields [ec.q.torsion_growth]" knowl="ec.q.torsion_growth" kwargs="">Growth of torsion</a> in number fields</h2>
+<p>
+The number fields $K$ of degree less than 24 such that
+$E(K)_{\rm tors}$ is strictly larger than $E(\Q)_{\rm tors}$
+ (which is trivial)
+are as follows:
+</p>
+<p>
+<table class="ntdata"><thead>
+<tr>
+<th>$[K:\Q]$</th>
+<td align=center>$K$</td>
+<th>$E(K)_{\rm tors}$</th>
+<th>Base change curve</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align=center>$3$</td>
+<td align=center><a title = "3.1.356.1 [nf.field.data]" knowl="nf.field.data" kwargs="label=3.1.356.1">3.1.356.1</a></td>
+<td align=center>\(\Z/2\Z\)</td>
+<td align=center>
+not in database
+</td>
+</tr>
+<tr>
+<td align=center>$6$</td>
+<td align=center><a title = "6.0.45118016.1 [nf.field.data]" knowl="nf.field.data" kwargs="label=6.0.45118016.1">6.0.45118016.1</a></td>
+<td align=center>\(\Z/2\Z \oplus \Z/2\Z\)</td>
+<td align=center>
+not in database
+</td>
+</tr>
+<tr>
+<td align=center>$8$</td>
+<td align=center><a title = "Field missing" knowl="nf.field.missing" kwargs="poly=x^%7B8%7d%2B66x^%7B4%7d%2B728x^%7B2%7d-363&raw=x^8%2B66*x^4%2B728*x^2-363">deg 8</a></td>
+<td align=center>\(\Z/3\Z\)</td>
+<td align=center>
+not in database
+</td>
+</tr>
+<tr>
+<td align=center>$12$</td>
+<td align=center><a title = "Field missing" knowl="nf.field.missing" kwargs="poly=x^%7B12%7d-142x^%7B8%7d-80x^%7B6%7d%2B5377x^%7B4%7d-1936x^%7B2%7d-69776&raw=x^12-142*x^8-80*x^6%2B5377*x^4-1936*x^2-69776">deg 12</a></td>
+<td align=center>\(\Z/4\Z\)</td>
+<td align=center>
+not in database
+</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p>
+We only show fields where the torsion growth is <a title="Torsion growth in number fields [ec.q.torsion_growth]" knowl="ec.q.torsion_growth" kwargs="">primitive</a>.
+For fields not in the database, click on the degree shown to reveal the defining polynomial.
+</p>
+
+<h2><a title="Iwasawa invariants of elliptic curves [ec.iwasawa_invariants]" knowl="ec.iwasawa_invariants" kwargs="">Iwasawa invariants</a> </h2>
+<p>
+<table border=1 style="margin-left:5%">
+<tr style="border-bottom: 1px solid #000;">
+<th>$p$</th>
+<td align=center>
+2
+</td>
+<td align=center>
+3
+</td>
+<td align=center>
+5
+</td>
+<td align=center>
+7
+</td>
+<td align=center>
+11
+</td>
+<td align=center>
+13
+</td>
+<td align=center>
+17
+</td>
+<td align=center>
+19
+</td>
+<td align=center>
+23
+</td>
+<td align=center>
+29
+</td>
+<td align=center>
+31
+</td>
+<td align=center>
+37
+</td>
+<td align=center>
+41
+</td>
+<td align=center>
+43
+</td>
+<td align=center>
+47
+</td>
+<td align=center>
+89
+</td>
+</tr>
+
+<tr>
+<th><a title="Reduction type of an elliptic curve over $\mathbb Q$ [ec.q.reduction_type]" knowl="ec.q.reduction_type" kwargs="">Reduction type</a></th>
+<td align=center>
+<a title="Additive reduction [ec.additive_reduction]" knowl="ec.additive_reduction" kwargs="">add</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good supersingular reduction [ec.good_supersingular_reduction]" knowl="ec.good_supersingular_reduction" kwargs="">ss</a>
+</td>
+<td align=center>
+<a title="Good supersingular reduction [ec.good_supersingular_reduction]" knowl="ec.good_supersingular_reduction" kwargs="">ss</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Good ordinary reduction [ec.good_ordinary_reduction]" knowl="ec.good_ordinary_reduction" kwargs="">ord</a>
+</td>
+<td align=center>
+<a title="Split multiplicative reduction [ec.split_multiplicative_reduction]" knowl="ec.split_multiplicative_reduction" kwargs="">split</a>
+</td>
+</tr>
+
+<tr>
+<th><a title="lambda-invariant of an elliptic curve [ec.lambda_invariant]" knowl="ec.lambda_invariant" kwargs="">$\lambda$-invariant(s)</a> </th>
+<td align=center>
+-
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1,1
+</td>
+<td align=center>
+1,1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+1
+</td>
+<td align=center>
+2
+</td>
+</tr>
+
+<tr>
+<th><a title="mu-invariant of an elliptic curve [ec.mu_invariant]" knowl="ec.mu_invariant" kwargs="">$\mu$-invariant(s)</a> </th>
+<td align=center>
+-
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0,0
+</td>
+<td align=center>
+0,0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+<td align=center>
+0
+</td>
+</tr>
+
+</table>
+</p>
+<p>
+An entry - indicates that the invariants are not computed because the reduction is additive.
+</p>
+
+
+<h2>$p$-adic regulators</h2>
+
+<p>
+</p><p>
+Note: $p$-adic regulator data only exists for primes $p\ge 5$ of good ordinary
+reduction.
+</p>
+  <select onchange="$('#padic').load('/EllipticCurve/Q/padic_data/1424.d1/0'+this.value, function() { renderMathInElement($('#padic').get(0),katexOpts);}); ">
+  <option value=''>Choose a prime...</option>
+    <option value="7">7</option>
+    <option value="11">11</option>
+    <option value="19">19</option>
+    <option value="23">23</option>
+    <option value="29">29</option>
+    <option value="31">31</option>
+    <option value="37">37</option>
+    <option value="41">41</option>
+    <option value="43">43</option>
+    <option value="47">47</option>
+    <option value="53">53</option>
+    <option value="59">59</option>
+    <option value="61">61</option>
+    <option value="67">67</option>
+    <option value="71">71</option>
+    <option value="73">73</option>
+    <option value="79">79</option>
+    <option value="83">83</option>
+    <option value="97">97</option>
+    </select>
+  <div id='padic'></div>
+    </p>
+
+
+
+
+<script type="text/javascript">
+var number_of_coefficients = 10;
+function more_handler(evt) {
+    number_of_coefficients += number_of_coefficients;
+    evt.preventDefault();
+    $("#modform_output").load("/EllipticCurve/Q/modular_form_display/1424.d1/"+number_of_coefficients,
+        function() {
+                        renderMathInElement($("#modform_output").get(0), katexOpts);
+        });
+}
+$(function() {
+    $("#morebutton").click(function(e) {more_handler(e)});
+});
+</script>
+
+
+
+            <h2>    </h2>
+          </div>
+</div>
+
+
+<div id="footer">
+    
+        <h4 style="margin:5px;">This project is supported by <a href="/acknowledgment#sponsors">grants</a> from the US National Science Foundation, the UK Engineering and Physical Sciences Research Council, and the Simons Foundation.</h4>
+    <div>
+      <a href="/contact">Contact</a>
+      &middot;
+      <a href="/citation">Citation</a>
+      &middot;
+      <a href="/license">License</a>
+      &middot;
+      <a href="/acknowledgment">Acknowledgments</a>
+      &middot;
+      <a href="/management">Editorial Board</a>
+            &middot;
+      <a href="https://github.com/LMFDB/lmfdb/tree/0db3a05774ad6bd8916a22b4de6d1a2b7aeaa9d3
+">Source</a>
+            &middot;
+      SageMath version 10.5
+      &middot;
+      LMFDB Release 1.2.1
+    </div>
+</div>  </body>
+</html>
