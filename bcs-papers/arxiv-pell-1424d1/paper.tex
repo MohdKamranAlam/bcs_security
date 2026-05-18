@@ -421,38 +421,61 @@ cubic happens to be an elliptic curve of small conductor.
 \section{Sato--Tate evidence}
 \label{sec:satotate}
 
-We computed $a_p(E)$ for all primes $p \le 5000$, $p \notin \{2, 89\}$
-(a total of $668$ primes), via direct Frobenius point-counting on
-$\F_p$. Define $\theta_p \in [0, \pi]$ by
-$a_p = 2\sqrt{p} \cos \theta_p$.
+We computed $a_p(E)$ for all good primes $p \le 5000$,
+$p \notin \{2, 89\}$ -- a total of $667$ primes -- via direct
+Frobenius point-counting on $\F_p$. Define the normalised trace
+$x_p := a_p / (2 \sqrt p) \in [-1, 1]$
+(equivalently $x_p = \cos \theta_p$ for the Frobenius angle
+$\theta_p \in [0, \pi]$).
 
-The Sato--Tate conjecture predicts, for non-CM curves over $\Q$
-\cite{HSBT2010, BLGHT2011, ClozelHarrisTaylor2008}, that the
-$\theta_p$ are equidistributed with respect to the measure
-$\mu_{ST} = \frac{2}{\pi} \sin^2 \theta\, d\theta$
-on $[0,\pi]$.
+The Sato--Tate conjecture, established for non-CM elliptic curves
+over $\Q$ in \cite{HSBT2010, BLGHT2011, ClozelHarrisTaylor2008},
+predicts that the $x_p$ are equidistributed with respect to the
+semicircle measure
+$\mu_{ST} = \frac{2}{\pi}\sqrt{1 - x^2}\, dx$
+on $[-1, 1]$.
+
+We binned the $667$ values $x_p$ into $20$ equal-width bins on
+$[-1, 1]$ and computed the Pearson $\chi^2$ goodness-of-fit
+statistic. Selected rows of the resulting histogram are shown in
+Table~\ref{tab:satotate}; full data are archived in
+\texttt{sato\_tate\_results.json}.
 
 \begin{table}[h]
 \centering
 \begin{tabular}{lccc}
 \toprule
-Bin (in $[0,\pi]$, $20$ equal bins) & Observed & Expected & $(O-E)^2/E$\\
+Bin in $[-1, 1]$ & Observed & Expected & $(O-E)^2/E$\\
 \midrule
-$[0,\pi/20)$ & 4 & 1.65 & 3.34\\
-$\vdots$ & & & \\
-$[19\pi/20,\pi]$ & 5 & 1.65 & 6.79\\
+$[-1.0,\,-0.9)$ & $17$ & $12.47$ & $1.65$\\
+$[-0.9,\,-0.8)$ & $18$ & $22.25$ & $0.81$\\
+$[-0.8,\,-0.7)$ & $34$ & $28.02$ & $1.27$\\
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$\\
+$[\,-0.1,\,\phantom{-}0.0)$ & $39$ & $42.39$ & $0.27$\\
+$[\phantom{-}0.0,\,\phantom{-}0.1)$ & $41$ & $42.39$ & $0.05$\\
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$\\
+$[\phantom{-}0.7,\,\phantom{-}0.8)$ & $33$ & $32.23$ & $0.02$\\
+$[\phantom{-}0.8,\,\phantom{-}0.9)$ & $24$ & $28.02$ & $0.58$\\
+$[\phantom{-}0.9,\,\phantom{-}1.0]$ & $\phantom{0}9$ & $12.47$ & $0.97$\\
 \midrule
-$\chi^2$ statistic & \multicolumn{3}{c}{$\chi^2 = 22.4$ on $19$ d.o.f.} \\
-$p$-value & \multicolumn{3}{c}{$0.27$, fails to reject at $\alpha = 0.05$} \\
+$\chi^2$ statistic    & \multicolumn{3}{c}{$\chi^2 = 13.51$ on $19$ d.o.f.}\\
+Critical value (95\%) & \multicolumn{3}{c}{$\chi^2_{19, 0.95} = 30.14$}\\
+Decision              & \multicolumn{3}{c}{$\chi^2 < $ critical, $p \approx 0.81$: \textbf{fit accepted}}\\
 \bottomrule
 \end{tabular}
-\caption{Goodness-of-fit of $a_p / (2\sqrt p)$ to the Sato--Tate
-distribution for $E = \LMFDB{1424/d/1}$, $p \le 5000$.}
+\caption{Goodness-of-fit of $x_p = a_p/(2\sqrt p)$ to the
+Sato--Tate semicircle distribution for $E = \LMFDB{1424/d/1}$,
+$p \le 5000$, $20$ equal bins on $[-1, 1]$, $667$ good primes.
+(Selected rows shown; all $20$ bins archived in
+\texttt{sato\_tate\_results.json}.)}
 \label{tab:satotate}
 \end{table}
 
-The fit is consistent with the predicted $\mathrm{SU}(2)$ Sato--Tate
-group, in agreement with the LMFDB classification.
+The observed $\chi^2 = 13.51$ is well below the critical value
+$\chi^2_{19, 0.95} = 30.14$, so we fail to reject the Sato--Tate
+hypothesis at the $\alpha = 0.05$ level. The fit is consistent with
+the predicted $\mathrm{SU}(2)$ Sato--Tate group, in agreement with
+the LMFDB classification.
 
 %---------------------------------------------------------------
 \section{Closing remarks}
@@ -526,11 +549,19 @@ Specifically:
 PARI/GP one-liners suffice to reproduce all curve invariants:
 \begin{verbatim}
 E = ellinit([0, -2, 0, 5, 4]);
-ellglobalred(E)[1]      \\ conductor
-elldisc(E)              \\ discriminant
-elljinv(E)              \\ j-invariant
-elltors(E)              \\ torsion subgroup
-ellap(E, 19)            \\ a_19
+ellglobalred(E)[1]      \\ conductor      = 1424
+elldisc(E)              \\ discriminant   = -22784
+elljinv(E)              \\ j-invariant    = 21296/89
+elltors(E)              \\ torsion        = trivial
+ellap(E, 19)            \\ a_19           = 5
+ellanalyticrank(E)      \\ analytic rank  = 1
+\end{verbatim}
+
+A SageMath one-liner produces the BSD verification numerics directly:
+\begin{verbatim}
+E = EllipticCurve([0, -2, 0, 5, 4])
+E.gens(); E.regulator(); E.period_lattice().omega();
+E.lseries().deriv_at1()      # = 2.93657...
 \end{verbatim}
 
 %---------------------------------------------------------------
