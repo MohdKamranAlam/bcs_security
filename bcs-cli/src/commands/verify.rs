@@ -1,40 +1,16 @@
-use std::fs;
+//! `bcs verify` — NOT YET IMPLEMENTED (mirror of `bcs sign`).
+//!
+//! Returning `valid = true` for *any* input — as the previous
+//! placeholder did — would be a security catastrophe. We therefore
+//! explicitly fail rather than ever return a verification verdict for
+//! a signature scheme that does not yet exist.
+
 use std::path::PathBuf;
 
-/// Verify a signature
-pub fn run(key: PathBuf, message: Option<String>, file: Option<PathBuf>, signature: String) {
-    println!("🔍 BCS-521 Signature Verification");
-    
-    // Read message
-    let _msg_bytes = if let Some(msg) = message {
-        msg.into_bytes()
-    } else if let Some(f) = file {
-        fs::read(f).expect("Read file")
-    } else {
-        eprintln!("❌ Error: Provide --message or --file");
-        std::process::exit(1);
-    };
-    
-    // Read public key
-    let _key_content = fs::read_to_string(&key).expect("Read public key");
-    
-    // Parse signature (from file or hex string)
-    let sig_data = if signature.len() > 64 {
-        // Assume it's a file path
-        fs::read_to_string(&signature).expect("Read signature file").trim().to_string()
-    } else {
-        signature
-    };
-    
-    // TODO: Implement actual verification
-    // For now, placeholder
-    let valid = sig_data.starts_with("BCS-SIG-v1:");
-    
-    if valid {
-        println!("✅ Signature VALID — Message authentic");
-        println!("🕌 Verified with BCS-521 Fortress");
-    } else {
-        eprintln!("❌ Signature INVALID — Possible tampering");
-        std::process::exit(1);
-    }
+pub fn run(_key: PathBuf, _message: Option<String>, _file: Option<PathBuf>, _signature: String) {
+    eprintln!(
+        "error: `bcs verify` is not implemented in v0.2.x. \n\
+         BCS-521 ECDSA verification is tracked for v0.3.0."
+    );
+    std::process::exit(2);
 }

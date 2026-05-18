@@ -1,33 +1,28 @@
-use std::fs;
+//! `bcs sign` — NOT YET IMPLEMENTED.
+//!
+//! BCS-521 ECDSA requires constant-time scalar arithmetic mod n_521
+//! (Barrett reduction + Fermat inversion) that the v0.2.x core library
+//! deliberately does not yet ship. Implementing this without the
+//! supporting primitives would mean either (a) using a non-constant-time
+//! path or (b) returning placeholder bytes — we will do neither.
+//!
+//! Tracked for v0.3.0. For authenticated message exchange today, use
+//! `bcs hybrid-kem --encaps/--decaps` to derive a shared secret and
+//! authenticate with HMAC-SHA-256.
+
 use std::path::PathBuf;
 
-/// Sign a message
-pub fn run(key: PathBuf, message: Option<String>, file: Option<PathBuf>, output: Option<PathBuf>) {
-    println!("✍️  BCS-521 Signing");
-    
-    // Read message
-    let msg_bytes = if let Some(msg) = message {
-        msg.into_bytes()
-    } else if let Some(f) = file {
-        fs::read(f).expect("Read file")
-    } else {
-        eprintln!("❌ Error: Provide --message or --file");
-        std::process::exit(1);
-    };
-    
-    // Read private key
-    let _key_content = fs::read_to_string(&key).expect("Read private key");
-    
-    // TODO: Implement actual ECDSA or EdDSA-style signing
-    // For now, placeholder
-    let signature = format!("BCS-SIG-v1:{}", hex::encode(&msg_bytes[..32.min(msg_bytes.len())]));
-    
-    if let Some(out) = output {
-        fs::write(&out, &signature).expect("Write signature");
-        println!("✅ Signature saved: {}", out.display());
-    } else {
-        println!("Signature: {}", signature);
-    }
-    
-    println!("\n🕌 Signed with BCS-521 Fortress protection");
+pub fn run(
+    _key: PathBuf,
+    _message: Option<String>,
+    _file: Option<PathBuf>,
+    _output: Option<PathBuf>,
+) {
+    eprintln!(
+        "error: `bcs sign` is not implemented in v0.2.x. \n\
+         BCS-521 ECDSA is tracked for v0.3.0. \n\
+         For authenticated message exchange today, derive a shared secret \
+         via `bcs hybrid-kem` and authenticate with HMAC-SHA-256."
+    );
+    std::process::exit(2);
 }

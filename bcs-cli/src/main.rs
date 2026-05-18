@@ -31,11 +31,11 @@
 //! ```
 
 use clap::{Parser, Subcommand};
-use std::fs;
 use std::path::PathBuf;
 
 mod commands;
 mod kahf_crypto;
+mod keyfile;
 
 use commands::*;
 

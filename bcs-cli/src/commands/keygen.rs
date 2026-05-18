@@ -1,100 +1,56 @@
-use std::fs;
+//! `bcs keygen` — generate a real BCS-521 keypair.
+//!
+//! This is a thin wrapper around `bcs_core_rust::Bcs521::keygen`, which
+//! produces a uniform-random scalar in `[1, n_521 - 1]` and the
+//! corresponding curve point. No placeholders.
+
 use std::path::PathBuf;
-use bcs_core_rust::kahf_seeded::bcs521_v2;
-use bcs_core_rust::ct::{Scalar, ProjPoint, scalar_mul_generator_fault_protected};
-use bcs_core_rust::ct::aggressive_zeroize::AggressiveZeroize;
+
+use bcs_core_rust::Bcs521;
+use rand::rngs::OsRng;
 use zeroize::Zeroize;
 
-/// Generate a new keypair
+use crate::keyfile::{write_bcs521_pub, write_bcs521_sk};
+
+/// Generate a new keypair and write `.bcs521-sk` / `.bcs521-pub` files.
+///
+/// `kahf` and `fortress` are *metadata tags* preserved in the key file.
+/// They do **not** alter the cryptographic generation path: BCS-521
+/// secret keys must be uniform random per RFC 6090 §3, and the
+/// constant-time + zeroize discipline is unconditional inside
+/// `bcs-core-rust`. The CLI exposes the tags so a downstream operator
+/// can later filter / report on them, not as a security claim.
 pub fn run(output: PathBuf, kahf: bool, fortress: bool) {
-    println!("🔐 BCS-521 Key Generation");
-    println!("   Mode: {}", if kahf { "Kahf Seeding" } else { "Random" });
-    println!("   Protection: {}", if fortress { "Fortress (DPA + Fault)" } else { "Standard CT" });
-    
-    // Generate scalar (private key)
-    let scalar = if kahf {
-        generate_kahf_scalar()
-    } else {
-        generate_random_scalar()
-    };
-    
-    // Generate public key
-    let public_point = if fortress {
-        scalar_mul_generator_fault_protected(&scalar)
-    } else {
-        bcs_core_rust::ct::scalar_mul_generator(&scalar)
-    };
-    
-    // Serialize keys
-    let private_bytes = scalar_to_bytes(&scalar);
-    let (public_x, public_y) = public_point.to_affine().expect("Valid public key");
-    let public_bytes = public_x.to_bytes_be();
-    
-    // Write files
-    let pem_file = output.with_extension("pem");
-    let pub_file = output.with_extension("pub");
-    
-    // PEM format private key
-    let pem_content = format!(
-        "-----BEGIN BCS-521 PRIVATE KEY-----\n\
-         Kahf: {}\n\
-         Fortress: {}\n\n\
-         {}\n\
-         -----END BCS-521 PRIVATE KEY-----\n",
-        kahf,
-        fortress,
-        hex::encode(&private_bytes)
-    );
-    
-    // Public key format
-    let pub_content = format!(
-        "-----BEGIN BCS-521 PUBLIC KEY-----\n\
-         Curve: BCS-521\n\
-         Kahf: {}\n\n\
-         x: {}\n\
-         y: {}\n\
-         -----END BCS-521 PUBLIC KEY-----\n",
-        kahf,
-        hex::encode(&public_bytes),
-        hex::encode(&public_y.to_bytes_be())
-    );
-    
-    fs::write(&pem_file, pem_content).expect("Write private key");
-    fs::write(&pub_file, pub_content).expect("Write public key");
-    
-    // Securely clear scalar from memory
-    let mut scalar_mut = scalar;
-    scalar_mut.aggressive_zeroize();
-    
-    println!("✅ Keypair generated:");
-    println!("   Private: {}", pem_file.display());
-    println!("   Public:  {}", pub_file.display());
-    println!("\n🕌 InshaAllah — Keys secured with BCS-521 Fortress");
-}
+    println!("BCS-521 keygen");
+    println!("  kahf tag    : {}", kahf);
+    println!("  fortress tag: {}", fortress);
 
-fn generate_kahf_scalar() -> Scalar {
-    // Use Kahf-seeded generation
-    let curve = bcs521_v2();
-    // For now, use random scalar from OsRng
-    // TODO: Integrate full Kahf seeding with counter
-    generate_random_scalar()
-}
+    let mut rng = OsRng;
+    let (sk, pk) = Bcs521::keygen(&mut rng);
 
-fn generate_random_scalar() -> Scalar {
-    use rand::rngs::OsRng;
-    use rand::RngCore;
-    
-    let mut bytes = [0u8; 66];
-    OsRng.fill_bytes(&mut bytes);
-    
-    // Reduce mod n
-    Scalar::from_bytes_be(&bytes).expect("Valid scalar")
-}
+    let mut sk_bytes = sk.to_bytes();
+    let pk_bytes = pk.to_bytes();
 
-fn scalar_to_bytes(scalar: &Scalar) -> [u8; 66] {
-    // Extract limbs and convert to bytes
-    let mut bytes = [0u8; 66];
-    // Implementation depends on Scalar internal structure
-    // For now, use serialization
-    bytes
+    let sk_path = output.with_extension("bcs521-sk");
+    let pub_path = output.with_extension("bcs521-pub");
+
+    if let Err(e) = write_bcs521_sk(&sk_path, &hex::encode(sk_bytes), kahf, None) {
+        eprintln!("error: {}", e);
+        sk_bytes.zeroize();
+        std::process::exit(1);
+    }
+    if let Err(e) = write_bcs521_pub(&pub_path, &hex::encode(pk_bytes), kahf, None) {
+        eprintln!("error: {}", e);
+        sk_bytes.zeroize();
+        std::process::exit(1);
+    }
+
+    // Erase the local hex copy of the secret material.
+    sk_bytes.zeroize();
+
+    println!("wrote secret key: {}", sk_path.display());
+    println!("wrote public key: {}", pub_path.display());
+    if fortress {
+        println!("note: fortress tag recorded; CT + zeroize are always on at the core level.");
+    }
 }

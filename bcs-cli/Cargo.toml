@@ -15,7 +15,7 @@ name = "bcs"
 path = "src/main.rs"
 
 [dependencies]
-bcs-core-rust = { path = "../bcs-core-rust", features = ["fortress"] }
+bcs-core-rust = { path = "../bcs-core-rust", features = ["fortress", "hybrid"] }
 clap = { version = "4.5", features = ["derive"] }
 hex = "0.4"
 serde = { version = "1", features = ["derive"] }

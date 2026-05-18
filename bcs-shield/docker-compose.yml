@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  bcs-shield:
+    build: .
+    ports:
+      - "8443:8443"
+    environment:
+      - RUST_LOG=info
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8443/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
