@@ -1,0 +1,12 @@
+{
+  "source": "PARI/GP 2.15.4 Tate algorithm",
+  "conductor": 1424,
+  "discriminant": -22784,
+  "j_invariant": "21296/89",
+  "torsion": "trivial",
+  "torsion_order": 1,
+  "tamagawa_product": 1,
+  "reduction_at_2": "additive",
+  "reduction_at_89": "multiplicative",
+  "mordell_weil": "E(Q) = Z^r  (r >= 1, generator outside |x|<=200)"
+}

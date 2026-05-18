@@ -1,6 +1,6 @@
 {
   "curve": "y\u00b2 = x\u00b3 + -2x\u00b2 + 5x + 4",
-  "discriminant": -1424,
+  "discriminant": -22784,
   "bad_primes": [
     2,
     89

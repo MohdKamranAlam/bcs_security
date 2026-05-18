@@ -79,7 +79,7 @@ def closed_form_recurrence_test(n: int = 8) -> dict:
     failures = []
     for i in range(len(sols) - 1):
         B_k, y_k = sols[i]["B"], sols[i]["y"]
-        B_next_pred = PELL_RECURRENCE_A * B_k + PELL_RECURRENCE_C * y_k + 320
+        B_next_pred = PELL_RECURRENCE_A * B_k + 2 * PELL_RECURRENCE_C * y_k + 320
         B_next_act  = sols[i+1]["B"]
         if B_next_pred != B_next_act:
             ok = False

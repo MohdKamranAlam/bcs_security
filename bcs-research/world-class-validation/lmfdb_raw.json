@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="Welcome to the LMFDB, the database of L-functions, modular forms, and related objects. These pages are intended to be a modern handbook including tables, formulas, links, and references for L-functions and their underlying objects."/>
+          <title>LMFDB - API  </title>
+        <link id="style_css" href="/style.css" rel="stylesheet" type="text/css" /> 
+
+    <!-- jQuery -->
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+            integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
+            crossorigin="anonymous"></script>
+    <!-- jQuery UI -->
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+            integrity="sha384-Dziy8F2VlJQLMShA6FHWNul/veM9bCkRUaLqr199K94ntO5QUrLJBEbYegdSkkqX"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+          href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"
+          integrity="sha384-Nlo8b0yiGl7Dn+BgLn4mxhIIBU6We7aeeiulNCjHdUv/eKHx59s3anfSUjExbDxn"
+          crossorigin="anonymous">
+
+          <!--reCAPTCHA-->
+      <script src="https://www.google.com/recaptcha/enterprise.js?render=6LchHWwpAAAAACFe52hZNEkUP5Bn5_0FfLiEuF3i&waf=session" async defer></script>
+    
+
+
+
+    <script type="text/javascript">var url_prefix = "";</script>
+
+    <script type="text/javascript" src="/static/lmfdb.js"></script>
+    <script type="text/javascript" src="/static/showdown.min.js"></script>
+
+    <script type="text/javascript" src="/static/raw_typeset.js"></script>
+    <script type="text/javascript" src="/static/notify.min.js"></script>
+
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+          integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j"
+          crossorigin="anonymous">
+    <script defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+          integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+          crossorigin="anonymous"></script>
+    <script defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js"
+          integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+          crossorigin="anonymous"></script>
+    <script>
+katexOpts = {
+  delimiters: [
+  {left: "$$", right: "$$", display: true},
+  {left: "\\[", right: "\\]", display: true},
+  {left: "$", right: "$", display: false},
+  {left: "\\(", right: "\\)", display: false}
+],
+  maxExpand: Infinity,
+  macros: {
+  "\\C": '{\\mathbb{C}}',
+  "\\R": '{\\mathbb{R}}',
+  "\\Q": '{\\mathbb{Q}}',
+  "\\Z": '{\\mathbb{Z}}',
+  "\\F": '{\\mathbb{F}}',
+  "\\H": '{\\mathbb{H}}',
+  "\\HH": '{\\mathcal{H}}',
+  "\\integers": '{\\mathcal{O}}',
+  "\\SL": '{\\textrm{SL}}',
+  "\\GL": '{\\textrm{GL}}',
+  "\\PSL": '{\\textrm{PSL}}',
+  "\\PGL": '{\\textrm{PGL}}',
+  "\\ASL": '{\\textrm{ASL}}',
+  "\\AGL": '{\\textrm{AGL}}',
+  "\\ASp": '{\\textrm{ASp}}',
+  "\\Sp": '{\\textrm{Sp}}',
+  "\\PSp": '{\\textrm{PSp}}',
+  "\\SO": '{\\textrm{SO}}',
+  "\\PSO": '{\\textrm{PSO}}',
+  "\\PO": '{\\textrm{PO}}',
+    "\\PGO": '{\\textrm{PO}}',
+  "\\SU": '{\\textrm{SU}}',
+  "\\PSU": '{\\textrm{PSU}}',
+  "\\SOPlus": '{\\textrm{SO}^+}',
+  "\\SOMinus": '{\\textrm{SO}^-}',
+    "\\GO": '{\\textrm{O}}',
+  "\\Orth": '{\\textrm{O}}',
+    "\\GOPlus": '{\\textrm{O}^+}',
+  "\\OPlus": '{\\textrm{O}^+}',
+  "\\OrthPlus": '{\\textrm{O}^+}',
+    "\\GOMinus": '{\\textrm{O}^-}',
+  "\\OrthMinus": '{\\textrm{O}^-}',
+  "\\OMinus": '{\\textrm{O}^-}',
+  "\\GU": '{\\textrm{GU}}',
+  "\\Unitary": '{\\textrm{U}}',
+    "\\CSp": '{\\textrm{GSp}}',
+  "\\GSp": '{\\textrm{GSp}}',
+    "\\CSO": '{\\textrm{GSO}}',
+  "\\GSO": '{\\textrm{GSO}}',
+    "\\CSOPlus": '{\\textrm{GSO}^+}',
+  "\\GSOPlus": '{\\textrm{GSO}^+}',
+    "\\CSOMinus": '{\\textrm{GSO}^-}',
+  "\\GSOMinus": '{\\textrm{GSO}^-}',
+    "\\CSU": '{\\textrm{GSU}}',
+  "\\GSU": '{\\textrm{GSU}}',
+    "\\CO": '{\\textrm{GO}}',
+  "\\GOrth": '{\\textrm{GO}}',
+    "\\COPlus": '{\\textrm{GO}^+}',
+  "\\GOrthPlus": '{\\textrm{GO}^+}',
+    "\\COMinus": '{\\textrm{GO}^-}',
+  "\\GOrthMinus": '{\\textrm{GO}^-}',
+    "\\CU": '{\\textrm{GU}}',
+  "\\GUnitary": '{\\textrm{GU}}',
+  "\\OmegaPlus": '{\\Omega^+}',
+  "\\OmegaMinus": '{\\Omega^-}',
+  "\\Spin": '{\\textrm{Spin}}',
+  "\\SpinPlus": '{\\textrm{Spin}^+}',
+  "\\SpinMinus": '{\\textrm{Spin}^-}',
+  "\\PSOPlus": '{\\textrm{PSO}^+}',
+  "\\POPlus": '{\\textrm{PO}^+}',
+    "\\PGOPlus": '{\\textrm{PO}^+}',
+  "\\PU": '{\\textrm{PU}}',
+    "\\PGU": '{\\textrm{PU}}',
+  "\\PSOMinus": '{\\textrm{PSO}^-}',
+  "\\POMinus": '{\\textrm{PO}^-}',
+    "\\PGOMinus": '{\\textrm{PO}^-}',
+  "\\POmega": '{\\textrm{P}\\Omega}',
+  "\\POmegaPlus": '{\\textrm{P}\\Omega^+}',
+  "\\POmegaMinus": '{\\textrm{P}\\Omega^-}',
+  "\\PGammaL": '{\\textrm{P}\\Gamma\\textrm{L}}',
+  "\\PSigmaL": '{\\textrm{P}\\Sigma\\textrm{L}}',
+  "\\PSigmaSp": '{\\textrm{P}\\Sigma\\textrm{Sp}}',
+  "\\PGammaU": '{\\textrm{P}\\Gamma\\textrm{U}}',
+  "\\AGammaL": '{\\textrm{A}\\Gamma\\textrm{L}}',
+  "\\ASigmaL": '{\\textrm{A}\\Sigma\\textrm{L}}',
+  "\\ASigmaSp": '{\\textrm{A}\\Sigma\\textrm{Sp}}',
+  "\\Dic": '{\\textrm{Dic}}',
+  "\\SD": '{\\textrm{SD}}',
+  "\\OD": '{\\textrm{OD}}',
+  "\\He": '{\\textrm{He}}',
+  "\\HS": '{\\textrm{HS}}',
+  "\\McL": '{\\textrm{McL}}',
+  "\\Ru": '{\\textrm{Ru}}',
+  "\\Co": '{\\textrm{Co}}',
+  "\\Aut": '\\operatorname{Aut}',
+  "\\Out": '\\operatorname{Out}',
+  "\\End": '\\operatorname{End}',
+  "\\Gal": '\\operatorname{Gal}',
+  "\\Hom": '\\operatorname{Hom}',
+  "\\Ord": '\\operatorname{Ord}',
+  "\\Pic": '\\operatorname{Pic}',
+  "\\Reg": '\\operatorname{Reg}',
+  "\\Res": '\\operatorname{Res}',
+  "\\sgn": '\\operatorname{sgn}',
+  "\\Spec": '\\operatorname{Spec}',
+  "\\Sym": '\\operatorname{Sym}',
+  "\\trace": '\\operatorname{tr}',
+  "\\mathstrut": '\\vphantom(',
+  "\\ideal": '{\\mathfrak{ #1 }}',
+  "\\classgroup": '{Cl(#1)}',
+  "\\modstar": '{\\left( #1/#2 \\right)^\\times}',
+  "\\card": '{\\# #1}',
+},
+};
+  document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, katexOpts);
+});
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.min.js" integrity="sha384-XhWAe6BtVcvEdS3FFKT7Mcft4HJjPqMQvi5V4YhzH9Qxw497jC13TupOEvjoIPy7" crossorigin="anonymous"></script>
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YVBFDNX374"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-YVBFDNX374');
+    </script>
+
+  </head><body class="api"><div id="header">
+    <div id="logo"><a href="/">
+    <img src="/static/images/lmfdb-logo.png" />
+</a></div>
+    <div class="right">
+      <div class="upper">
+        <div class="bread">
+                      <a href="/">&#8962;</a>
+                   </div>
+        <div class="topright">
+                                      <!--
+            <span id="communication-wrapper">
+              <img id="communication-img" src="/static/images/progress-green.gif" />
+              <span id="communication"></span>
+            </span>
+-->
+          <div class="undertopright">
+            <a href="/citation" >Citation</a>
+              &middot;
+            <a href="/contact" target="_blank">Feedback</a>
+              &middot;
+            <a href="#" id="menutoggle">Hide Menu
+                        </a>
+          </div>
+        </div>
+      
+        </div>
+        <div id="title">API</div>
+
+    </div>
+</div>
+
+<div id="sidebar">
+<h2 class="link"><a href="/intro">Introduction</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td scope="col" width="20%"><a href="/intro">Overview</a><td scope="col" width="20%"><a href="/random">Random</a></tr><tr><td scope="col" width="20%"><a href="/universe">Universe</a><td scope="col" width="20%"><a href="/knowledge/">Knowledge</a></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/L/contents">L-functions</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td scope="col" width="20%"><a href="/L/rational">Rational</a><td scope="col" width="20%"><a href="/L/">All</a></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/ModularForm/">Modular forms</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td scope="col" width="20%"><a href="/ModularForm/GL2/Q/holomorphic/">Classical</a><td scope="col" width="20%"><a href="/ModularForm/GL2/Q/Maass/">Maass</a></tr><tr><td scope="col" width="20%"><a href="/ModularForm/GL2/TotallyReal/">Hilbert</a><td scope="col" width="20%"><a href="/ModularForm/GL2/ImaginaryQuadratic/">Bianchi</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Variety/">Varieties</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/EllipticCurve/Q/">Elliptic curves over $\Q$</a></tr><tr></tr><tr><td colspan=2><a href="/EllipticCurve/">Elliptic curves over $\Q(\alpha)$</a></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/Genus2Curve/Q/">Genus 2 curves over $\Q$</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/HigherGenus/C/Aut/">Higher genus families</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/Variety/Abelian/Fq/">Abelian varieties over $\F_{q}$</a></tr><tr><td colspan=2><a href="/Belyi/">Belyi maps</a></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Field/">Fields</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/NumberField/">Number fields</a></tr><tr></tr><tr><td colspan=2><a href="/padicField/">$p$-adic fields</a></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Representation/">Representations</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/Character/Dirichlet/">Dirichlet characters</a></tr><tr></tr><tr></tr><tr><td colspan=2><a href="/ArtinRepresentation/">Artin representations</a></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/Group/">Groups</a></h2>
+
+
+
+  <table class="short">
+  <tr>
+  <td colspan=2><a href="/GaloisGroup/">Galois groups</a></tr><tr></tr><tr><td colspan=2><a href="/SatoTateGroup/">Sato-Tate groups</a></tr><tr><td colspan=2><a href="/Groups/Abstract/">Abstract groups</a></tr><tr></tr><tr></tr><tr><td scope="col" width="40%">    </td></tr><tr></tr>
+</table>
+
+
+ 
+<h2 class="link"><a href="/api/options">Database</a></h2>
+
+
+
+
+ </div>
+ 
+ 
+
+
+<div id="main">
+  <div id="content">
+    <div id="flashes">
+              </div>    <div align="right" style="float: right; padding-left:10px;" id="rawtseticonspot" title="raw/typeset toggle"></div>
+            <style>
+.api-entries > li { margin-bottom: 14px; }
+</style>
+
+
+<div>
+This is a very basic API for accessing the LMFDB Database.
+It lists available databases and collections,
+links to their respective descriptions,
+and has very limited query capabilities.
+</div>
+<div>
+Queries are url encoded <b><code>key=value</code></b> parameters, where the value has a prefix to specify the type.
+Keys starting with "<code>_</code>" are meta-parameters further refining query.
+They can be combined by specifying several ones delimited by <code>&amp;</code> to further drill down to the desired objects.
+The result formats are JSON, YAML or HTML (default).
+Each list is limited by a maximum of 100 results and the <code>next</code> entry contains the query to request more objects.
+The overall limit is at about 10000 results and beyond that it is necessary to further refine the query to the results in question.
+</div>
+<div>
+<b>Please use this API responsibly!</b>
+</div>
+<h4>Type-prefixes for query values</h4>
+<div>
+<ul>
+<li><b>s</b>: string</li>
+<li><b>i</b>: integer</li>
+<li><b>f</b>: float</li>
+<li><b>ls</b>: list of strings, delimiter is "," by default or the value of the query key <code>_delim</code></li>
+<li><b>li</b>: list of integers</li>
+<li><b>lf</b>: list of floats</li>
+<li><b>py</b>: this evaluates the query literally following the Python syntax. This can be used to express a matrix as a nested list of lists.
+<li><b>cs</b>, <b>ci</b>, <b>cf</b> and <b>cpy</b>: queries, if the given string, integer, float or Python literal is <i>contained</i> in a list.
+</ul>
+</div>
+<h4>Meta-parameters</h4>
+<div>
+<ul>
+<li><code>_format</code> is used to specify the encoding. Possible values are html (default), json and yaml.</li>
+<li>To only retrieve a selected list of entries per document,
+use <code>_fields=name1,name2</code> to reduce the amount of data sent back to only those fields named <code>name1</code> and <code>name2</code>.
+</li>
+<li>Sorting by fields is done via <code>_sort=name1,-name2</code>,
+where the prefix "-" indicates to sort in descending order.
+</li>
+<li>Finally, <code>_delim</code> is used to specify the delimiter (default: "<code>,</code>")</li>
+</div>
+<div>
+<h4>Examples</h4>
+<ul>
+    <li>
+    The query <a href='/api/nf_fields/?degree=i12&amp;r2=i5&amp;_format=json'>?degree=i12&amp;r2=i5&amp;_format=json</a>
+    searches for numberfields of degree 12 with the signature <code>[2, 5]</code> and gives the result in the JSON format.
+    </li>
+    <li>
+    To search for integers or floats, prefix the value with "i" or "f".
+    For example elliptic curves with rank 2 and torsion 5:
+    <a href='/api/ec_curvedata/?rank=i2&amp;torsion=i5'><code>?rank=i2&amp;torsion=i5</code></a>.
+    </li>
+    <li>
+    A string encoding a list of integers for the <code>ainvs</code> parameter of an elliptic curve is
+    <a href='/api/ec_curvedata/?ainvs=li0;1;1;-840;39800&amp;_format=yaml&amp;_delim=;'>
+       <code>?ainvs=li0;1;1;-840;39800&amp;_format=yaml&amp;_delim=;</code></a>,
+    the result formatted in YAML.
+    </li>
+        <li>
+    To see those elliptic curves, where the field <code>torsion_structure</code> is the list  [2,2], encoded as a list of integers:
+    <a href='/api/ec_curvedata/?torsion_structure=li2;2&amp;_delim=;'>?torsion_structure=li2;2&amp;_delim=;</a>.
+    </li>
+    <!--
+    <li>To only retrieve the fields <code>authors</code> and <code>last_author</code> of the knowl documents,
+    query <a href="/api/kwl_knowls/?_fields=authors,last_author"</a>?_fields=authors,last_author</a>.
+    </li>
+    <li>For sorting the result, use a query like
+    <a href="/api/kwl_knowls/?_fields=authors,content&amp;_sort=timestamp">?_fields=content,authors&_sort=timestamp</a>.
+    </li>
+    -->
+</ul>
+</div>
+
+<h3>Available Collections</h3>
+<ul class="api-entries">
+  <li>
+    <b>artin</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-artin.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/artin_field_data/">field_data (606677)</a>
+        &middot;              <a href="/api/artin_old2new_labels/">old2new_labels (1631776)</a>
+        &middot;              <a href="/api/artin_reps/">reps (798140)</a>
+                </li>
+  <li>
+    <b>av</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-av.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/av_fq_endalg_data/">fq_endalg_data (2659523)</a>
+        &middot;              <a href="/api/av_fq_endalg_factors/">fq_endalg_factors (4084993)</a>
+        &middot;              <a href="/api/av_fq_isog/">fq_isog (2945722)</a>
+                </li>
+  <li>
+    <b>belyi</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-belyi.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/belyi_galmap_portraits/">galmap_portraits (915)</a>
+        &middot;              <a href="/api/belyi_galmaps/">galmaps (1111)</a>
+        &middot;              <a href="/api/belyi_galmaps_fixed/">galmaps_fixed (1111)</a>
+        &middot;              <a href="/api/belyi_galmaps_prim/">galmaps_prim (616)</a>
+        &middot;              <a href="/api/belyi_passports/">passports (1007)</a>
+        &middot;              <a href="/api/belyi_passports_fixed/">passports_fixed (1007)</a>
+        &middot;              <a href="/api/belyi_specializations/">specializations (5106)</a>
+                </li>
+  <li>
+    <b>bmf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-bmf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/bmf_dims/">dims (456188)</a>
+        &middot;              <a href="/api/bmf_forms/">forms (233333)</a>
+                </li>
+  <li>
+    <b>char</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-char.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/char_dirichlet/">dirichlet (562396733)</a>
+                </li>
+  <li>
+    <b>cluster</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-cluster.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/cluster_pictures/">pictures (279)</a>
+                </li>
+  <li>
+    <b>ec</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-ec.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/ec_classdata/">classdata (2917287)</a>
+        &middot;              <a href="/api/ec_curvedata/">curvedata (3824372)</a>
+        &middot;              <a href="/api/ec_galrep/">galrep (5482562)</a>
+        &middot;              <a href="/api/ec_iqf_labels/">iqf_labels (46358)</a>
+        &middot;              <a href="/api/ec_iwasawa/">iwasawa (974104)</a>
+        &middot;              <a href="/api/ec_localdata/">localdata (13178234)</a>
+        &middot;              <a href="/api/ec_mwbsd/">mwbsd (3824372)</a>
+        &middot;              <a href="/api/ec_nfcurves/">nfcurves (767518)</a>
+        &middot;              <a href="/api/ec_nfportraits/">nfportraits (170119)</a>
+        &middot;              <a href="/api/ec_padic/">padic (6819842)</a>
+        &middot;              <a href="/api/ec_torsion_growth/">torsion_growth (16491706)</a>
+                </li>
+  <li>
+    <b>fq</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-fq.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/fq_fields/">fields (35352)</a>
+                </li>
+  <li>
+    <b>g2c</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-g2c.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/g2c_curves/">curves (66158)</a>
+        &middot;              <a href="/api/g2c_endomorphisms/">endomorphisms (66158)</a>
+        &middot;              <a href="/api/g2c_galrep/">galrep (51890)</a>
+        &middot;              <a href="/api/g2c_plots/">plots (66158)</a>
+        &middot;              <a href="/api/g2c_ratpts/">ratpts (66158)</a>
+        &middot;              <a href="/api/g2c_tamagawa/">tamagawa (172938)</a>
+                </li>
+  <li>
+    <b>gps</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-gps.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/gps_char/">char (39901075)</a>
+        &middot;              <a href="/api/gps_char_test/">char_test (0)</a>
+        &middot;              <a href="/api/gps_conj_classes/">conj_classes (177423106)</a>
+        &middot;              <a href="/api/gps_crep/">crep (701)</a>
+        &middot;              <a href="/api/gps_families/">families (66)</a>
+        &middot;              <a href="/api/gps_gl2zhat/">gl2zhat (3336)</a>
+        &middot;              <a href="/api/gps_gl2zhat_coarse/">gl2zhat_coarse (804450)</a>
+        &middot;              <a href="/api/gps_gl2zhat_fine/">gl2zhat_fine (8166335)</a>
+        &middot;              <a href="/api/gps_gl2zhat_nonsurjdet/">gl2zhat_nonsurjdet (11182)</a>
+        &middot;              <a href="/api/gps_gmodules/">gmodules (73)</a>
+        &middot;              <a href="/api/gps_groups/">groups (544831)</a>
+        &middot;              <a href="/api/gps_groups_cc/">groups_cc (39809857)</a>
+        &middot;              <a href="/api/gps_groups_cc_test/">groups_cc_test (0)</a>
+        &middot;              <a href="/api/gps_groups_test/">groups_test (544831)</a>
+        &middot;              <a href="/api/gps_gsp4zhat/">gsp4zhat (1662)</a>
+        &middot;              <a href="/api/gps_images/">images (733572)</a>
+        &middot;              <a href="/api/gps_qchar/">qchar (18632148)</a>
+        &middot;              <a href="/api/gps_qchar_test/">qchar_test (0)</a>
+        &middot;              <a href="/api/gps_qrep/">qrep (371)</a>
+        &middot;              <a href="/api/gps_regular_polynomials/">regular_polynomials (218)</a>
+        &middot;              <a href="/api/gps_small/">small (92804)</a>
+        &middot;              <a href="/api/gps_smallhash/">smallhash (0)</a>
+        &middot;              <a href="/api/gps_special_names/">special_names (14639)</a>
+        &middot;              <a href="/api/gps_st/">st (10465)</a>
+        &middot;              <a href="/api/gps_st0/">st0 (25)</a>
+        &middot;              <a href="/api/gps_subgroup_data/">subgroup_data (275339797)</a>
+        &middot;              <a href="/api/gps_subgroup_search/">subgroup_search (275339797)</a>
+        &middot;              <a href="/api/gps_subgroups_test/">subgroups_test (0)</a>
+        &middot;              <a href="/api/gps_transitive/">transitive (512614)</a>
+        &middot;              <a href="/api/gps_transitive_portraits/">transitive_portraits (512615)</a>
+                </li>
+  <li>
+    <b>halfmf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-halfmf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/halfmf_forms/">forms (3)</a>
+                </li>
+  <li>
+    <b>hecke</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-hecke.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/hecke_algebras/">algebras (1421)</a>
+        &middot;              <a href="/api/hecke_ladic/">ladic (3771)</a>
+        &middot;              <a href="/api/hecke_orbits/">orbits (454)</a>
+                </li>
+  <li>
+    <b>hgcwa</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-hgcwa.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/hgcwa_complete/">complete (14)</a>
+        &middot;              <a href="/api/hgcwa_passports/">passports (335012)</a>
+        &middot;              <a href="/api/hgcwa_unique_groups/">unique_groups (1299)</a>
+                </li>
+  <li>
+    <b>hgm</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-hgm.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/hgm_euler_survey/">euler_survey (97527)</a>
+        &middot;              <a href="/api/hgm_families/">families (61063)</a>
+        &middot;              <a href="/api/hgm_monodromy/">monodromy (137565)</a>
+        &middot;              <a href="/api/hgm_motives/">motives (285)</a>
+                </li>
+  <li>
+    <b>hmf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-hmf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/hmf_fields/">fields (400)</a>
+        &middot;              <a href="/api/hmf_forms/">forms (368356)</a>
+        &middot;              <a href="/api/hmf_hecke/">hecke (368356)</a>
+                </li>
+  <li>
+    <b>inv</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-inv.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/inv_dbs/">dbs (28)</a>
+        &middot;              <a href="/api/inv_fields_auto/">fields_auto (1195)</a>
+        &middot;              <a href="/api/inv_fields_human/">fields_human (1138)</a>
+        &middot;              <a href="/api/inv_ops/">ops (2)</a>
+        &middot;              <a href="/api/inv_rollback/">rollback (0)</a>
+        &middot;              <a href="/api/inv_tables/">tables (73)</a>
+                </li>
+  <li>
+    <b>lat</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-lat.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/lat_lattices/">lattices (39293)</a>
+                </li>
+  <li>
+    <b>lf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-lf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/lf_families/">families (605478)</a>
+        &middot;              <a href="/api/lf_fields/">fields (1393286)</a>
+                </li>
+  <li>
+    <b>lfunc</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-lfunc.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/lfunc_instances/">instances (24594342)</a>
+        &middot;              <a href="/api/lfunc_lfunctions/">lfunctions (24201376)</a>
+        &middot;              <a href="/api/lfunc_rs_knowls/">rs_knowls (6)</a>
+        &middot;              <a href="/api/lfunc_search/">search (24123388)</a>
+                </li>
+  <li>
+    <b>maass</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-maass.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/maass_newforms/">newforms (14995)</a>
+        &middot;              <a href="/api/maass_newforms_coefficients/">newforms_coefficients (14995)</a>
+        &middot;              <a href="/api/maass_portraits/">portraits (14995)</a>
+        &middot;              <a href="/api/maass_rigor/">rigor (35416)</a>
+        &middot;              <a href="/api/maass_rigor_coefficients/">rigor_coefficients (35416)</a>
+        &middot;              <a href="/api/maass_rigor_portraits/">rigor_portraits (35416)</a>
+                </li>
+  <li>
+    <b>mf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-mf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/mf_boxes/">boxes (12)</a>
+        &middot;              <a href="/api/mf_gamma1/">gamma1 (1161064)</a>
+        &middot;              <a href="/api/mf_gamma1_portraits/">gamma1_portraits (27801)</a>
+        &middot;              <a href="/api/mf_hecke_cc/">hecke_cc (14417694)</a>
+        &middot;              <a href="/api/mf_hecke_charpolys/">hecke_charpolys (5472725)</a>
+        &middot;              <a href="/api/mf_hecke_lpolys/">hecke_lpolys (5472725)</a>
+        &middot;              <a href="/api/mf_hecke_nf/">hecke_nf (218909)</a>
+        &middot;              <a href="/api/mf_hecke_traces/">hecke_traces (184889242)</a>
+        &middot;              <a href="/api/mf_newform_portraits/">newform_portraits (281965)</a>
+        &middot;              <a href="/api/mf_newforms/">newforms (1141510)</a>
+        &middot;              <a href="/api/mf_newspace_portraits/">newspace_portraits (338553)</a>
+        &middot;              <a href="/api/mf_newspaces/">newspaces (2471024)</a>
+        &middot;              <a href="/api/mf_stark/">stark (2556)</a>
+        &middot;              <a href="/api/mf_twists_cc/">twists_cc (49165089)</a>
+        &middot;              <a href="/api/mf_twists_nf/">twists_nf (1622040)</a>
+                </li>
+  <li>
+    <b>modcurve</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-modcurve.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/modcurve_modelmaps/">modelmaps (109042)</a>
+        &middot;              <a href="/api/modcurve_models/">models (110173)</a>
+        &middot;              <a href="/api/modcurve_pictures/">pictures (17618)</a>
+        &middot;              <a href="/api/modcurve_points/">points (1848861)</a>
+        &middot;              <a href="/api/modcurve_teximages/">teximages (5891)</a>
+                </li>
+  <li>
+    <b>modlgal</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-modlgal.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/modlgal_reps/">reps (845)</a>
+                </li>
+  <li>
+    <b>modlmf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-modlmf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/modlmf_forms/">forms (264)</a>
+                </li>
+  <li>
+    <b>nf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-nf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/nf_fields/">fields (22178569)</a>
+        &middot;              <a href="/api/nf_fields_extra/">fields_extra (22177345)</a>
+        &middot;              <a href="/api/nf_fields_reflex/">fields_reflex (2865131)</a>
+                </li>
+  <li>
+    <b>smf</b>
+    <!--
+    (<a href="https://github.com/LMFDB/lmfdb-inventory/blob/master/db-smf.md"
+    target="_blank">description</a>)
+    -->
+    <br/>
+              <a href="/api/smf_dims/">dims (72)</a>
+        &middot;              <a href="/api/smf_ev/">ev (3094)</a>
+        &middot;              <a href="/api/smf_families/">families (14)</a>
+        &middot;              <a href="/api/smf_fc/">fc (26212)</a>
+        &middot;              <a href="/api/smf_samples/">samples (129)</a>
+                </li>
+</ul>
+
+      </div>
+</div>
+
+
+<div id="footer">
+    
+        <h4 style="margin:5px;">This project is supported by <a href="/acknowledgment#sponsors">grants</a> from the US National Science Foundation, the UK Engineering and Physical Sciences Research Council, and the Simons Foundation.</h4>
+    <div>
+      <a href="/contact">Contact</a>
+      &middot;
+      <a href="/citation">Citation</a>
+      &middot;
+      <a href="/license">License</a>
+      &middot;
+      <a href="/acknowledgment">Acknowledgments</a>
+      &middot;
+      <a href="/management">Editorial Board</a>
+            &middot;
+      <a href="https://github.com/LMFDB/lmfdb/tree/0db3a05774ad6bd8916a22b4de6d1a2b7aeaa9d3
+">Source</a>
+            &middot;
+      SageMath version 10.5
+      &middot;
+      LMFDB Release 1.2.1
+    </div>
+</div>  </body>
+</html>

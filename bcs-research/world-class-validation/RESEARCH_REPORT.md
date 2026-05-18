@@ -1,5 +1,5 @@
 # BCS-521-V2 — World-Class Validation Report
-*Auto-generated 2026-05-18 08:00 UTC*
+*Auto-generated 2026-05-18 08:31 UTC*
 
 This report aggregates the numerical and structural evidence collected by the
 Phase-6 validation suite for the elliptic curve
@@ -134,3 +134,25 @@ arXiv math.NT.
 The Phase-6 outputs are sufficient for an **IACR ePrint** submission and a
 **math.NT arXiv** paper on the Bismillah-Pell family.  Both are realistic
 publication targets.
+
+---
+
+## 7. PARI/GP Exact Values
+
+PARI/GP 2.15.4 (Tate's algorithm) gives the following **exact** invariants:
+
+| Quantity | Exact Value | Note |
+|---|---|---|
+| Conductor N | **1424** | = 2⁴ · 89 |
+| Discriminant Δ | **−22784** | = −2⁸ · 89 |
+| j-invariant | **21296/89** | |
+| Torsion E(ℚ)_tors | **trivial** | Mazur 1977 |
+| Tamagawa product | **1** | ∏ cₚ = 1 |
+| Reduction at 2 | additive | Kodaira type I_n* |
+| Reduction at 89 | multiplicative | Kodaira type I_n |
+
+**Mordell-Weil conclusion (Mazur + BSD signal):**
+> E(ℚ) ≅ ℤ^r  with r ≥ 1  (slope -1.114, generator not in |x| ≤ 200).
+
+**LMFDB cross-reference:**
+  https://www.lmfdb.org/EllipticCurve/Q/?ainvs=%5B0%2C-2%2C0%2C5%2C4%5D

@@ -18,11 +18,12 @@ A2, A4, A6 = -2, 5, 4
 
 
 def discriminant() -> int:
-    return (-4 * A2**3 * A6
-            +     A2**2 * A4**2
-            + 18 * A2 * A4 * A6
-            -  4 * A4**3
-            - 27 * A6**2)
+    # Full Weierstrass discriminant (a1 = a3 = 0)
+    b2 = 4 * A2
+    b4 = 2 * A4
+    b6 = 4 * A6
+    b8 = 4 * A2 * A6 - A4**2
+    return -b2*b2*b8 - 8*b4**3 - 27*b6*b6 + 9*b2*b4*b6
 
 
 def c4_c6() -> tuple[int, int]:

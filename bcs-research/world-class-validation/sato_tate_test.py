@@ -82,12 +82,12 @@ def expected_count_in_bin(left: float, right: float, total: int) -> float:
 
 # ----- Discriminant + bad primes --------------------------------------------
 def discriminant(a2: int = A2, a4: int = A4, a6: int = A6) -> int:
-    # General Weierstrass with a1 = a3 = 0
-    return (-4 * a2**3 * a6
-            +     a2**2 * a4**2
-            + 18 * a2 * a4 * a6
-            -  4 * a4**3
-            - 27 * a6**2)
+    # Full Weierstrass discriminant (a1 = a3 = 0)
+    b2 = 4 * a2
+    b4 = 2 * a4
+    b6 = 4 * a6
+    b8 = 4 * a2 * a6 - a4**2
+    return -b2*b2*b8 - 8*b4**3 - 27*b6*b6 + 9*b2*b4*b6
 
 
 def bad_primes() -> list[int]:
