@@ -51,6 +51,10 @@ pub use api::{Bcs521, Bcs521Error, Bcs521PublicKey, Bcs521SecretKey, Bcs521Share
 #[cfg(feature = "hybrid")]
 pub mod hybrid;
 
+/// Kahf-seeded deterministic prime generator for BCS-521-V2.
+/// Byte-for-byte port of `bcs521-v2-search/kahf_seeded_search.py::candidate`.
+pub mod kahf_seeded;
+
 #[cfg(feature = "hybrid")]
 pub use hybrid::{
     BcsHybrid521Mlkem1024, HybridCiphertext, HybridError, HybridPublicKey, HybridSecretKey,
@@ -334,6 +338,37 @@ pub fn bcs521() -> Curve {
         p,
         n,
         field_bytes: 66, // ceil(521 / 8) = 66
+        g: Point::Affine {
+            x: BigUint::zero(),
+            y: BigUint::from(2u32),
+        },
+    }
+}
+
+
+/// BCS-521-V2 research curve (Kahf-seeded, verifiably random).
+///
+/// `p` and `n` are deterministically derived from the canonical Kahf seed
+/// via [`kahf_seeded::candidate`]. See `reproduce_v2_prime()` — anyone can
+/// re-derive `p` byte-for-byte from the seed text alone.
+///
+/// Audit (PARI APR-CL): both `p` and `n` are constructively prime.
+pub fn bcs521_v2() -> Curve {
+    let p = BigUint::parse_bytes(
+        b"3653235570455525964101546872972377381028859693657234694370089361335511547047366769170661366411783533970948449305575073943487138347217946970845438585295113967",
+        10,
+    )
+    .unwrap();
+    let n = BigUint::parse_bytes(
+        b"3653235570455525964101546872972377381028859693657234694370089361335511547047368501056249976202843283167644817710698907182284089240919590631709823470060471101",
+        10,
+    )
+    .unwrap();
+    Curve {
+        name: "BCS-521-V2",
+        p,
+        n,
+        field_bytes: 66,
         g: Point::Affine {
             x: BigUint::zero(),
             y: BigUint::from(2u32),
