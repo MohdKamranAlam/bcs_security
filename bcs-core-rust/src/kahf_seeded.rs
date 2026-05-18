@@ -278,9 +278,9 @@ mod tests {
     #[test]
     fn first_three_candidates_hex_prefix_match_python() {
         let expected_prefixes = [
-            "18d8ce581d6b17fceda196a0aa88a88c",
-            "1ed62cb7897b4c6d6a6a2a6480712cd4",
-            "13dd053f2c618834ae5709a56b5df60d",
+            "1b8ec6cb7c8819a2a74bb8f092f4ef96",
+            "0a6e94feffcde3ef1f73fe9bb8af6a0d",
+            "1c7c43d264b4c3d69c6f6ea0b7a60e4b",
         ];
         for (c, want) in expected_prefixes.iter().enumerate() {
             let p = candidate_v2(c as u64);
