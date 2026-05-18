@@ -1,0 +1,42 @@
+{
+  "source": "https://www.lmfdb.org/EllipticCurve/Q/1424/d/1",
+  "fetched_on": "2026-05-18",
+  "lmfdb_label": "1424.d1",
+  "cremona_label": "1424d1",
+  "our_curve": "y^2 = x^3 - 2*x^2 + 5*x + 4",
+  "lmfdb_minimal": "y^2 = x^3 + x^2 + 4*x + 8",
+  "isomorphism": "x -> x + 1",
+  "conductor": 1424,
+  "discriminant": -22784,
+  "j_invariant": "21296/89",
+  "rank": 1,
+  "torsion": "trivial",
+  "generator_point": "(-1, 2)",
+  "canonical_height": 1.080159041528491,
+  "regulator": 1.080159041528491,
+  "real_period_omega": 2.7186498896794076,
+  "tamagawa_product": 1,
+  "analytic_sha": 1,
+  "special_value_L_prime_E_1": 2.9365742584163637,
+  "bsd_verified": true,
+  "bsd_check": "L'(E,1) = Omega * Reg * Tam * |Sha| / Tors^2 = 2.71865 * 1.08016 * 1 * 1 / 1 = 2.93657",
+  "modular_form": "1424.2.a.d",
+  "modular_degree": 48,
+  "a19_coefficient": 5,
+  "a19_note": "a_19 = +5 = linear coefficient of T_A = 17*B^2 + 5*B + 4",
+  "local_p2": {
+    "kodaira": "I_0^*",
+    "reduction": "additive",
+    "c_p": 1
+  },
+  "local_p89": {
+    "kodaira": "I_1",
+    "reduction": "split multiplicative",
+    "c_p": 1
+  },
+  "galois_image": "maximal for all primes ell",
+  "rational_isogenies": "none",
+  "isogeny_class_size": 1,
+  "cm": false,
+  "sato_tate_group": "SU(2)"
+}
