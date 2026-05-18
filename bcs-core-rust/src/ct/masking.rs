@@ -140,6 +140,8 @@ fn scalar_add_mod_n(a: &Scalar, b: &Scalar) -> Scalar {
     let ge_n = !candidate.ct_lt_n();
 
     // Constant-time conditional subtraction of n.
+    // Store original limbs before we modify (Scalar is not Copy).
+    let original_limbs = candidate.limbs;
     let mut result = candidate;
     let mut borrow: u64 = 0;
     for i in 0..9 {
@@ -148,7 +150,7 @@ fn scalar_add_mod_n(a: &Scalar, b: &Scalar) -> Scalar {
         // Select: if ge_n, use diff2; else keep original.
         let mask = ge_n.unwrap_u8() as u64; // 0 or 1
         let mask = !(mask.wrapping_sub(1)); // 0→0x0000, 1→0xFFFF
-        result.limbs[i] = (diff2 & mask) | (candidate.limbs[i] & !mask);
+        result.limbs[i] = (diff2 & mask) | (original_limbs[i] & !mask);
         borrow = (b1 as u64) | (b2 as u64);
     }
     result

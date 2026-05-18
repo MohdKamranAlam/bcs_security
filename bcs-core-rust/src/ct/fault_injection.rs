@@ -29,7 +29,7 @@
 //! high-value operations (key generation, signing) where fault attacks
 //! are a realistic threat model.
 
-use subtle::Choice;
+use subtle::{Choice, ConditionallySelectable};
 
 use super::point::ProjPoint;
 use super::scalar::Scalar;
