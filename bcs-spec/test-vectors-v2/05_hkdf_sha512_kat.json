@@ -1,0 +1,38 @@
+{
+  "name": "BCS-521-V2 HKDF-SHA-512 KAT",
+  "description": "RFC 5869 HKDF-SHA-512 with V2-master-seed salts.",
+  "hash": "SHA-512",
+  "vectors": [
+    {
+      "ikm_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+      "salt_hex": "a7e2095812a53b18111510409951b3472dcdbfdc49a08600dd83f3b644a8ebeddcd856198544a56d905272203057ee7b6c1a55b080fd8d51a9144b739ed95cbd",
+      "info": "BCS-521-V2/test/1",
+      "L": 32,
+      "prk_hex": "f591ffaa1815fa429506a84515d632aa136d344208c7fd0dd67a8d89a87033ba70e4b022c60dbe0cbf4fd761e31a6a6c2c833e94706a275b4b6b2a3442ced999",
+      "okm_hex": "964cc197b8481ba5e8b3840c27938ce883ec1d2e3eada2a24a40fc900895e178"
+    },
+    {
+      "ikm_hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "salt_hex": "a7e2095812a53b18111510409951b3472dcdbfdc49a08600dd83f3b644a8ebeddcd856198544a56d905272203057ee7b6c1a55b080fd8d51a9144b739ed95cbd",
+      "info": "BCS-521-V2/test/2",
+      "L": 64,
+      "prk_hex": "b4a26d1ca55bfb12c4507caae4a29d50c61268ebf6f0652429637284efc3502eb8a00b4316f3fcbd2b3dfd2bef206d4ee2f718c97ce61cee75613829a26d972f",
+      "okm_hex": "88e95f5b4714a3e0518d9530e09b3bc581db9d5f5090d440a35525959d12baff11b2ba6786256aa97818d364be25caf011ff0de3db87edba69b8de184519503e"
+    },
+    {
+      "ikm_hex": "a7e2095812a53b18111510409951b3472dcdbfdc49a08600dd83f3b644a8ebeddcd856198544a56d905272203057ee7b6c1a55b080fd8d51a9144b739ed95cbd",
+      "salt_hex": "",
+      "info": "BCS-521-V2/test/3",
+      "L": 96,
+      "prk_hex": "ee97c37c3305501191ec8c12146e7073cc5b2d68743e32d8fd8157f44931dcf7c1e6a2d0dd067f2db1daeb1aea3946243f8c2d79908ba38d53122ac955e52b22",
+      "okm_hex": "0257752f51e7491256560e4d3474c0ca9bec5ee8ec5321dcc84d9e430364e3b8807899ee6c36d2ab4951cc0f6bd756d61529433d4d308b98579b478be07cb0e18f10333a0d65e8d623eb5a3001ffd549e60e1a2e0e52a22a3f01db0301b70edc"
+    }
+  ],
+  "_metadata": {
+    "spec": "BCS-521-V2",
+    "status": "frozen-v1",
+    "generated": "2026-05-18T07:34:13Z",
+    "generator": "generate_bcs521_v2_kats.py",
+    "warning": "DO NOT EDIT. Audit-locked. Regenerate only via script."
+  }
+}

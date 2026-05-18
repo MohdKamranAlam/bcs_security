@@ -1,0 +1,28 @@
+{
+  "name": "BCS-521-V2",
+  "status": "research-curve, audit-frozen",
+  "field_bits": 521,
+  "field_bytes": 66,
+  "cofactor": 1,
+  "equation": "y^2 = x^3 - 2x^2 + 5x + 4  (mod p)",
+  "a2": -2,
+  "a4": 5,
+  "a6": 4,
+  "p_decimal": "3653235570455525964101546872972377381028859693657234694370089361335511547047366769170661366411783533970948449305575073943487138347217946970845438585295113967",
+  "n_decimal": "3653235570455525964101546872972377381028859693657234694370089361335511547047368501056249976202843283167644817710698907182284089240919590631709823470060471101",
+  "p_hex": "11078838074e5689000cc9121648f0d2d908d2c93a96a70ce1d796f36c679c62ba43aa8c1ae457604b3b5ce7530c0fc6f4fae892e6703c6913073f74e8b59148eef",
+  "n_hex": "11078838074e5689000cc9121648f0d2d908d2c93a96a70ce1d796f36c679c62bb32f9d4325dad11f98da7b04e7a6d93361a9f261f7266dd18887492c16cd6c833d",
+  "generator": {
+    "x": "0",
+    "y": "2"
+  },
+  "winning_counter": 28738,
+  "seed_label": "BCS-521-V2-Seed-v1",
+  "_metadata": {
+    "spec": "BCS-521-V2",
+    "status": "frozen-v1",
+    "generated": "2026-05-18T07:34:13Z",
+    "generator": "generate_bcs521_v2_kats.py",
+    "warning": "DO NOT EDIT. Audit-locked. Regenerate only via script."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "spec": "BCS-521-V2 Known Answer Tests",
+  "version": "v1.0-frozen",
+  "generated": "2026-05-18T07:34:13Z",
+  "files": [
+    {
+      "name": "01_canonical_seed_input.json",
+      "title": "BCS-521-V2 Canonical Seed Input",
+      "sha256": "30599cbec97d29e5d1331fe2b3f03463c13b0959bd9e3f10059d2dc3bc8c8af3",
+      "size": 898
+    },
+    {
+      "name": "02_master_seed.json",
+      "title": "BCS-521-V2 Master Seed",
+      "sha256": "12e270580543d6e2c5db2aff4de041b71343cc3d704b69dc85f158a3a14a948d",
+      "size": 584
+    },
+    {
+      "name": "03_candidate_kat.json",
+      "title": "BCS-521-V2 candidate(c) Outputs",
+      "sha256": "d0b3832d6f2852d8a2e3859d07cfc88ba6994fd5188c161aee5535e6a30965fb",
+      "size": 6626
+    },
+    {
+      "name": "04_kahf_dst_kat.json",
+      "title": "BCS-521-V2 Kahf Domain Separator KAT",
+      "sha256": "2c9c3d1fff687463f517bd00a85203fba3c61ac8a4de2d729fa545a9ab5921d8",
+      "size": 1525
+    },
+    {
+      "name": "05_hkdf_sha512_kat.json",
+      "title": "BCS-521-V2 HKDF-SHA-512 KAT",
+      "sha256": "3aa575b9be0bd29ea60595e832a6b33d75ef73abfbf8a78957229d426c9d17fd",
+      "size": 2173
+    },
+    {
+      "name": "06_curve_params.json",
+      "title": "BCS-521-V2",
+      "sha256": "e4e53f33d28639d6f03fa8080fae7faf3b212644078a761c3be621e4fe0f23c2",
+      "size": 1210
+    }
+  ]
+}

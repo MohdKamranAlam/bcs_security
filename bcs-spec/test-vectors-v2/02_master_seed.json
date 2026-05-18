@@ -1,0 +1,16 @@
+{
+  "name": "BCS-521-V2 Master Seed",
+  "description": "SHA-512 of canonical_seed_input.",
+  "input_label": "BCS-521-V2-Seed-v1",
+  "input_bits": 521,
+  "hash": "SHA-512",
+  "master_seed": "a7e2095812a53b18111510409951b3472dcdbfdc49a08600dd83f3b644a8ebeddcd856198544a56d905272203057ee7b6c1a55b080fd8d51a9144b739ed95cbd",
+  "master_seed_bits": 512,
+  "_metadata": {
+    "spec": "BCS-521-V2",
+    "status": "frozen-v1",
+    "generated": "2026-05-18T07:34:13Z",
+    "generator": "generate_bcs521_v2_kats.py",
+    "warning": "DO NOT EDIT. Audit-locked. Regenerate only via script."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "BCS-521-V2 Kahf Domain Separator KAT",
+  "description": "SHA-256(master_seed || ':dst:' || label) \u2014 32-byte tag.",
+  "construction": "SHA-256(master_seed_v2 || b':dst:' || label_utf8)",
+  "vectors": [
+    {
+      "label": "BCS-521-V2/ECDH",
+      "dst_hex": "3ff8949d5971ad574326babe4ce92cbb9a60e0d4e37773cb977a0d80e5413bcd"
+    },
+    {
+      "label": "BCS-521-V2/Sign",
+      "dst_hex": "ce7102a2bc219ba524f559cbe9e23cc23dc88f2a107b845287b7a3497cf03682"
+    },
+    {
+      "label": "BCS-521-V2/KEM",
+      "dst_hex": "5b603cf944d6231a899702d0602a60230b71e6f1c4620dc9a66748fce865a0a3"
+    },
+    {
+      "label": "BCS-521-V2/Hybrid-ML-KEM-1024",
+      "dst_hex": "138f735f5d471e24cebd776727d8aa3039a5cf42365dd9218fe5721e88643516"
+    },
+    {
+      "label": "BCS-521-V2/HKDF-Extract",
+      "dst_hex": "7d6598ad463d5623335de052f1f54701e816b3dacd6bafa33f5509b152b27fa7"
+    },
+    {
+      "label": "BCS-521-V2/HKDF-Expand",
+      "dst_hex": "5aa76865a0f398e40b7de124240b3e1ece2b34446d23fb41baec4751691f1934"
+    },
+    {
+      "label": "Halal-Certificate-v1",
+      "dst_hex": "d6f452221f5f9f1f245192b4696be7aeb13c6c8030fa3c34945fda54612cbf78"
+    },
+    {
+      "label": "",
+      "dst_hex": "95667e702462eaf27f1c571fe9101b0fb685b338f9ecb8d990720eab745e0601"
+    }
+  ],
+  "_metadata": {
+    "spec": "BCS-521-V2",
+    "status": "frozen-v1",
+    "generated": "2026-05-18T07:34:13Z",
+    "generator": "generate_bcs521_v2_kats.py",
+    "warning": "DO NOT EDIT. Audit-locked. Regenerate only via script."
+  }
+}

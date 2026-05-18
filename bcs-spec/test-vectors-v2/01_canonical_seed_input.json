@@ -1,0 +1,16 @@
+{
+  "name": "BCS-521-V2 Canonical Seed Input",
+  "description": "Exact ASCII bytes hashed by SHA-512 to form the master seed.",
+  "label": "BCS-521-V2-Seed-v1",
+  "bits": 521,
+  "length": 147,
+  "ascii": "BCS-521-V2-Seed-v1:p_kahf_first_decimal=2141;p_kahf_last_zf=2969;p_kahf_sleepers=7;p_kahf_surah_zf=19;p_kahf_years_zf=373;a2=-2;a4=5;a6=4;bits=521;",
+  "hex": "4243532d3532312d56322d536565642d76313a705f6b6168665f66697273745f646563696d616c3d323134313b705f6b6168665f6c6173745f7a663d323936393b705f6b6168665f736c6565706572733d373b705f6b6168665f73757261685f7a663d31393b705f6b6168665f79656172735f7a663d3337333b61323d2d323b61343d353b61363d343b626974733d3532313b",
+  "_metadata": {
+    "spec": "BCS-521-V2",
+    "status": "frozen-v1",
+    "generated": "2026-05-18T07:34:13Z",
+    "generator": "generate_bcs521_v2_kats.py",
+    "warning": "DO NOT EDIT. Audit-locked. Regenerate only via script."
+  }
+}
