@@ -17,6 +17,7 @@
 //! ├── scalar.rs            ← Z / n_521 Z with Zeroize + Montgomery arithmetic
 //! ├── point.rs             ← Jacobian-projective point + complete formulas
 //! ├── ladder.rs            ← Montgomery ladder scalar multiplication
+//! ├── ecdsa.rs             ← CT ECDSA sign/verify (RFC 6979, SHA-256)
 //! ├── fault_injection.rs   ← Redundant computation + CT compare (Fortress)
 //! ├── masking.rs           ← DPA additive scalar masking (Fortress)
 //! ├── execution_proof.rs   ← Transparent proof system (Fortress)
@@ -56,3 +57,9 @@ pub use fault_injection::{scalar_mul_fault_protected, scalar_mul_generator_fault
 pub use masking::{scalar_mul_masked, scalar_mul_generator_masked, MaskedScalar};
 pub use execution_proof::{ExecutionProof, FortressFlags, OperationKind};
 pub use aggressive_zeroize::{aggressive_clear, aggressive_clear_u64, AggressiveZeroize};
+
+#[cfg(feature = "ecdsa")]
+pub mod ecdsa;
+
+#[cfg(feature = "ecdsa")]
+pub use ecdsa::{ct_sign, ct_verify, Bcs521EcdsaSignature, CtEcdsaError};

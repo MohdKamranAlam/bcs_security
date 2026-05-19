@@ -56,12 +56,18 @@ pub use api::{Bcs521, Bcs521Error, Bcs521PublicKey, Bcs521SecretKey, Bcs521Share
 pub mod hybrid;
 
 /// BCS-521 ECDSA — deterministic sign + verify (RFC 6979, SHA-256).
-/// Requires `--features ecdsa`.  Reference BigUint path (not CT yet).
+/// Requires `--features ecdsa`.  Both BigUint reference and CT Montgomery
+/// paths are available.
 #[cfg(feature = "ecdsa")]
 pub mod ecdsa;
 
 #[cfg(feature = "ecdsa")]
 pub use ecdsa::{sign as ecdsa_sign, verify as ecdsa_verify, Bcs521Signature, EcdsaError};
+
+/// Constant-time BCS-521 ECDSA — deterministic sign + verify via
+/// Montgomery ladder + CIOS scalar arithmetic (RFC 6979, SHA-256).
+#[cfg(feature = "ecdsa")]
+pub use ct::ecdsa::{ct_sign as ecdsa_ct_sign, ct_verify as ecdsa_ct_verify, Bcs521EcdsaSignature, CtEcdsaError};
 
 /// Kahf-seeded deterministic prime generator for BCS-521-V2.
 /// Byte-for-byte port of `bcs521-v2-search/kahf_seeded_search.py::candidate`.

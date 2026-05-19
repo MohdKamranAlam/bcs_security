@@ -16,9 +16,9 @@ ct = ["dep:subtle", "dep:zeroize"]
 # Enable the hybrid post-quantum KEM (BCS-521 ECDH + ML-KEM-1024).
 # Pulls in the `ml-kem` crate from RustCrypto.
 hybrid = ["ct", "dep:ml-kem"]
-# Enable BCS-521 ECDSA: deterministic sign + verify via RFC 6979 + BigUint
-# reference path. CT Barrett-reduced path arrives in v0.3.1.
-ecdsa = ["dep:hmac"]
+# Enable BCS-521 ECDSA: deterministic sign + verify via RFC 6979.
+# Both BigUint reference and CT Montgomery paths are available.
+ecdsa = ["ct", "dep:hmac"]
 # Fortress: all security hardening enabled (CT + fault injection + DPA masking
 # + aggressive zeroize + transparent execution proofs + PQ hybrid).
 # This is the recommended feature for production deployments.

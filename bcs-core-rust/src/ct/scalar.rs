@@ -98,6 +98,50 @@ impl Scalar {
         }
     }
 
+    /// Decode 66 big-endian bytes into a scalar, reducing mod n if needed.
+    ///
+    /// Unlike [`from_bytes_be`], this always succeeds: if the encoded
+    /// value is `>= n`, it is reduced by subtracting `n` once (sufficient
+    /// because the input is at most `p - 1 < 2·n` for BCS-521).
+    ///
+    /// **Constant-time.**  Used by ECDSA to convert `R.x mod n` where
+    /// `R.x < p` but may be `>= n`.
+    pub fn from_bytes_be_reduce(bytes: &[u8; FIELD_BYTES]) -> Self {
+        let raw = Self::from_bytes_be_unreduced(bytes);
+        // raw < 2·n because the input is at most p-1 < 2·n.
+        // Subtract n if raw >= n.  Keep the comparison as a Choice
+        // to avoid a secret-dependent branch.
+        let needs_reduce = raw.ct_lt_n().not();
+        let reduced = raw.sub_mod_n(&Self::N);
+        let mut out = [0u64; 9];
+        for i in 0..9 {
+            out[i] = u64::conditional_select(
+                &raw.limbs[i],
+                &reduced.limbs[i],
+                needs_reduce,
+            );
+        }
+        Self { limbs: out }
+    }
+
+    /// Decode 66 big-endian bytes into a scalar without range check.
+    ///
+    /// Internal helper — the caller must ensure the result is used
+    /// correctly (e.g. by reducing mod n afterwards).
+    fn from_bytes_be_unreduced(bytes: &[u8; FIELD_BYTES]) -> Self {
+        let mut le = [0u8; 72];
+        for i in 0..FIELD_BYTES {
+            le[i] = bytes[FIELD_BYTES - 1 - i];
+        }
+        let mut limbs = [0u64; 9];
+        for i in 0..9 {
+            let mut buf = [0u8; 8];
+            buf.copy_from_slice(&le[i * 8..(i + 1) * 8]);
+            limbs[i] = u64::from_le_bytes(buf);
+        }
+        Self { limbs }
+    }
+
     /// Encode as 66 big-endian bytes.  **Constant-time.**
     pub fn to_bytes_be(&self) -> [u8; FIELD_BYTES] {
         let mut le = [0u8; 72];
