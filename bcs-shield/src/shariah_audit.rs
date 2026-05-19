@@ -57,6 +57,7 @@ impl AuditLog {
     }
 
     /// Get entries for a specific key
+    #[allow(dead_code)]
     pub fn for_key(&self, key_id: &str) -> Vec<AuditEntry> {
         let entries = self.entries.read().unwrap();
         entries.iter()

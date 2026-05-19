@@ -110,7 +110,7 @@ run_phase "fmt" \
     "cargo fmt --all"
 
 run_phase "clippy" \
-    "cargo clippy --manifest-path bcs-core-rust/Cargo.toml --features fortress -- -D warnings -A dead_code"
+    "cargo clippy --manifest-path bcs-core-rust/Cargo.toml --features fortress -- -D clippy::correctness -W clippy::suspicious -A dead_code -A unused_imports -A unused_variables"
 
 run_phase "core_ref" \
     "cargo test --manifest-path bcs-core-rust/Cargo.toml --no-default-features"

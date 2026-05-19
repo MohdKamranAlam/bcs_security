@@ -189,6 +189,7 @@ pub struct ComplianceItem {
 }
 
 /// Generic API response
+#[allow(dead_code)]
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct ApiResponse<T: Serialize> {
     pub success: bool,

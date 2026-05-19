@@ -14,6 +14,11 @@
 //! ciphertexts.  Full arithmetic mod `n` arrives with the EC-DSA-style
 //! sign path in `v0.3.0`.
 
+// bool-as-u64 (e.g. `b1 as u64`) is the intentional CT-safe idiom throughout
+// this module.  Clippy's `cast_lossless` suggestion (`u64::from(b)`) is
+// equivalent but suppressed here to keep the CT code readable.
+#![allow(clippy::cast_lossless)]
+
 use subtle::{Choice, ConstantTimeEq};
 use zeroize::{Zeroize, ZeroizeOnDrop};
 

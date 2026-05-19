@@ -24,6 +24,7 @@ use crate::models::KeyInfo;
 
 /// What kind of key is this?
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[allow(dead_code)]
 pub enum KeyKind {
     /// Pure classical BCS-521 keypair (66B SK, 133B PK).
     Bcs521,
@@ -64,6 +65,7 @@ impl StoredKey {
         }
     }
 
+    #[allow(dead_code)]
     pub fn kind(&self) -> KeyKind {
         match self {
             StoredKey::Bcs521 { .. } => KeyKind::Bcs521,
@@ -71,6 +73,7 @@ impl StoredKey {
         }
     }
 
+    #[allow(dead_code)]
     pub fn is_active(&self) -> bool {
         match self {
             StoredKey::Bcs521 { active, .. } => *active,
@@ -78,6 +81,7 @@ impl StoredKey {
         }
     }
 
+    #[allow(dead_code)]
     pub fn public_key_hex(&self) -> String {
         match self {
             StoredKey::Bcs521 { pk, .. } => hex::encode(pk.to_bytes()),

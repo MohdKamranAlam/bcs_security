@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "bcs-core-rust",
+    "bcs-cli",
+    "bcs-shield",
+    "bcs-kahf-verify",
+]
+# fuzz crate is excluded (it uses its own nightly toolchain directives)
+exclude = ["bcs-core-rust/fuzz"]
+resolver = "2"
