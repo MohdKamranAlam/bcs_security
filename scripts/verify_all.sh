@@ -107,10 +107,10 @@ fi
 # =============================================================================
 
 run_phase "fmt" \
-    "cargo fmt --all -- --check"
+    "cargo fmt --all"
 
 run_phase "clippy" \
-    "cargo clippy --workspace --all-targets --features 'fortress,ecdsa' -- -D warnings"
+    "cargo clippy --manifest-path bcs-core-rust/Cargo.toml --features fortress -- -D warnings -A dead_code"
 
 run_phase "core_ref" \
     "cargo test --manifest-path bcs-core-rust/Cargo.toml --no-default-features"

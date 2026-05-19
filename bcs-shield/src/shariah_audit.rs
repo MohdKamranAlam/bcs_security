@@ -125,7 +125,7 @@ impl AuditLog {
                 satisfied: true,
                 evidence: "bcs-core-rust enforces `#![forbid(unsafe_code)]` and\n\
                            `ZeroizeOnDrop` on every secret-key type. Constant-time\n\
-                           Montgomery ladder + Renes\u2013Costello\u2013Batina formulas are\n\
+                           Montgomery ladder + Renes\u{2013}Costello\u{2013}Batina formulas are\n\
                            used for every secret-scalar operation."
                     .to_string(),
             },
