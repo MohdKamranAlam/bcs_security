@@ -7,12 +7,19 @@
 //! - [x] type, byte (de)serialization
 //! - [x] MSB-first bit iterator (constant 521 iterations)
 //! - [x] `Zeroize` / `ZeroizeOnDrop`
-//! - [ ] `add`, `sub`, `mul` mod n via Barrett reduction (v0.3.0, for EC-DSA-style sign)
+//! - [x] `add_mod_n`, `sub_mod_n` (canonical form, mod n)
+//! - [x] Montgomery multiplication mod n (`mont_mul_n`)
+//! - [x] `to_montgomery_n`, `from_montgomery_n`
+//! - [x] `mul_mod_n` — canonical `a·b mod n`
+//! - [x] `inv_mod_n` — Fermat inversion `a^(n-2) mod n` (constant-time)
 //!
-//! For the Montgomery ladder we only need bit-iteration, so this
-//! minimal API is sufficient for `v0.2.0-ct` to start producing
-//! ciphertexts.  Full arithmetic mod `n` arrives with the EC-DSA-style
-//! sign path in `v0.3.0`.
+//! These operations are required by ECDSA sign:
+//!
+//! ```text
+//! s = k⁻¹ · (z + r·d)  mod n
+//!     ^^^^   ^^^^^^^^
+//!     inv_mod_n  mul_mod_n
+//! ```
 
 // bool-as-u64 (e.g. `b1 as u64`) is the intentional CT-safe idiom throughout
 // this module.  Clippy's `cast_lossless` suggestion (`u64::from(b)`) is
@@ -22,7 +29,10 @@
 use subtle::{Choice, ConstantTimeEq};
 use zeroize::{Zeroize, ZeroizeOnDrop};
 
-use super::consts::{FIELD_BITS, FIELD_BYTES, N_521_LIMBS};
+use super::consts::{
+    FIELD_BITS, FIELD_BYTES, MONT_INV_NEG_N_0, N_521_LIMBS, N_521_MINUS_2_LIMBS, N_MONT_R2_LIMBS,
+    N_MONT_R_LIMBS,
+};
 use super::aggressive_zeroize::AggressiveZeroize;
 
 /// A scalar in `Z / n_521 Z`, stored as 9 little-endian `u64` limbs.
@@ -57,6 +67,9 @@ impl Scalar {
 
     /// `n_521` itself, used for range checks.
     pub const N: Self = Self { limbs: N_521_LIMBS };
+
+    /// The multiplicative identity in Montgomery form mod n: `1 · R mod n`.
+    pub const ONE_MONT_N: Self = Self { limbs: N_MONT_R_LIMBS };
 
     // ---------------------------------------------------------------
     // Serialization
@@ -144,61 +157,50 @@ impl Scalar {
         (0..FIELD_BITS).rev().map(move |i| self.bit(i))
     }
 
-    // ---------------------------------------------------------------
-    // Scalar arithmetic mod n_521  (CT — no secret-dependent branches)
-    // ---------------------------------------------------------------
+    // ===============================================================
+    // Addition / subtraction mod n  (canonical form)
+    // ===============================================================
 
-    /// Constant-time `(self + rhs) mod n_521`.
-    ///
-    /// Both inputs must be in `[0, n)`.  The output is in `[0, n)`.
-    ///
-    /// Algorithm: compute the 9-limb sum (may overflow into bit 521), then
-    /// unconditionally subtract `n` using a bitmask derived from the overflow
-    /// flag and from `ct_lt_n`.  No branches on secret data.
+    /// `self + rhs mod n`.  Both operands must be in canonical form
+    /// (`0 ≤ x < n`).  **Constant-time.**
+    #[inline]
+    #[allow(clippy::needless_range_loop)]
     pub fn add_mod_n(&self, rhs: &Self) -> Self {
-        // --- Step 1: full-width addition (carry into bit 576) ---
-        let mut sum = [0u64; 9];
+        // Add with carry propagation across 9 limbs.
+        let mut limbs = [0u64; 9];
         let mut carry: u64 = 0;
         for i in 0..9 {
             let (s1, c1) = self.limbs[i].overflowing_add(rhs.limbs[i]);
             let (s2, c2) = s1.overflowing_add(carry);
-            sum[i] = s2;
-            carry = (c1 as u64) | (c2 as u64);
+            limbs[i] = s2;
+            carry = (c1 as u64) + (c2 as u64);
         }
 
-        // --- Step 2: decide whether to subtract n (CT) ---
-        // `carry == 1` → sum >= 2^576 > n → must subtract.
-        // `carry == 0` → sum might still be >= n; use `ct_lt_n`.
-        //
-        // BUG-FIX (v0.3.0): the previous version used `(!lt.unwrap_u8()) as u64`
-        // to invert the `< n` flag, but `!` on a `u8` flips ALL 8 bits, so
-        // `!1u8 = 254` and `!0u8 = 255` — neither is a valid {0,1} flag.
-        // Use `^ 1u64` (or `1 - x`) to flip a {0,1} value.
-        let sum_scalar = Self { limbs: sum };
-        let lt = sum_scalar.ct_lt_n().unwrap_u8() as u64; // 1 iff sum < n, else 0
-        let needs_sub: u64 = carry | (lt ^ 1u64); // 1 iff sum >= n
-
-        // --- Step 3: unconditional conditional-subtract via bitmask ---
-        // mask = 0xFFFF...FFFF if needs_sub, 0 if not
-        let mask = needs_sub.wrapping_neg();
-        let mut result = [0u64; 9];
+        // `sum` is at most `2n − 2 + carry_bit`, i.e. at most `2n − 1`.
+        // Subtract n and select based on whether the subtraction underflowed.
+        let mut diff = [0u64; 9];
         let mut borrow: u64 = 0;
         for i in 0..9 {
-            let sub = N_521_LIMBS[i] & mask;
-            let (d1, b1) = sum[i].overflowing_sub(sub);
+            let (d1, b1) = limbs[i].overflowing_sub(N_521_LIMBS[i]);
             let (d2, b2) = d1.overflowing_sub(borrow);
-            result[i] = d2;
+            diff[i] = d2;
             borrow = (b1 as u64) | (b2 as u64);
         }
-        // borrow == 0 is guaranteed: sum - n < n when needs_sub was correct.
-        Self { limbs: result }
+
+        // If borrow=1, the sum was < n, so keep the original sum.
+        let keep_sum = Choice::from(borrow as u8);
+        let mut out = [0u64; 9];
+        for i in 0..9 {
+            out[i] = u64::conditional_select(&diff[i], &limbs[i], keep_sum);
+        }
+        Self { limbs: out }
     }
 
-    /// Constant-time `(self - rhs) mod n_521`.
-    ///
-    /// Both inputs must be in `[0, n)`.  The output is in `[0, n)`.
+    /// `self − rhs mod n`.  Both operands must be in canonical form.
+    /// **Constant-time.**
+    #[inline]
+    #[allow(clippy::needless_range_loop)]
     pub fn sub_mod_n(&self, rhs: &Self) -> Self {
-        // Subtract with borrow.
         let mut diff = [0u64; 9];
         let mut borrow: u64 = 0;
         for i in 0..9 {
@@ -207,89 +209,186 @@ impl Scalar {
             diff[i] = d2;
             borrow = (b1 as u64) | (b2 as u64);
         }
-        // If borrow == 1 the subtraction underflowed → add n back (CT).
-        let mask = borrow.wrapping_neg(); // 0xFF..FF iff borrow
-        let mut result = [0u64; 9];
+
+        // If borrow=1, self < rhs, so we need to add n back.
+        let mut sum = [0u64; 9];
         let mut carry: u64 = 0;
         for i in 0..9 {
-            let add = N_521_LIMBS[i] & mask;
-            let (s1, c1) = diff[i].overflowing_add(add);
+            let (s1, c1) = diff[i].overflowing_add(N_521_LIMBS[i]);
             let (s2, c2) = s1.overflowing_add(carry);
-            result[i] = s2;
-            carry = (c1 as u64) | (c2 as u64);
+            sum[i] = s2;
+            carry = (c1 as u64) + (c2 as u64);
         }
-        Self { limbs: result }
+
+        let add_n = Choice::from(borrow as u8);
+        let mut out = [0u64; 9];
+        for i in 0..9 {
+            out[i] = u64::conditional_select(&diff[i], &sum[i], add_n);
+        }
+        Self { limbs: out }
     }
 
-    /// Constant-time `(self * rhs) mod n_521`.
+    // ===============================================================
+    // Montgomery multiplication mod n
+    // ===============================================================
+    //
+    // Identical algorithm to Fp521::mont_mul but with modulus n_521
+    // and the corresponding Montgomery constants.
+
+    /// Montgomery multiplication mod n: returns the Montgomery
+    /// representative of `ã · b̃ · R^{-1} mod n`.
     ///
-    /// Uses a double-and-add method over the bits of `rhs` with CT selection,
-    /// so the loop body is independent of any secret bit.
+    /// **Constant-time.**  Both inputs must be in Montgomery form.
+    #[inline]
+    #[allow(clippy::needless_range_loop)]
+    pub fn mont_mul_n(&self, rhs: &Self) -> Self {
+        let a = &self.limbs;
+        let b = &rhs.limbs;
+        let n = &N_521_LIMBS;
+        let n_inv_neg = MONT_INV_NEG_N_0;
+
+        let mut t = [0u64; 11];
+
+        for i in 0..9 {
+            // ---- Multiply step: t += a · b[i] ----
+            let bi = b[i] as u128;
+            let mut carry: u64 = 0;
+            for j in 0..9 {
+                let prod = (a[j] as u128) * bi + (t[j] as u128) + (carry as u128);
+                t[j] = prod as u64;
+                carry = (prod >> 64) as u64;
+            }
+            let (s, c1) = t[9].overflowing_add(carry);
+            t[9] = s;
+            t[10] = c1 as u64;
+
+            // ---- Reduce step: m = t[0] · (-n^-1) mod 2^64 ----
+            let m = (t[0] as u128 * n_inv_neg as u128) as u64;
+
+            let prod0 = (m as u128) * (n[0] as u128) + (t[0] as u128);
+            debug_assert!((prod0 as u64) == 0);
+            let mut carry = (prod0 >> 64) as u64;
+
+            for j in 1..9 {
+                let prod = (m as u128) * (n[j] as u128) + (t[j] as u128) + (carry as u128);
+                t[j - 1] = prod as u64;
+                carry = (prod >> 64) as u64;
+            }
+            let (s, c1) = t[9].overflowing_add(carry);
+            t[8] = s;
+            t[9] = t[10].wrapping_add(c1 as u64);
+            t[10] = 0;
+        }
+
+        // ---- Final conditional subtraction of n ----
+        let mut diff = [0u64; 10];
+        let mut borrow: u64 = 0;
+        for i in 0..9 {
+            let (d1, b1) = t[i].overflowing_sub(n[i]);
+            let (d2, b2) = d1.overflowing_sub(borrow);
+            diff[i] = d2;
+            borrow = (b1 as u64) + (b2 as u64);
+        }
+        let (d9, b9) = t[9].overflowing_sub(borrow);
+        diff[9] = d9;
+        let take_t = Choice::from(b9 as u8);
+
+        let mut out = [0u64; 9];
+        for i in 0..9 {
+            out[i] = u64::conditional_select(&diff[i], &t[i], take_t);
+        }
+        Self { limbs: out }
+    }
+
+    /// Squaring in Montgomery form mod n: `mont_mul_n(self, self)`.
+    #[inline]
+    pub fn square_n(&self) -> Self {
+        self.mont_mul_n(self)
+    }
+
+    /// Convert a canonical-form scalar `a` into Montgomery form mod n:
+    /// `a · R mod n`.
+    #[inline]
+    pub fn to_montgomery_n(&self) -> Self {
+        let r2 = Self { limbs: N_MONT_R2_LIMBS };
+        self.mont_mul_n(&r2)
+    }
+
+    /// Convert a Montgomery-form scalar `ã = a · R mod n` back to
+    /// canonical form `a`.
+    #[inline]
+    pub fn from_montgomery_n(&self) -> Self {
+        let one_canonical = Self { limbs: [1, 0, 0, 0, 0, 0, 0, 0, 0] };
+        self.mont_mul_n(&one_canonical)
+    }
+
+    // ===============================================================
+    // Public API: mul_mod_n, inv_mod_n
+    // ===============================================================
+
+    /// Canonical multiplication: `self · rhs mod n`.
     ///
-    /// Complexity: 521 iterations × 2 `add_mod_n` calls.
-    ///
-    /// **v0.3.1 roadmap**: replace with Barrett-reduced 18-limb schoolbook
-    /// multiplication for a ~100× throughput improvement.
+    /// Both inputs are in canonical form; the result is in canonical
+    /// form.  **Constant-time.**
     pub fn mul_mod_n(&self, rhs: &Self) -> Self {
-        let mut result = Self::ZERO;
-        for bit in rhs.bits_msb_first() {
-            // Double
-            result = result.add_mod_n(&result.clone());
-            // CT-select: if bit==1, compute result+self; else result+0.
-            // We compute both and pick with a bitmask.
-            let added = result.add_mod_n(self);
-            let mask = (bit as u64).wrapping_neg(); // 0xFF..FF iff bit==1
-            let mut selected = [0u64; 9];
-            for i in 0..9 {
-                selected[i] = (added.limbs[i] & mask) | (result.limbs[i] & !mask);
-            }
-            result = Self { limbs: selected };
-        }
-        result
+        let a_mont = self.to_montgomery_n();
+        let b_mont = rhs.to_montgomery_n();
+        let prod_mont = a_mont.mont_mul_n(&b_mont);
+        prod_mont.from_montgomery_n()
     }
 
-    /// Constant-time Fermat inversion: `self^(n-2) mod n`.
+    /// Multiplicative inverse mod n: `self^{-1} mod n`.
     ///
-    /// Valid because `n_521` is prime (Fermat's little theorem).
-    /// Uses square-and-multiply via `mul_mod_n` — same bit loop, CT selection.
+    /// Uses Fermat's little theorem: `a^{n-2} mod n`.
+    /// Returns `None` if `self` is zero.
     ///
-    /// Returns `ZERO` if `self == ZERO` (caller must validate inputs).
-    pub fn inv_mod_n(&self) -> Self {
-        // Exponent = n - 2.  We represent it by decrementing the limb copy of N.
-        let mut exp_limbs = N_521_LIMBS;
-        // Subtract 2: borrow chain through limbs.
-        let (e0, b) = exp_limbs[0].overflowing_sub(2);
-        exp_limbs[0] = e0;
-        let mut carry_b = b as u64;
-        for i in 1..9 {
-            let (ei, bi) = exp_limbs[i].overflowing_sub(carry_b);
-            exp_limbs[i] = ei;
-            carry_b = bi as u64;
+    /// **Constant-time** (the exponent `n-2` is public; we perform a
+    /// multiplication on every iteration and select with `Choice`).
+    pub fn inv_mod_n(&self) -> Option<Self> {
+        // Reject zero.
+        if bool::from(self.ct_eq(&Self::ZERO)) {
+            return None;
         }
-        let exp = Self { limbs: exp_limbs };
 
-        // Square-and-multiply.
-        let mut result = {
-            // 1 in scalar form: limbs all zero except limbs[0] = 1.
-            let mut one = Self::ZERO;
-            one.limbs[0] = 1;
-            one
-        };
-        for bit in exp.bits_msb_first() {
-            // Square
-            result = result.mul_mod_n(&result.clone());
-            // CT multiply by self if bit==1
-            let multiplied = result.mul_mod_n(self);
-            let mask = (bit as u64).wrapping_neg();
-            let mut selected = [0u64; 9];
-            for i in 0..9 {
-                selected[i] = (multiplied.limbs[i] & mask) | (result.limbs[i] & !mask);
+        // Exponent: e = n_521 - 2  (pre-computed constant).
+        let exp = N_521_MINUS_2_LIMBS;
+
+        let mut result = Self::ONE_MONT_N;
+        let a_mont = self.to_montgomery_n();
+
+        // Left-to-right square-and-multiply over 521 bits.
+        for i in (0..FIELD_BITS).rev() {
+            result = result.square_n();
+
+            let limb_idx = i / 64;
+            let bit_idx = i % 64;
+            let bit = ((exp[limb_idx] >> bit_idx) & 1) as u8;
+
+            let multiplied = result.mont_mul_n(&a_mont);
+            for j in 0..9 {
+                result.limbs[j] = u64::conditional_select(
+                    &result.limbs[j],
+                    &multiplied.limbs[j],
+                    Choice::from(bit),
+                );
             }
-            result = Self { limbs: selected };
         }
-        result
+
+        // Convert back from Montgomery form.
+        Some(result.from_montgomery_n())
     }
 }
+
+// ---------------------------------------------------------------
+// Trait impls
+// ---------------------------------------------------------------
+
+impl PartialEq for Scalar {
+    fn eq(&self, rhs: &Self) -> bool {
+        bool::from(self.ct_eq(rhs))
+    }
+}
+impl Eq for Scalar {}
 
 // ---------------------------------------------------------------
 // Unit tests
@@ -383,23 +482,21 @@ mod tests {
     #[test]
     fn add_mod_n_small() {
         let c = small_scalar(3).add_mod_n(&small_scalar(7));
-        assert_eq!(c.to_bytes_be(), small_scalar(10).to_bytes_be());
+        assert_eq!(c, small_scalar(10));
     }
 
     #[test]
     fn add_mod_n_zero_identity() {
         let a = small_scalar(0xdead_beef);
-        let c = a.add_mod_n(&Scalar::ZERO);
-        assert_eq!(c.to_bytes_be(), a.to_bytes_be());
-        let c2 = Scalar::ZERO.add_mod_n(&a);
-        assert_eq!(c2.to_bytes_be(), a.to_bytes_be());
+        assert_eq!(a.add_mod_n(&Scalar::ZERO), a);
+        assert_eq!(Scalar::ZERO.add_mod_n(&a), a);
     }
 
     #[test]
     fn add_mod_n_wraps_n_minus_one_plus_one() {
         // (n-1) + 1 = n ≡ 0 (mod n)
         let c = n_minus_one().add_mod_n(&one());
-        assert_eq!(c.to_bytes_be(), Scalar::ZERO.to_bytes_be());
+        assert_eq!(c, Scalar::ZERO);
         assert_in_range(&c);
     }
 
@@ -412,7 +509,7 @@ mod tests {
         let (v, _) = expected[0].overflowing_sub(2);
         expected[0] = v;
         let expected = Scalar { limbs: expected };
-        assert_eq!(c.to_bytes_be(), expected.to_bytes_be());
+        assert_eq!(c, expected);
         assert_in_range(&c);
     }
 
@@ -420,10 +517,7 @@ mod tests {
     fn add_mod_n_commutative() {
         let a = small_scalar(0x1234_5678_9abc_def0);
         let b = small_scalar(0x0fed_cba9_8765_4321);
-        assert_eq!(
-            a.add_mod_n(&b).to_bytes_be(),
-            b.add_mod_n(&a).to_bytes_be()
-        );
+        assert_eq!(a.add_mod_n(&b), b.add_mod_n(&a));
     }
 
     // -----------------------------------------------------------------
@@ -433,21 +527,21 @@ mod tests {
     #[test]
     fn sub_mod_n_no_wrap() {
         let c = small_scalar(10).sub_mod_n(&small_scalar(3));
-        assert_eq!(c.to_bytes_be(), small_scalar(7).to_bytes_be());
+        assert_eq!(c, small_scalar(7));
     }
 
     #[test]
     fn sub_mod_n_wraps() {
         // 2 - 3 ≡ n - 1 (mod n)
         let c = small_scalar(2).sub_mod_n(&small_scalar(3));
-        assert_eq!(c.to_bytes_be(), n_minus_one().to_bytes_be());
+        assert_eq!(c, n_minus_one());
     }
 
     #[test]
     fn sub_mod_n_self_is_zero() {
         let a = small_scalar(0xc0ffee);
         let c = a.sub_mod_n(&a);
-        assert_eq!(c.to_bytes_be(), Scalar::ZERO.to_bytes_be());
+        assert_eq!(c, Scalar::ZERO);
     }
 
     #[test]
@@ -455,99 +549,111 @@ mod tests {
         let a = small_scalar(12345);
         let b = small_scalar(67890);
         let back = a.add_mod_n(&b).sub_mod_n(&b);
-        assert_eq!(a.to_bytes_be(), back.to_bytes_be());
+        assert_eq!(a, back);
     }
 
     #[test]
     fn add_sub_inverse_with_wrap() {
-        // (n-1) + b - b = n-1 even though intermediate wrapped.
         let a = n_minus_one();
         let b = small_scalar(0x9999);
         let back = a.add_mod_n(&b).sub_mod_n(&b);
-        assert_eq!(a.to_bytes_be(), back.to_bytes_be());
+        assert_eq!(a, back);
     }
 
     // -----------------------------------------------------------------
-    // mul_mod_n
+    // Montgomery multiplication mod n
     // -----------------------------------------------------------------
+
+    #[test]
+    fn mont_mul_n_by_one() {
+        let a = small_scalar(0x1234_5678_9abc_def0);
+        let a_mont = a.to_montgomery_n();
+        let one_mont = Scalar::ONE_MONT_N;
+        let prod = a_mont.mont_mul_n(&one_mont);
+        let result = prod.from_montgomery_n();
+        assert_eq!(result, a);
+    }
 
     #[test]
     fn mul_mod_n_small() {
         let c = small_scalar(6).mul_mod_n(&small_scalar(7));
-        assert_eq!(c.to_bytes_be(), small_scalar(42).to_bytes_be());
+        assert_eq!(c, small_scalar(42));
     }
 
     #[test]
     fn mul_mod_n_by_zero() {
-        let c = small_scalar(999).mul_mod_n(&Scalar::ZERO);
-        assert_eq!(c.to_bytes_be(), Scalar::ZERO.to_bytes_be());
-        let c2 = Scalar::ZERO.mul_mod_n(&small_scalar(999));
-        assert_eq!(c2.to_bytes_be(), Scalar::ZERO.to_bytes_be());
+        assert_eq!(small_scalar(999).mul_mod_n(&Scalar::ZERO), Scalar::ZERO);
+        assert_eq!(Scalar::ZERO.mul_mod_n(&small_scalar(999)), Scalar::ZERO);
     }
 
     #[test]
     fn mul_mod_n_by_one() {
         let a = small_scalar(0xabcd_ef01_2345_6789);
-        let c = a.mul_mod_n(&one());
-        assert_eq!(c.to_bytes_be(), a.to_bytes_be());
-        let c2 = one().mul_mod_n(&a);
-        assert_eq!(c2.to_bytes_be(), a.to_bytes_be());
+        assert_eq!(a.mul_mod_n(&one()), a);
+        assert_eq!(one().mul_mod_n(&a), a);
     }
 
     #[test]
     fn mul_mod_n_commutative() {
         let a = small_scalar(0x1111_2222_3333_4444);
         let b = small_scalar(0x5555_6666_7777_8888);
-        assert_eq!(
-            a.mul_mod_n(&b).to_bytes_be(),
-            b.mul_mod_n(&a).to_bytes_be()
-        );
+        assert_eq!(a.mul_mod_n(&b), b.mul_mod_n(&a));
     }
 
     #[test]
     fn mul_mod_n_n_minus_one_squared() {
         // (n-1)^2 ≡ 1 (mod n)   because (n-1) ≡ -1
         let c = n_minus_one().mul_mod_n(&n_minus_one());
-        assert_eq!(c.to_bytes_be(), one().to_bytes_be());
+        assert_eq!(c, one());
+    }
+
+    #[test]
+    fn mul_mod_n_associative() {
+        let m2 = small_scalar(2);
+        let m3 = small_scalar(3);
+        let m5 = small_scalar(5);
+        let left = m2.mul_mod_n(&m3).mul_mod_n(&m5);
+        let right = m2.mul_mod_n(&m3.mul_mod_n(&m5));
+        assert_eq!(left, right);
     }
 
     // -----------------------------------------------------------------
-    // inv_mod_n  (Fermat)
+    // inv_mod_n  (Fermat via Montgomery)
     // -----------------------------------------------------------------
 
     #[test]
-    fn inv_mod_n_roundtrip_small() {
-        let a = small_scalar(17);
-        let inv = a.inv_mod_n();
-        let one_back = a.mul_mod_n(&inv);
-        assert_eq!(one_back.to_bytes_be(), one().to_bytes_be());
+    fn inv_of_zero_is_none() {
+        assert!(Scalar::ZERO.inv_mod_n().is_none());
     }
 
     #[test]
     fn inv_mod_n_of_one_is_one() {
-        let inv = one().inv_mod_n();
-        assert_eq!(inv.to_bytes_be(), one().to_bytes_be());
+        let inv = one().inv_mod_n().unwrap();
+        assert_eq!(inv, one());
     }
 
     #[test]
     fn inv_mod_n_of_n_minus_one_is_n_minus_one() {
-        // (n-1)·(n-1) ≡ 1 ⇒ (n-1)^(-1) = n-1
-        let inv = n_minus_one().inv_mod_n();
-        assert_eq!(inv.to_bytes_be(), n_minus_one().to_bytes_be());
+        let inv = n_minus_one().inv_mod_n().unwrap();
+        assert_eq!(inv, n_minus_one());
     }
 
     #[test]
-    fn inv_mod_n_random_values_roundtrip() {
-        // Use a handful of fixed but non-trivial values.
-        for v in [3u64, 5, 65537, 0xdead_beefu64, 0x1234_5678_9abc_def0u64] {
+    fn inv_then_mul_is_one() {
+        for v in [2u64, 3, 7, 17, 0xDEAD_BEEF, 0xFEDC_BA98_7654_3210] {
             let a = small_scalar(v);
-            let inv = a.inv_mod_n();
-            let back = a.mul_mod_n(&inv);
-            assert_eq!(
-                back.to_bytes_be(), one().to_bytes_be(),
-                "a · a^(-1) ≠ 1 for v = {:#x}", v
-            );
+            let a_inv = a.inv_mod_n().unwrap();
+            let prod = a.mul_mod_n(&a_inv);
+            assert_eq!(prod, one(), "a · a^(-1) ≠ 1 for v = {v:#x}");
         }
+    }
+
+    #[test]
+    fn inv_double_is_identity() {
+        let a = small_scalar(0x1234_5678_9abc_def0);
+        let a_inv = a.inv_mod_n().unwrap();
+        let a_inv_inv = a_inv.inv_mod_n().unwrap();
+        assert_eq!(a_inv_inv, a);
     }
 
     // -----------------------------------------------------------------
@@ -559,8 +665,71 @@ mod tests {
         assert_eq!(Scalar::ZERO.ct_lt_n().unwrap_u8(), 1, "0 < n");
         assert_eq!(one().ct_lt_n().unwrap_u8(), 1, "1 < n");
         assert_eq!(n_minus_one().ct_lt_n().unwrap_u8(), 1, "n-1 < n");
-        // Constructing exactly n violates the invariant; check the raw scalar.
         let n_scalar = Scalar { limbs: N_521_LIMBS };
         assert_eq!(n_scalar.ct_lt_n().unwrap_u8(), 0, "n ≮ n");
+    }
+
+    // -----------------------------------------------------------------
+    // Cross-check with BigUint reference
+    // -----------------------------------------------------------------
+
+    #[test]
+    fn inv_matches_biguint_reference() {
+        use num_bigint::BigUint;
+        use num_traits::{One, Zero};
+
+        let n = BigUint::parse_bytes(
+            b"6684878480953803875615041384236581248565144626959181331935475284049641722241859866323302474084432391273141914599968033004535887077643952596722791822942474231",
+            10,
+        ).unwrap();
+
+        for v in [2u64, 7, 19, 0xDEAD_BEEF, 0x1234_5678_9ABC_DEF0] {
+            let a = small_scalar(v);
+            let ct_inv = a.inv_mod_n().unwrap();
+            let ct_inv_bytes = ct_inv.to_bytes_be();
+
+            let a_big = BigUint::from(v);
+            let n_minus_2 = &n - BigUint::from(2u64);
+            let ref_inv = a_big.modpow(&n_minus_2, &n);
+
+            let ref_bytes = {
+                let b = ref_inv.to_bytes_be();
+                let mut padded = [0u8; FIELD_BYTES];
+                let offset = FIELD_BYTES - b.len();
+                padded[offset..].copy_from_slice(&b);
+                padded
+            };
+
+            assert_eq!(ct_inv_bytes, ref_bytes, "inv_mod_n mismatch for v={v:#x}");
+        }
+    }
+
+    #[test]
+    fn mul_matches_biguint_reference() {
+        use num_bigint::BigUint;
+
+        let n = BigUint::parse_bytes(
+            b"6684878480953803875615041384236581248565144626959181331935475284049641722241859866323302474084432391273141914599968033004535887077643952596722791822942474231",
+            10,
+        ).unwrap();
+
+        let a = small_scalar(0xDEAD_BEEF);
+        let b = small_scalar(0xCAFE_BABE);
+        let ct_prod = a.mul_mod_n(&b);
+        let ct_bytes = ct_prod.to_bytes_be();
+
+        let a_big = BigUint::from(0xDEAD_BEEFu64);
+        let b_big = BigUint::from(0xCAFE_BABEu64);
+        let ref_prod = (&a_big * &b_big) % &n;
+
+        let ref_bytes = {
+            let rb = ref_prod.to_bytes_be();
+            let mut padded = [0u8; FIELD_BYTES];
+            let offset = FIELD_BYTES - rb.len();
+            padded[offset..].copy_from_slice(&rb);
+            padded
+        };
+
+        assert_eq!(ct_bytes, ref_bytes);
     }
 }

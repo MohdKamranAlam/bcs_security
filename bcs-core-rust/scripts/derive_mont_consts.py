@@ -106,6 +106,21 @@ def main(argv: list[str]) -> int:
     gy_mont = (G_Y * R) % P_521
 
     # -------------------------------------------------------------------
+    # Montgomery constants for the SCALAR field Z / n_521 Z.
+    #   Used by ct/scalar.rs for ECDSA-style sign:  inv_mod_n, mul_mod_n.
+    #   Derivation mirrors the field constants above; modulus is `n_521`.
+    # -------------------------------------------------------------------
+    r_mod_n  = R % N_521
+    r2_mod_n = (R * R) % N_521
+    n_lo = N_521 & (W - 1)
+    inv_n_lo = mod_inv(n_lo, W)
+    mont_neg_n_inv = (W - inv_n_lo) & (W - 1)
+    assert ((N_521 * mont_neg_n_inv) + 1) % W == 0
+
+    # Fermat-inversion exponent for `inv_mod_n`:  a^(n-2) mod n.
+    n_minus_2 = N_521 - 2
+
+    # -------------------------------------------------------------------
     # Change of variables to short Weierstrass form  y² = x'³ + A·x' + B
     # -------------------------------------------------------------------
     # Substitute  x = x' + 2/3   in   y² = x³ − 2x² + 5x + 4.
@@ -183,7 +198,22 @@ def main(argv: list[str]) -> int:
         fmt_limbs("SHORT_GX_MONT_LIMBS", to_limbs(short_Gx_mont)),
         "",
         fmt_limbs("SHORT_GY_MONT_LIMBS", to_limbs(short_Gy_mont)),
+        "",
+        "// ---- Scalar field Z / n_521 Z  (for ECDSA sign: inv_mod_n, mul_mod_n) ----",
+        fmt_limbs("N_MONT_R_LIMBS", to_limbs(r_mod_n)),
+        "",
+        fmt_limbs("N_MONT_R2_LIMBS", to_limbs(r2_mod_n)),
+        "",
+        f"pub const MONT_INV_NEG_N_0: u64 = 0x{mont_neg_n_inv:016X};",
+        "",
+        f"pub const N_521_MINUS_2_LIMBS: [u64; 9] = [",
     ]
+    # N_521 - 2 is the Fermat inversion exponent for inv_mod_n.
+    n_minus_2_limbs = to_limbs(n_minus_2)
+    for l in n_minus_2_limbs:
+        blocks.append(f"    0x{l:016X},")
+    blocks.append("];")
+
     rust = "\n".join(blocks)
 
     # Hash the consolidated content for the cargo-side integrity test.

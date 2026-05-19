@@ -190,12 +190,51 @@ pub const SHORT_GY_MONT_LIMBS: [u64; 9] = [
     0x0000000000000030,
 ];
 
-/// SHA-256 of the canonical Rust source emitted by
-/// `scripts/derive_mont_consts.py` covering all of the constants
-/// above.  Used by `tests/test_ct_consts.rs` to detect manual
-/// transcription errors.
+/// `R mod n` where `R = 2^576`, for scalar-field Montgomery multiplication.
+pub const N_MONT_R_LIMBS: [u64; 9] = [
+    0x96D343B3AF5AD0AB,
+    0xC5CE379DC69E027D,
+    0x9C2C38EEAD110604,
+    0x89C38F4DE844A4BC,
+    0x67E93C905F9916BB,
+    0x0D20C0C014B5C5CD,
+    0xD8FE5D9E429FE477,
+    0x318A89CDE0EF2B72,
+    0x0000000000000018,
+];
+
+/// `R^2 mod n` where `R = 2^576`, for scalar-field Montgomery multiplication.
+pub const N_MONT_R2_LIMBS: [u64; 9] = [
+    0xF096324D921C8DAD,
+    0x0888E2868481CB0D,
+    0xF20A75CAEA2CC25E,
+    0x2E155B0F38D47BB2,
+    0x1A3216350C462A20,
+    0xB7444689F32EBAEE,
+    0x7BED95936EFCDF9F,
+    0x26852C822B167E0F,
+    0x0000000000000174,
+];
+
+/// `-n^{-1} mod 2^64` for the CIOS reduction inner loop (scalar field).
+pub const MONT_INV_NEG_N_0: u64 = 0xCDA1997CF4D99E39;
+
+/// `n_521 − 2` in little-endian limb form.
+/// This is the Fermat inversion exponent for `inv_mod_n`:  `a^(n-2) mod n`.
+pub const N_521_MINUS_2_LIMBS: [u64; 9] = [
+    0x1ECF77E1DFDB0FF5,
+    0x107F211A8D8E3CEE,
+    0xED05D6FD2163DA78,
+    0xF142C170EDBFD8EC,
+    0xBA2FE102829EC762,
+    0x6D99A052C2AF01FB,
+    0x3CAE6FDF39466130,
+    0x94BD5F0B57F7B051,
+    0x00000000000001F2,
+];
+
 pub const CT_CONSTS_SHA256: &str =
-    "77eef76902afaa70f5a53d7cc0896134cb31012e9376fc042401ed9e83c302fd";
+    "22919a7ba6ee4822434caa0371e13b6e7d8fe20e66b3c31d01bddf08470a3bf2";
 
 // =========================================================================
 // END AUTO

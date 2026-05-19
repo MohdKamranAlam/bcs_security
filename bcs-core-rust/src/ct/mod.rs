@@ -14,7 +14,7 @@
 //! ├── mod.rs               ← this file (re-exports)
 //! ├── consts.rs            ← p_521, n_521, R, R^2, G, addition-chain table
 //! ├── fp521.rs             ← 9-limb field with Montgomery multiplication
-//! ├── scalar.rs            ← Z / n_521 Z with Zeroize
+//! ├── scalar.rs            ← Z / n_521 Z with Zeroize + Montgomery arithmetic
 //! ├── point.rs             ← Jacobian-projective point + complete formulas
 //! ├── ladder.rs            ← Montgomery ladder scalar multiplication
 //! ├── fault_injection.rs   ← Redundant computation + CT compare (Fortress)
