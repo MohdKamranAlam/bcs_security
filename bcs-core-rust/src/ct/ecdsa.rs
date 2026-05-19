@@ -730,4 +730,116 @@ mod tests {
             "n-1 mod n should be n-1"
         );
     }
+
+    // -----------------------------------------------------------------
+    // KAT parity: cross-check with Python-generated ECDSA vectors
+    // -----------------------------------------------------------------
+
+    /// Read the ECDSA KAT file produced by `generate_bcs521_kats.py`.
+    /// The file lives in `bcs-verify/kats/bcs521_ecdsa.json`, which is
+    /// **not** inside the crate directory.  The test is gated behind
+    /// the `ecdsa_kat` feature so normal CI doesn't need the file.
+    #[cfg(feature = "ecdsa_kat")]
+    #[test]
+    fn ecdsa_kat_parity() {
+        use std::fs;
+
+        let path = concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../bcs-verify/kats/bcs521_ecdsa.json"
+        );
+        let data = fs::read_to_string(path)
+            .unwrap_or_else(|e| panic!("KAT file not found at {}: {}", path, e));
+
+        let kat: serde_json::Value = serde_json::from_str(&data).expect("invalid JSON");
+        let vectors = kat["vectors"].as_array().expect("vectors array");
+
+        let mut pass = 0usize;
+        let mut fail = 0usize;
+
+        for v in vectors {
+            let idx = v["index"].as_u64().unwrap();
+
+            // Decode fields.
+            let sk_bytes: [u8; SCALAR_BYTES] = {
+                let hex = v["secret_key_hex"].as_str().unwrap();
+                let bytes = hex_decode(hex);
+                <[u8; SCALAR_BYTES]>::try_from(bytes.as_slice()).unwrap()
+            };
+
+            let pk_bytes: Vec<u8> = hex_decode(v["public_key_sec1_hex"].as_str().unwrap());
+
+            let msg: Vec<u8> = hex_decode(v["message_hex"].as_str().unwrap());
+
+            let expected_r: [u8; SCALAR_BYTES] = {
+                let hex = v["r_hex"].as_str().unwrap();
+                let bytes = hex_decode(hex);
+                <[u8; SCALAR_BYTES]>::try_from(bytes.as_slice()).unwrap()
+            };
+            let expected_s: [u8; SCALAR_BYTES] = {
+                let hex = v["s_hex"].as_str().unwrap();
+                let bytes = hex_decode(hex);
+                <[u8; SCALAR_BYTES]>::try_from(bytes.as_slice()).unwrap()
+            };
+
+            // CT sign — must produce the same (r, s).
+            let ct_sig = ct_sign(&sk_bytes, &msg).unwrap_or_else(|e| {
+                panic!("vector {}: ct_sign failed: {:?}", idx, e)
+            });
+
+            if ct_sig.r != expected_r || ct_sig.s != expected_s {
+                eprintln!(
+                    "vector {}: SIGNATURE MISMATCH\n  r: got {} expected {}\n  s: got {} expected {}",
+                    idx,
+                    hex_encode(&ct_sig.r),
+                    hex_encode(&expected_r),
+                    hex_encode(&ct_sig.s),
+                    hex_encode(&expected_s),
+                );
+                fail += 1;
+                continue;
+            }
+
+            // CT verify — must accept the expected signature.
+            let expected_sig = Bcs521EcdsaSignature {
+                r: expected_r,
+                s: expected_s,
+            };
+            let ok = ct_verify(&pk_bytes, &msg, &expected_sig)
+                .unwrap_or_else(|e| panic!("vector {}: ct_verify error: {:?}", idx, e));
+
+            if !ok {
+                eprintln!("vector {}: ct_verify rejected valid signature", idx);
+                fail += 1;
+                continue;
+            }
+
+            // CT verify — must reject a tampered message.
+            let tampered: Vec<u8> = msg.iter().chain(b"-tampered").copied().collect();
+            let bad = ct_verify(&pk_bytes, &tampered, &expected_sig)
+                .unwrap_or_else(|e| panic!("vector {}: ct_verify(tampered) error: {:?}", idx, e));
+
+            if bad {
+                eprintln!("vector {}: ct_verify accepted tampered message!", idx);
+                fail += 1;
+                continue;
+            }
+
+            pass += 1;
+        }
+
+        assert_eq!(fail, 0, "{} KAT vectors failed, {} passed", fail, pass);
+        eprintln!("ECDSA KAT parity: {}/{} vectors passed", pass, pass + fail);
+    }
+
+    fn hex_decode(hex: &str) -> Vec<u8> {
+        (0..hex.len())
+            .step_by(2)
+            .map(|i| u8::from_str_radix(&hex[i..i + 2], 16).unwrap())
+            .collect()
+    }
+
+    fn hex_encode(bytes: &[u8]) -> String {
+        bytes.iter().map(|b| format!("{:02x}", b)).collect()
+    }
 }

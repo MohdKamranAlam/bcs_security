@@ -22,13 +22,15 @@
 //!
 //! ## What we test
 //!
-//! Three benchmarks, each a "fixed-vs-random" t-test:
+//! Five benchmarks, each a "fixed-vs-random" t-test:
 //!
 //! | Bench name             | Class::Left              | Class::Right             | Operation under timing |
 //! |------------------------|--------------------------|--------------------------|------------------------|
 //! | `bcs521_scalar_mul`    | scalar = 1 (low Hamming) | scalar = uniform random  | `scalar_mul_generator(s)` |
 //! | `bcs521_ecdh`          | secret = fixed `s_fix`   | secret = uniform random  | `Bcs521::ecdh(sk, pk)`    |
 //! | `fp521_mont_mul`       | `a = 0` Mont-form        | `a = uniform random`     | `a.mont_mul(&b)`         |
+//! | `bcs521_ecdsa_sign`    | sk = fixed, msg = fixed  | sk = random, msg = fixed | `ct_sign(sk, msg)`       |
+//! | `bcs521_ecdsa_verify`  | pk = fixed, sig = fixed  | pk = random, sig = valid | `ct_verify(pk, msg, sig)`|
 //!
 //! A passing run shows `|max-t| < 4.5` for all three benches.  A
 //! failure means a real timing channel exists somewhere upstream of
@@ -63,9 +65,10 @@
 //! * The reported `t`-value is the worst (largest in absolute value)
 //!   observed across *all* sample buckets, not just the final one.
 
-#![cfg(feature = "ct")]
+#![cfg(all(feature = "ct", feature = "ecdsa"))]
 
 use bcs_core_rust::ct::{scalar_mul_generator, Fp521, Scalar};
+use bcs_core_rust::ct::ecdsa::{ct_sign, ct_verify, Bcs521EcdsaSignature};
 use bcs_core_rust::{Bcs521, Bcs521PublicKey, Bcs521SecretKey};
 // `RngExt` (not `RngCore`) provides `random::<T>()` in rand 0.10,
 // which is what `dudect-bencher` 0.7 re-exports.  See upstream
@@ -84,6 +87,8 @@ use dudect_bencher::{ctbench_main, BenchRng, Class, CtRunner};
 const SAMPLES_FAST: usize = 100_000;
 const SAMPLES_SCALAR_MUL: usize = 5_000;
 const SAMPLES_ECDH: usize = 5_000;
+const SAMPLES_ECDSA_SIGN: usize = 2_000;   // sign = 1 scalar_mul + CIOS ops
+const SAMPLES_ECDSA_VERIFY: usize = 1_000; // verify = 2 scalar_muls + CIOS ops
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -270,7 +275,163 @@ fn fp521_mont_mul(runner: &mut CtRunner, rng: &mut BenchRng) {
 }
 
 // ---------------------------------------------------------------------------
+// Bench 4 — ECDSA sign (secret-key operation)
+// ---------------------------------------------------------------------------
+
+/// Tests that `ct_sign` does not leak the value of the secret key
+/// through wall-clock timing.  This is the most critical dudect bench
+/// for ECDSA because signing directly handles the secret scalar.
+///
+/// **Methodology:**
+/// - Class::Left: fixed secret key (scalar = 0x42), fixed message.
+/// - Class::Right: random secret key, same fixed message.
+/// - The message is constant across both classes so any timing
+///   difference must come from the secret key value.
+/// - RFC 6979 nonce is deterministic, so `k` is a function of
+///   `(sk, msg)`.  With `msg` fixed, `k` varies only with `sk`.
+///   If the Montgomery ladder or CIOS arithmetic has a timing
+///   dependency on `k` or `sk`, dudect will detect it.
+fn bcs521_ecdsa_sign(runner: &mut CtRunner, rng: &mut BenchRng) {
+    // Fixed message — same for both classes.
+    const MSG: &[u8] = b"dudect-ecdsa-sign-test-message";
+
+    // Fixed secret key (Class::Left).
+    let mut sk_fixed_bytes = [0u8; 66];
+    sk_fixed_bytes[65] = 0x42;
+    // Validate that 0x42 is a legal scalar.
+    let _ = Scalar::from_bytes_be(&sk_fixed_bytes).expect("0x42 < n");
+
+    // Pre-generate inputs.
+    let mut inputs: Vec<[u8; 66]> = Vec::with_capacity(SAMPLES_ECDSA_SIGN);
+    let mut classes: Vec<Class> = Vec::with_capacity(SAMPLES_ECDSA_SIGN);
+    for _ in 0..SAMPLES_ECDSA_SIGN {
+        if rng.random::<bool>() {
+            inputs.push(sk_fixed_bytes);
+            classes.push(Class::Left);
+        } else {
+            inputs.push(random_scalar_bytes(rng));
+            classes.push(Class::Right);
+        }
+    }
+
+    for (sk_bytes, class) in inputs.into_iter().zip(classes) {
+        runner.run_one(class, || {
+            let sig = ct_sign(&sk_bytes, MSG).expect("sign");
+            std::hint::black_box(sig)
+        });
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Bench 5 — ECDSA verify (public-key operation)
+// ---------------------------------------------------------------------------
+
+/// Tests that `ct_verify` does not have timing dependencies on the
+/// public key or signature values.  Although verify only handles public
+/// data, timing leaks can still enable fault attacks (e.g. skipping
+/// a point multiplication step for certain inputs).
+///
+/// **Methodology:**
+/// - Class::Left: fixed key pair, fixed signature on a fixed message.
+/// - Class::Right: random key pair, valid signature on the same message.
+/// - Both classes use a *valid* signature so the verify logic takes
+///   the "accept" path in both cases — we are testing for leaks in
+///   the computation itself, not in the accept/reject branch.
+fn bcs521_ecdsa_verify(runner: &mut CtRunner, rng: &mut BenchRng) {
+    const MSG: &[u8] = b"dudect-ecdsa-verify-test-message";
+
+    // Fixed key pair (Class::Left).
+    let mut sk_fixed_bytes = [0u8; 66];
+    sk_fixed_bytes[65] = 0x42;
+    let sk_fixed = Scalar::from_bytes_be(&sk_fixed_bytes).expect("0x42 < n");
+    let pk_fixed_point = scalar_mul_generator(&sk_fixed);
+    let pk_fixed_bytes = point_to_sec1_uncompressed(&pk_fixed_point);
+    let sig_fixed = ct_sign(&sk_fixed_bytes, MSG).expect("sign for fixed key");
+
+    // Pre-generate (pk_bytes, sig) pairs.
+    struct VerifyInput {
+        pk_bytes: Vec<u8>,
+        sig: Bcs521EcdsaSignature,
+    }
+
+    let mut inputs: Vec<VerifyInput> = Vec::with_capacity(SAMPLES_ECDSA_VERIFY);
+    let mut classes: Vec<Class> = Vec::with_capacity(SAMPLES_ECDSA_VERIFY);
+    for _ in 0..SAMPLES_ECDSA_VERIFY {
+        if rng.random::<bool>() {
+            inputs.push(VerifyInput {
+                pk_bytes: pk_fixed_bytes.clone(),
+                sig: sig_fixed.clone(),
+            });
+            classes.push(Class::Left);
+        } else {
+            // Random key pair + valid signature.
+            let sk_bytes = random_scalar_bytes(rng);
+            let sk = Scalar::from_bytes_be(&sk_bytes).expect("random sk in range");
+            let pk_point = scalar_mul_generator(&sk);
+            let pk_bytes = point_to_sec1_uncompressed(&pk_point);
+            let sig = ct_sign(&sk_bytes, MSG).expect("sign for random key");
+            inputs.push(VerifyInput { pk_bytes, sig });
+            classes.push(Class::Right);
+        }
+    }
+
+    for (input, class) in inputs.into_iter().zip(classes) {
+        runner.run_one(class, || {
+            let ok = ct_verify(&input.pk_bytes, MSG, &input.sig).expect("verify");
+            std::hint::black_box(ok)
+        });
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Additional helpers for ECDSA benches
+// ---------------------------------------------------------------------------
+
+/// Sample a uniformly random 66-byte scalar in `[1, n_521 − 1]`.
+fn random_scalar_bytes(rng: &mut BenchRng) -> [u8; 66] {
+    loop {
+        let mut bytes = [0u8; 66];
+        rng.fill_bytes(&mut bytes);
+        bytes[0] &= 0x01; // mask to 521 bits
+        if let Some(s) = Scalar::from_bytes_be(&bytes) {
+            if !bool::from(s.ct_eq(&Scalar::ZERO)) {
+                return bytes;
+            }
+        }
+    }
+}
+
+/// Convert a `ProjPoint` to SEC1 uncompressed encoding (133 bytes)
+/// in the **original** BCS-521 chart.
+fn point_to_sec1_uncompressed(point: &bcs_core_rust::ct::ProjPoint) -> Vec<u8> {
+    use bcs_core_rust::ct::Fp521;
+    let (x_short_mont, y_short_mont) = point.to_affine().expect("not identity");
+
+    // x_orig = x_short + 2/3 mod p.
+    let one = Fp521::ONE_MONT;
+    let two = one + one;
+    let three = two + one;
+    let three_inv = three.invert().expect("3 is invertible mod p");
+    let two_thirds_mont = two.mont_mul(&three_inv);
+
+    let x_orig_mont = x_short_mont + two_thirds_mont;
+    let x_canon = x_orig_mont.from_montgomery();
+    let y_canon = y_short_mont.from_montgomery();
+
+    let mut out = vec![0x04u8];
+    out.extend_from_slice(&x_canon.to_bytes_be());
+    out.extend_from_slice(&y_canon.to_bytes_be());
+    out
+}
+
+// ---------------------------------------------------------------------------
 // Entrypoint
 // ---------------------------------------------------------------------------
 
-ctbench_main!(bcs521_scalar_mul, bcs521_ecdh, fp521_mont_mul);
+ctbench_main!(
+    bcs521_scalar_mul,
+    bcs521_ecdh,
+    fp521_mont_mul,
+    bcs521_ecdsa_sign,
+    bcs521_ecdsa_verify
+);

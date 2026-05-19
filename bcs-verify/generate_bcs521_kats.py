@@ -306,6 +306,213 @@ def generate_kahf_dst_kats() -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
+# ECDSA KAT generation (RFC 6979, SHA-256)
+# ---------------------------------------------------------------------------
+
+def _rfc6979_nonce(n: int, sk_bytes: bytes, h1: bytes) -> int:
+    """RFC 6979 §3.2 deterministic nonce for BCS-521.
+
+    Parameters:
+        n        — curve order (521-bit prime)
+        sk_bytes — secret scalar as 66 big-endian bytes (int2octets(d))
+        h1       — SHA-256 message digest (32 bytes)
+
+    This must match the Rust `ct::ecdsa::rfc6979_nonce` byte-for-byte.
+    Key details:
+      - qlen = 521, hlen = 256 (SHA-256)
+      - bits2int(h1): since hlen < qlen, no right-shift; just BigUint(h1)
+      - bits2octets(h1): bits2int(h1) mod n, encoded as 66 BE bytes
+      - bits2int(T): T is 66 bytes = 528 bits; right-shift by 7 to get 521 bits
+    """
+    n_bytes = 66
+    hlen = 32
+
+    # bits2octets(h1): h_int = BigUint(h1) (no shift since hlen < qlen),
+    # then h_mod_n = h_int mod n, then encode as 66 BE bytes.
+    h_int = int.from_bytes(h1, 'big')
+    h_mod_n = h_int % n
+    h_octets = int_to_bytes_be(h_mod_n, n_bytes)
+
+    # Step a: already have h1.
+    # Step b: V = 0x01 * hlen.
+    v = b'\x01' * hlen
+    # Step c: K = 0x00 * hlen.
+    k_mac = b'\x00' * hlen
+
+    # Step d: K = HMAC_K(V || 0x00 || int2octets(d) || bits2octets(h1)).
+    k_mac = hmac.new(k_mac, v + b'\x00' + sk_bytes + h_octets, 'sha256').digest()
+    # Step e: V = HMAC_K(V).
+    v = hmac.new(k_mac, v, 'sha256').digest()
+    # Step f: K = HMAC_K(V || 0x01 || int2octets(d) || bits2octets(h1)).
+    k_mac = hmac.new(k_mac, v + b'\x01' + sk_bytes + h_octets, 'sha256').digest()
+    # Step g: V = HMAC_K(V).
+    v = hmac.new(k_mac, v, 'sha256').digest()
+
+    # Step h: generate candidate nonces until one is in [1, n-1].
+    while True:
+        # Accumulate T until |T| >= n_bytes (66 bytes).
+        t = b''
+        while len(t) < n_bytes:
+            v = hmac.new(k_mac, v, 'sha256').digest()
+            t += v
+
+        # bits2int(T): T is 528 bits, qlen = 521 bits.
+        # Right-shift by 7: candidate = int(T) >> 7
+        raw = int.from_bytes(t[:n_bytes], 'big')
+        candidate = raw >> 7  # now at most 521 bits
+
+        if 1 <= candidate < n:
+            return candidate
+
+        # Candidate out of range: update K and V and retry.
+        k_mac = hmac.new(k_mac, v + b'\x00', 'sha256').digest()
+        v = hmac.new(k_mac, v, 'sha256').digest()
+
+
+def _ecdsa_sign(n: int, sk: int, sk_bytes: bytes, msg: bytes) -> dict:
+    """ECDSA sign matching the Rust `ct::ecdsa::ct_sign` exactly.
+
+    Returns dict with r_hex, s_hex, and intermediate values for audit.
+    """
+    G = (G_X, G_Y)
+
+    # Step 1: e = SHA-256(msg) as integer.
+    h1 = hashlib.sha256(msg).digest()
+    e = int.from_bytes(h1, 'big')  # 256-bit value, always < n
+
+    # Step 2: k = RFC 6979 deterministic nonce.
+    k = _rfc6979_nonce(n, sk_bytes, h1)
+
+    # Step 3: R = k·G, r = R.x mod n.
+    R = scalar_mul(k, G)
+    if R[0] is None:
+        raise ValueError("nonce produced identity point")
+    r = R[0] % n
+    if r == 0:
+        raise ValueError("r = 0 (astronomically rare)")
+
+    # Step 4: s = k⁻¹ · (e + r · sk) mod n.
+    k_inv = pow(k, n - 2, n)  # Fermat inversion
+    s = (k_inv * ((e + r * sk) % n)) % n
+    if s == 0:
+        raise ValueError("s = 0 (astronomically rare)")
+
+    return {
+        "r_hex": int_to_bytes_be(r, FIELD_BYTES).hex(),
+        "s_hex": int_to_bytes_be(s, FIELD_BYTES).hex(),
+        "k_hex": int_to_bytes_be(k, FIELD_BYTES).hex(),
+        "e_hex": int_to_bytes_be(e, FIELD_BYTES).hex(),
+    }
+
+
+def _ecdsa_verify(n: int, pk_point, msg: bytes, r: int, s: int) -> bool:
+    """ECDSA verify matching the Rust `ct::ecdsa::ct_verify` exactly."""
+    G = (G_X, G_Y)
+
+    # Range check.
+    if not (1 <= r < n and 1 <= s < n):
+        return False
+
+    # e = SHA-256(msg) as integer.
+    h1 = hashlib.sha256(msg).digest()
+    e = int.from_bytes(h1, 'big')
+
+    # w = s⁻¹ mod n.
+    w = pow(s, n - 2, n)
+
+    # u1 = e·w mod n, u2 = r·w mod n.
+    u1 = (e * w) % n
+    u2 = (r * w) % n
+
+    # X = u1·G + u2·Q.
+    X = point_add(scalar_mul(u1, G), scalar_mul(u2, pk_point))
+    if X[0] is None:
+        return False  # identity
+
+    # Accept iff X.x ≡ r (mod n).
+    return (X[0] % n) == r
+
+
+def generate_ecdsa_kats(count: int = 100) -> list[dict]:
+    """Generate ECDSA sign/verify KAT vectors.
+
+    Each vector contains:
+      - secret key + public key
+      - message
+      - signature (r, s)
+      - RFC 6979 nonce k (for audit)
+      - hash e (for audit)
+      - verify_result (always True for valid signatures)
+    """
+    rng = drbg_seed(b'BCS-521-KAT-ecdsa-v1')
+    vectors = []
+    G = (G_X, G_Y)
+
+    messages = [
+        b"Bismillah al-Rahman al-Raheem",
+        b"BCS-521 ECDSA test vector",
+        b"",
+        b"Kahf",
+        b"Halal certification signature",
+        b"Surah Al-Baqarah 255 (Ayat al-Kursi)",
+        b"Sukuk bond issuance",
+        b"Nikah Nama digital signature",
+        b"Waqf deed verification",
+        b"Zakat calculation receipt",
+    ]
+
+    for i in range(count):
+        # Generate secret key.
+        seed = rng.generate(64)
+        sk_int = int_from_bytes_be(hashlib.sha256(seed).digest()) % (N_521 - 1) + 1
+        sk_bytes = int_to_bytes_be(sk_int, FIELD_BYTES)
+
+        # Compute public key.
+        pk = scalar_mul(sk_int, G)
+        if pk[0] is None:
+            continue
+
+        pk_sec1 = b'\x04' + int_to_bytes_be(pk[0], FIELD_BYTES) + int_to_bytes_be(pk[1], FIELD_BYTES)
+
+        # Select message (cycle through the list).
+        msg = messages[i % len(messages)]
+
+        # Sign.
+        try:
+            sig = _ecdsa_sign(N_521, sk_int, sk_bytes, msg)
+        except ValueError:
+            continue
+
+        # Verify (should always succeed).
+        r_int = int.from_bytes(bytes.fromhex(sig["r_hex"]), 'big')
+        s_int = int.from_bytes(bytes.fromhex(sig["s_hex"]), 'big')
+        ok = _ecdsa_verify(N_521, pk, msg, r_int, s_int)
+        if not ok:
+            print(f"  WARNING: ECDSA verify failed at vector {i}!")
+            continue
+
+        # Also test that a wrong message fails.
+        wrong_msg = msg + b"-tampered"
+        wrong_ok = _ecdsa_verify(N_521, pk, wrong_msg, r_int, s_int)
+
+        vectors.append({
+            "index": i,
+            "message_hex": msg.hex(),
+            "message_utf8": msg.decode('utf-8', errors='replace'),
+            "secret_key_hex": sk_bytes.hex(),
+            "public_key_sec1_hex": pk_sec1.hex(),
+            "r_hex": sig["r_hex"],
+            "s_hex": sig["s_hex"],
+            "k_hex": sig["k_hex"],
+            "e_hex": sig["e_hex"],
+            "verify_valid": ok,
+            "verify_tampered": wrong_ok,
+        })
+
+    return vectors
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -343,9 +550,16 @@ def main():
         json.dump({"algorithm": "BCS-521", "type": "kahf_domain_separator", "count": len(kahf), "vectors": kahf}, f, indent=2)
     print(f"  kahf:   {len(kahf)} vectors -> {path}")
 
-    total = len(keygen) + len(ecdh) + len(scalar) + len(kahf)
+    # 5. ECDSA sign/verify
+    ecdsa = generate_ecdsa_kats(100)
+    path = os.path.join(out_dir, 'bcs521_ecdsa.json')
+    with open(path, 'w') as f:
+        json.dump({"algorithm": "BCS-521", "type": "ecdsa_rfc6979_sha256", "count": len(ecdsa), "vectors": ecdsa}, f, indent=2)
+    print(f"  ecdsa:  {len(ecdsa)} vectors -> {path}")
+
+    total = len(keygen) + len(ecdh) + len(scalar) + len(kahf) + len(ecdsa)
     print(f"\nTotal: {total} KAT vectors generated.")
-    print("Next: run `cargo test --features ct kat_parity` on Codespaces to cross-check.")
+    print("Next: run `cargo test --features ecdsa kat_parity` on Codespaces to cross-check.")
 
 
 if __name__ == '__main__':

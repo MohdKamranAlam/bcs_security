@@ -19,6 +19,8 @@ hybrid = ["ct", "dep:ml-kem"]
 # Enable BCS-521 ECDSA: deterministic sign + verify via RFC 6979.
 # Both BigUint reference and CT Montgomery paths are available.
 ecdsa = ["ct", "dep:hmac"]
+# Enable ECDSA KAT parity tests (requires bcs-verify/kats/bcs521_ecdsa.json).
+ecdsa_kat = ["ecdsa", "dep:serde_json", "dep:serde"]
 # Fortress: all security hardening enabled (CT + fault injection + DPA masking
 # + aggressive zeroize + transparent execution proofs + PQ hybrid).
 # This is the recommended feature for production deployments.
@@ -36,11 +38,11 @@ subtle  = { version = "2.5", optional = true, default-features = false }
 zeroize = { version = "1.7", optional = true, features = ["zeroize_derive"] }
 ml-kem  = { version = "0.2", optional = true, default-features = false, features = ["std"] }
 hmac    = { version = "0.12", optional = true }
+serde_json = { version = "1", optional = true, features = ["std"] }
+serde      = { version = "1", optional = true, features = ["derive"] }
 
 [dev-dependencies]
 aes-gcm    = "0.10"
-serde_json = { version = "1", features = ["std"] }
-serde      = { version = "1", features = ["derive"] }
 criterion  = { version = "0.5", features = ["html_reports"] }
 proptest   = "1.4"
 # Dudect statistical timing-leak detector (PHASE C-1).
@@ -65,11 +67,11 @@ path = "examples/bcs256_ecdh_demo.rs"
 
 # PHASE C-1 — dudect timing-leak harness.
 # Run via:
-#   cargo run --release --features ct --example dudect_ct -- --continuous bcs521_ecdh
+#   cargo run --release --features ecdsa --example dudect_ct -- --continuous bcs521_ecdh
 [[example]]
 name = "dudect_ct"
 path = "examples/dudect_ct.rs"
-required-features = ["ct"]
+required-features = ["ecdsa"]
 
 [[bench]]
 name = "ct_bench"
