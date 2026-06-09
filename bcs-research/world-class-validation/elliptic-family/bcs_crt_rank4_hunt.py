@@ -16,6 +16,17 @@ from pathlib import Path
 from sage.all import EllipticCurve, QQ
 
 
+known_bad = {
+    66,
+    3942,
+    235210,
+    1456150,
+    652849,
+    405754,
+    28408885,
+}
+
+
 def curve(t: int):
     return EllipticCurve(QQ, [0, 17 + t, 0, 5, 4])
 
@@ -81,8 +92,22 @@ def main() -> None:
     for k in range(args.k_min, args.k_max + 1):
         t = 66 + 323 * k
         start = time.perf_counter()
-        print(f"Analyzing k={k} (t={t}) mode={args.mode}", flush=True)
-        row = analyze_rank(k, args.mode)
+        if t in known_bad:
+            print(f"Skipping known bad t={t} (k={k})", flush=True)
+            row = {
+                "k": k,
+                "t": t,
+                "conductor": "SKIPPED",
+                "root_number": "SKIPPED",
+                "rank_bounds": "SKIPPED",
+                "upper_bound": "SKIPPED",
+                "rank_mwrank": "SKIPPED",
+                "rank_all": "SKIPPED",
+                "analytic_rank": "SKIPPED",
+            }
+        else:
+            print(f"Analyzing k={k} (t={t}) mode={args.mode}", flush=True)
+            row = analyze_rank(k, args.mode)
         rows.append(row)
         elapsed = time.perf_counter() - start
         print(f"  done in {elapsed:.1f}s", flush=True)
