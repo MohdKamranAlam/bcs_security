@@ -1,0 +1,53 @@
+k,t,discriminant,bad_primes,conductor,rank_bounds,rank,analytic_rank,count_p17,a_p17,count_p19,a_p19,gens
+-20,-6394,66404173291216,2;67;49877;1241939,33202086645608,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (5819720737/904401 : 42110118622873/860085351 : 1)]"
+-19,-6071,56817094719232,2;31;89;80442833,887767104988,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (13900462732257528445/537586649703670180201 : -3561504170330836139914290585602/12464438310867820366104380714699 : 1)]"
+-18,-5748,48200249139024,2;3;503;1996365521,48200249139024,"(2, 2)",2,,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-17,-5425,40501876012480,2;5;281;450421219,40501876012480,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-16,-5102,33670214801488,2;51503;40859531,16835107400744,"(1, 3)",rank_ERROR: RuntimeError: rank not provably correct (lower bound: 1),,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-15,-4779,27653504967936,2;3;12002389309,288057343416,"(1, 3)",rank_ERROR: RuntimeError: rank not provably correct (lower bound: 1),,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-14,-4456,22399985973712,2;1069;1567;835759,22399985973712,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-13,-4133,17857897280704,2;13;863;4409;5641,17857897280704,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-12,-3810,13975478350800,2;3;5;97;1949;61603,1397547835080,"(2, 2)",2,,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-11,-3487,10700968645888,2;1549;26985577,668810540368,"(2, 2)",2,,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-10,-3164,7982607627856,2;498912976741,7982607627856,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-9,-2841,5768634758592,2;3;30044972701,5768634758592,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-8,-2518,4007289499984,2;306091;818239,2003644749992,"(2, 2)",2,,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-7,-2195,2646811313920,2;5;4663;443453,165425707120,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-6,-1872,1635439662288,2;3;97;283;137909,181715518032,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (14724015377634306113197/6171104871609823044 : -842829800654112312122144176833683/15330078908399373438880943928 : 1)]"
+-5,-1549,921414006976,2;149;503;192097,921414006976,"(2, 4)",rank_ERROR: RuntimeError: rank not provably correct (lower bound: 1),,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=2, generators found=[[0, 2, 1], [1081624567466932404182536212768, -308066929464108015927463407499342, 13086219898247204621463949]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-4,-1226,452973809872,2;28310863117,226486904936,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-3,-903,178358532864,2;3;163;1424771,2786852076,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+-2,-580,45807637840,2;5;89;137;151;311,45807637840,"(2, 2)",2,,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+-1,-257,3560586688,2;89;625103,3560586688,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+0,66,-143158704,2;3;13;61;3761,71579352,"(3, 3)",3,,19,-1,17,3,"[(-1 : 9 : 1), (0 : 2 : 1), (-45 : 277 : 1)]"
+1,389,-17064136448,2;23;2898121,533254264,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (165/1681 : 199792/68921 : 1)]"
+2,712,-98962884656,2;29;1531;139309,98962884656,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (-731/4 : 34169/8 : 1)]"
+3,1035,-297599941440,2;3;5;1093;94541,99199980480,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+4,1358,-664735844912,2;29347;1415681,332367922456,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (818426898091261045/4542435401825412036 : -68143261057233171756270744043/9681288002220486435962291784 : 1)]"
+5,1681,-1252131133184,2;4891137239,78258195824,"(3, 3)",3,,19,-1,17,3,"[(0 : 2 : 1), (153/4 : 12751/8 : 1), (12/121 : 6128/1331 : 1)]"
+6,2004,-2111546344368,2;3;2381;18475661,2111546344368,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+7,2327,-3294742016576,2;51480344009,3294742016576,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+8,2650,-4853478687920,2;5;2239;2729;9929,2426739343960,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+9,2973,-6839516896512,2;3;47;189481297,427469806032,"(3, 3)",3,,19,-1,17,3,"[(0 : 2 : 1), (10528/9801 : 57079934/970299 : 1), (-518111/3392964 : 53381490605/6249839688 : 1)]"
+10,3296,-9304617180464,2;597803;972793,9304617180464,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (12 : 692 : 1)]"
+11,3619,-12300540077888,2;787;244213391,12300540077888,"(2, 2)",2,,19,-1,17,3,"[(-99985392435253407/881165859375844 : -176153012376363274649755807/26156913320358959915672 : 1), (0 : 2 : 1)]"
+12,3942,-15879046126896,2;3;31;349;10192361,2646507687816,"(3, 3)",3,,19,-1,17,3,"[(-239 : 14577 : 1), (0 : 2 : 1), (132039136/1408876225 : -331274866082934/52882169105375 : 1)]"
+13,4265,-20091895865600,2;5;13;8431;28643,62787174580,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (28/9 : 5500/27 : 1)]"
+14,4588,-24990849832112,2;59;26473357873,24990849832112,"(2, 2)",2,,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+15,4911,-30627668564544,2;3;3727;5273;8117,30627668564544,"(1, 3)",rank_ERROR: RuntimeError: rank not provably correct (lower bound: 1),,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+16,5234,-37054112601008,2;843881;2744323,18527056300504,"(1, 1)",1,,19,-1,17,3,[(0 : 2 : 1)]
+17,5557,-44321942479616,2;317;1069;510907,1385060702488,"(2, 2)",2,,19,-1,17,3,"[(0 : 2 : 1), (117515/3481 : 519213358/205379 : 1)]"
+18,5880,-52482918738480,2;3;5;218678828077,52482918738480,"(2, 2)",2,,19,-1,17,3,"gens_ERROR: RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=1, generators found=[[0, 2, 1]]).  This could be because Sha(E/Q)[2] is nontrivial.
+Try increasing descent_second_limit then trying this command again."
+19,6203,-61588801915712,2;2029;474285377,61588801915712,"(2, 2)",2,,19,-1,17,3,"[(-13274116102100/1150721962377849 : -85253987324062307271736/39035127569316370487757 : 1), (0 : 2 : 1)]"
+20,6526,-71691352549424,2;4480709534339,35845676274712,"(3, 3)",3,,19,-1,17,3,"[(0 : 2 : 1), (-11 : 889 : 1), (-935/1849 : 3253439/79507 : 1)]"
