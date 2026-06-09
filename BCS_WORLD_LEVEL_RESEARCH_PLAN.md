@@ -95,6 +95,25 @@ a_19 = 3
 - Compare with Fourier coefficients of the attached modular forms.
 - Check whether rank-3 examples have unusual root number/sign patterns.
 
+New tooling:
+
+```bash
+python3 bcs-research/world-class-validation/elliptic-family/bcs_crt_character_sum_certificate.py \
+  --output BCS_CRT_CHARACTER_SUM_CERTIFICATE.md
+
+sage -python bcs-research/world-class-validation/elliptic-family/bcs_crt_root_modular_analysis.py \
+  --input bcs_crt_rank3_analytic.csv \
+  --output bcs_crt_root_modular_rank3.csv \
+  --report BCS_CRT_ROOT_MODULAR_RANK3.md
+```
+
+Expected outputs:
+
+- character-sum proof certificate for the local theorem,
+- root number and parity table,
+- Frobenius traces `a17=-1`, `a19=3`,
+- local reduction data at bad primes.
+
 ### Level 4: Generic Rank Theorem
 
 Current result:
@@ -120,4 +139,3 @@ in the CRT class would have a deeper explanation.
   proof for BCS-521.
 - We do not claim BSD is proven; equal algebraic/analytic ranks are
   Sage-computed evidence for the tested curves.
-

@@ -101,6 +101,34 @@ python3 bcs-research/world-class-validation/elliptic-family/bcs_crt_wide_rank_sc
   --output bcs_crt_selected_rank.csv
 ```
 
+## Advanced Layer: Character Sums, Root Numbers, Frobenius Data
+
+Generate a pure-Python character-sum certificate for the exact CRT theorem:
+
+```bash
+python3 bcs-research/world-class-validation/elliptic-family/bcs_crt_character_sum_certificate.py \
+  --output BCS_CRT_CHARACTER_SUM_CERTIFICATE.md
+```
+
+Analyze the certified rank-3 cases with Sage:
+
+```bash
+sage -python bcs-research/world-class-validation/elliptic-family/bcs_crt_root_modular_analysis.py \
+  --input bcs_crt_rank3_analytic.csv \
+  --output bcs_crt_root_modular_rank3.csv \
+  --report BCS_CRT_ROOT_MODULAR_RANK3.md
+```
+
+Analyze the full `k=-20..20` CRT window:
+
+```bash
+sage -python bcs-research/world-class-validation/elliptic-family/bcs_crt_root_modular_analysis.py \
+  --k-min -20 \
+  --k-max 20 \
+  --output bcs_crt_root_modular_k20.csv \
+  --report BCS_CRT_ROOT_MODULAR_K20.md
+```
+
 ## Baseline Expected for t = 0
 
 For
