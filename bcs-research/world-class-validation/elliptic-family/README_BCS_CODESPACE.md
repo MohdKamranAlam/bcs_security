@@ -61,6 +61,46 @@ Do not use `--rank`, `--rank-bounds`, or `--analytic-rank` on large ranges
 until the quick scan has identified a small candidate list. These options can
 invoke descent/mwrank and may run for a long time.
 
+## CRT Class Wide Scan
+
+For the special class
+
+```text
+t = 66 + 323*k
+```
+
+run a wider invariant scan first:
+
+```bash
+cd /workspaces/bcs_security
+
+python3 bcs-research/world-class-validation/elliptic-family/bcs_crt_wide_rank_scan.py \
+  --k-min -20 \
+  --k-max 20 \
+  --no-rank \
+  --output bcs_crt_k20_invariants.csv
+```
+
+Then run rank without analytic rank:
+
+```bash
+python3 bcs-research/world-class-validation/elliptic-family/bcs_crt_wide_rank_scan.py \
+  --k-min -20 \
+  --k-max 20 \
+  --rank \
+  --output bcs_crt_k20_rank.csv
+```
+
+Finally run analytic rank only for selected strong candidates:
+
+```bash
+python3 bcs-research/world-class-validation/elliptic-family/bcs_crt_wide_rank_scan.py \
+  --t-values 66,1681 \
+  --rank \
+  --analytic-rank \
+  --output bcs_crt_selected_rank.csv
+```
+
 ## Baseline Expected for t = 0
 
 For
