@@ -1,63 +1,44 @@
 # BCS CRT 17/19 Rank Finding
 
-Family:
+We study the family:
 
-\[
-E_t: y^2=x^3+(17+t)x^2+5x+4.
-\]
+E_t: y^2 = x^3 + (17+t)x^2 + 5x + 4.
 
-## Local 17/19 Point-Count Exchange
+Main result:
 
-The CRT class
+For every integer t satisfying
 
-\[
-t \equiv 66 \pmod{323}
-\]
+t = 66 mod 323,
 
-satisfies the local finite-field exchange
+we get the finite-field point-count exchange:
 
-\[
-\#E_t(\mathbb{F}_{17})=19,\quad \#E_t(\mathbb{F}_{19})=17.
-\]
+#E_t(F_17) = 19
+#E_t(F_19) = 17
 
-This follows from the congruence conditions:
+This happens because:
 
-\[
-t\equiv -2 \pmod{17},\quad t\equiv 9 \pmod{19}.
-\]
+t = -2 mod 17 gives #E_t(F_17) = 19
+t = 9 mod 19 gives #E_t(F_19) = 17
 
-## Sage Rank Evidence
+Combining these two congruences gives:
 
-Tested values \(t=66+323k\) show repeated positive Mordell-Weil rank.
+t = 66 mod 323.
 
-| t | rank bounds | rank | analytic rank | point counts |
-|---:|---:|---:|---:|---|
-| -1549 | (2,4) | uncertified | 2 | #F17=19, #F19=17 |
-| -1226 | (1,1) | 1 | 1 | #F17=19, #F19=17 |
-| -903 | (1,1) | 1 | 1 | #F17=19, #F19=17 |
-| -580 | (2,2) | 2 | 2 | #F17=19, #F19=17 |
-| -257 | (1,1) | 1 | 1 | #F17=19, #F19=17 |
-| 66 | (3,3) | 3 | 3 | #F17=19, #F19=17 |
-| 389 | (2,2) | 2 | 2 | #F17=19, #F19=17 |
-| 712 | (2,2) | 2 | 2 | #F17=19, #F19=17 |
-| 1035 | (1,1) | 1 | 1 | #F17=19, #F19=17 |
-| 1358 | (2,2) | 2 | 2 | #F17=19, #F19=17 |
-| 1681 | (3,3) | 3 | 3 | #F17=19, #F19=17 |
+Sage rank evidence for tested values:
 
-## Main Finding
+t=-257: rank 1
+t=66: rank 3
+t=389: rank 2
+t=712: rank 2
+t=1035: rank 1
+t=1358: rank 2
+t=1681: rank 3
 
-In the BCS family, the CRT class \(t\equiv66\pmod{323}\) gives a clean 17/19 finite-field exchange and repeatedly produces positive-rank curves. The strongest certified examples are:
+Strongest examples:
 
-\[
-\operatorname{rank} E_{66}(\mathbb{Q}) = 3
-\]
+E_66 has rank 3.
+E_1681 has rank 3.
 
-and
+Caveat:
 
-\[
-\operatorname{rank} E_{1681}(\mathbb{Q}) = 3.
-\]
-
-## Caveat
-
-The point-count exchange is exact and congruence-based. The rank pattern is computational Sage evidence from tested cases, not yet a theorem for all \(t\equiv66\pmod{323}\).
+The point-count exchange is exact. The rank pattern is computational evidence from tested cases.
