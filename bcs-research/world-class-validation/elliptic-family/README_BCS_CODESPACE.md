@@ -57,6 +57,10 @@ sage -python bcs_codespace_sage.py \
   --summary bcs_family_sage_big_summary.md
 ```
 
+Do not use `--rank`, `--rank-bounds`, or `--analytic-rank` on large ranges
+until the quick scan has identified a small candidate list. These options can
+invoke descent/mwrank and may run for a long time.
+
 ## Baseline Expected for t = 0
 
 For

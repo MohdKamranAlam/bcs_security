@@ -84,7 +84,11 @@ def scan(args) -> list[dict[str, object]]:
             row["torsion_structure"] = safe(
                 "torsion_structure", lambda: E.torsion_subgroup().invariants()
             )
-            row["rank_bounds"] = safe("rank_bounds", lambda: E.rank_bounds())
+            row["rank_bounds"] = (
+                safe("rank_bounds", lambda: E.rank_bounds())
+                if args.rank_bounds or args.rank
+                else ""
+            )
             row["rank"] = safe("rank", lambda: E.rank()) if args.rank else ""
             row["analytic_rank"] = (
                 safe("analytic_rank", lambda: E.analytic_rank())
@@ -198,6 +202,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("bcs_family_sage.csv"))
     parser.add_argument("--summary", type=Path, default=Path("bcs_family_summary.md"))
     parser.add_argument("--rank", action="store_true")
+    parser.add_argument(
+        "--rank-bounds",
+        action="store_true",
+        help="Compute rank bounds; can invoke mwrank/descent and be slow.",
+    )
     parser.add_argument("--analytic-rank", action="store_true")
     args = parser.parse_args()
 
