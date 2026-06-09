@@ -42,3 +42,17 @@ Outputs:
 * BSD itself is unproven; we only test the curve's behaviour against its
   predictions.
 * The Riemann Hypothesis lies outside our scope.
+
+## Elliptic-Family Scan Add-on
+
+The `elliptic-family/` subdirectory contains a Codespaces-ready scanner for
+the parametric family
+
+```text
+E_t: y^2 = x^3 + (17+t)x^2 + 5x + 4.
+```
+
+Use `elliptic-family/bcs_family_quick.py` for fast finite-field scans without
+Sage, and `elliptic-family/bcs_codespace_sage.py` for exact conductor/rank
+checks when SageMath is installed. See
+`elliptic-family/README_BCS_CODESPACE.md` for commands.
