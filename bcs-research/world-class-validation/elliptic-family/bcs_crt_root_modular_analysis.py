@@ -76,9 +76,22 @@ def read_t_values(path: Path) -> list[int]:
         return [int(row["t"]) for row in csv.DictReader(fh)]
 
 
+def bad_primes(E) -> list[int]:
+    try:
+        return list(E.bad_primes())
+    except AttributeError:
+        try:
+            c = E.conductor()
+            if isinstance(c, int):
+                return [int(p) for p, _ in factor(c)]
+        except Exception:
+            pass
+        return []
+
+
 def local_data_summary(E) -> str:
     parts = []
-    for p in E.bad_primes():
+    for p in bad_primes(E):
         ld = E.local_data(p)
         parts.append(
             f"p={p}:kodaira={ld.kodaira_symbol()},"
@@ -120,7 +133,7 @@ def analyze_t(t: int) -> dict[str, object]:
         "ap19": ap19,
         "count_p17": 18 - ap17 if isinstance(ap17, int) else "",
         "count_p19": 20 - ap19 if isinstance(ap19, int) else "",
-        "bad_primes": ";".join(str(p) for p in E.bad_primes()),
+        "bad_primes": ";".join(str(p) for p in bad_primes(E)),
         "local_data": local_data,
         "gens": gens,
     }
