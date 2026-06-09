@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+
+\title{A CRT-Controlled 17/19 Point-Count Exchange\\
+in a Rank-Positive Elliptic Curve Family}
+\author{BCS Research}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the one-parameter family of elliptic curves
+\[
+E_t:\quad y^2=x^3+(17+t)x^2+5x+4.
+\]
+We prove an exact local congruence phenomenon: for every integer
+\(t\equiv 66 \pmod{323}\), the reductions satisfy
+\[
+\#E_t(\F_{17})=19,\qquad \#E_t(\F_{19})=17.
+\]
+The family also has a non-torsion rational section \(P=(0,2)\), so its
+generic Mordell--Weil rank over \(\Q(t)\) is at least one. Sage computations
+inside the same CRT class find certified rank-three specializations at
+\(t=66\) and \(t=1681\), both with matching analytic rank three.
+\end{abstract}
+
+\section{The family}
+
+Let
+\[
+E_t:\quad y^2=x^3+(17+t)x^2+5x+4.
+\]
+The point \(P=(0,2)\) lies on every fiber, since substituting \(x=0\)
+gives \(y^2=4\).
+
+\section{The CRT point-count exchange}
+
+\begin{theorem}
+For every integer \(t\equiv 66 \pmod{323}\),
+\[
+\#E_t(\F_{17})=19,\qquad \#E_t(\F_{19})=17.
+\]
+\end{theorem}
+
+\begin{proof}
+Over \(\F_p\), the equation only depends on \(t\bmod p\). A direct residue
+count gives
+\[
+t\equiv 15\equiv -2 \pmod{17}\quad\Longrightarrow\quad
+\#E_t(\F_{17})=19,
+\]
+and
+\[
+t\equiv 9 \pmod{19}\quad\Longrightarrow\quad
+\#E_t(\F_{19})=17.
+\]
+Solving
+\[
+t\equiv -2 \pmod{17},\qquad t\equiv 9 \pmod{19}
+\]
+by the Chinese Remainder Theorem gives \(t\equiv 66\pmod{323}\).
+\end{proof}
+
+\section{Generic rank}
+
+\begin{proposition}
+The generic Mordell--Weil rank of \(E/\Q(t)\) is at least one.
+\end{proposition}
+
+\begin{proof}
+The point \(P=(0,2)\) is a rational section. If it were torsion over
+\(\Q(t)\), then its specialization at every smooth fiber would be torsion.
+At \(t=66\), Sage verifies that \(E_{66}(\Q)\) has trivial torsion and rank
+three; in particular, \(P_{66}=(0,2)\) is non-torsion. Thus \(P\) is
+non-torsion over \(\Q(t)\).
+\end{proof}
+
+\section{Rank evidence}
+
+For tested values \(t=66+323k\), Sage gives the following data.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+\(t\) & rank bounds & rank & analytic rank\\
+\midrule
+-1226 & (1,1) & 1 & 1\\
+-903  & (1,1) & 1 & 1\\
+-580  & (2,2) & 2 & 2\\
+-257  & (1,1) & 1 & 1\\
+66    & (3,3) & 3 & 3\\
+389   & (2,2) & 2 & 2\\
+712   & (2,2) & 2 & 2\\
+1035  & (1,1) & 1 & 1\\
+1358  & (2,2) & 2 & 2\\
+1681  & (3,3) & 3 & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For \(t=66\), Sage finds generators
+\[
+(-1,9),\quad (0,2),\quad (-45,277).
+\]
+For \(t=1681\), Sage finds generators
+\[
+(0,2),\quad (153/4,12751/8),\quad (12/121,6128/1331).
+\]
+
+\section{Caveats}
+
+The CRT point-count exchange is exact. The rank pattern is computational
+evidence from tested specializations; we do not claim that all
+\(t\equiv 66\pmod{323}\) have positive rank, nor that the rank is bounded
+below by two or three on the entire CRT class.
+
+\begin{remark}
+This note is mathematical pedigree for the BCS research program. It is not a
+cryptographic security proof for BCS-521, whose security argument concerns a
+separate 521-bit prime-field elliptic-curve group.
+\end{remark}
+
+\end{document}
+
