@@ -122,3 +122,23 @@ The selected Sage verification file `bcs_crt_selected_rank.csv` confirms:
 | 1681 | (3,3) | 3 | 3 | 19 | 17 |
 
 This independently confirms that both strongest CRT-class examples are exact rank-3 curves with matching analytic rank.
+
+## Five Certified Rank-3 CRT Examples
+
+The file `bcs_crt_rank3_analytic.csv` verifies five CRT-class examples with:
+
+- rank bounds `(3,3)`
+- algebraic rank `3`
+- analytic rank `3`
+- `#E_t(F_17)=19`
+- `#E_t(F_19)=17`
+
+| t | conductor | rank | analytic rank | #F17 | #F19 |
+|---:|---:|---:|---:|---:|---:|
+| 66 | 71579352 | 3 | 3 | 19 | 17 |
+| 1681 | 78258195824 | 3 | 3 | 19 | 17 |
+| 2973 | 427469806032 | 3 | 3 | 19 | 17 |
+| 3942 | 2646507687816 | 3 | 3 | 19 | 17 |
+| 6526 | 35845676274712 | 3 | 3 | 19 | 17 |
+
+This strengthens the CRT-class finding from isolated rank-3 examples to a reproducible rank-3 pattern in the tested window \(k=-20,\ldots,20\).
