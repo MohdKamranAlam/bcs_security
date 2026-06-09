@@ -111,3 +111,14 @@ The selected Sage verification file `bcs_crt_selected_rank.csv` confirms:
 | 1681 | (3,3) | 3 | 3 | 19 | 17 |
 
 This independently confirms that both strongest CRT-class examples are exact rank-3 curves with matching analytic rank.
+
+## Selected Rank-3 Verification CSV
+
+The selected Sage verification file `bcs_crt_selected_rank.csv` confirms:
+
+| t | rank bounds | rank | analytic rank | #F17 | #F19 |
+|---:|---:|---:|---:|---:|---:|
+| 66 | (3,3) | 3 | 3 | 19 | 17 |
+| 1681 | (3,3) | 3 | 3 | 19 | 17 |
+
+This independently confirms that both strongest CRT-class examples are exact rank-3 curves with matching analytic rank.
